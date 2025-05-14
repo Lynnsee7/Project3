@@ -1,168 +1,386 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>${systemName} - 购物车</title>
-  <link rel="stylesheet" type="text/css" href="/WEB-ROOT/front/skin/css/style.css">
-  <script src="/WEB-ROOT/front/skin/js/jquery.min.js"></script>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>$ResultMap.systemName - 购物车</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/fontawesome-all.css">
+  <link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/flaticon.css">
+  <link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/animate.css">
+  <link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/jquery.mCustomScrollbar.min.css">
+  <link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/slick.css">
+  <link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/slick-theme.css">
+  <link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/style.css">
   <style>
     .cart-table {
       width: 100%;
+      margin-top: 30px;
       border-collapse: collapse;
-      margin-top: 20px;
     }
     .cart-table th, .cart-table td {
-      padding: 12px;
+      padding: 15px;
       text-align: left;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid #eee;
     }
     .cart-table th {
-      background-color: #f5f5f5;
+      background-color: #f8f9fa;
+      font-weight: bold;
+    }
+    .product-thumbnail {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+    .product-name {
+      font-weight: bold;
     }
     .quantity-control {
       display: flex;
       align-items: center;
+      max-width: 120px;
     }
-    .quantity-control button {
+    .quantity-btn {
       width: 30px;
       height: 30px;
       background: #f0f0f0;
       border: 1px solid #ddd;
-      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
+      user-select: none;
     }
-    .quantity-control input {
-      width: 50px;
+    .quantity-input {
+      width: 40px;
       height: 30px;
       text-align: center;
       border: 1px solid #ddd;
       margin: 0 5px;
     }
     .remove-item {
-      color: #e53935;
+      color: #dc3545;
       cursor: pointer;
-    }
-    .cart-summary {
-      margin-top: 30px;
-      padding: 20px;
-      background: #f9f9f9;
-      border-radius: 8px;
     }
     .cart-total {
-      font-size: 18px;
-      font-weight: bold;
+      margin-top: 30px;
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    .cart-total h3 {
       margin-bottom: 15px;
     }
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
     .checkout-btn {
-      background: #4CAF50;
+      display: inline-block;
+      background: #76A713;
       color: white;
-      border: none;
-      padding: 12px 20px;
-      font-size: 16px;
+      padding: 10px 25px;
       border-radius: 4px;
+      font-weight: bold;
+      margin-top: 15px;
+      border: none;
       cursor: pointer;
+      transition: all 0.3s ease;
     }
     .checkout-btn:hover {
-      background: #45a049;
+      background: #619000;
     }
     .empty-cart {
       text-align: center;
       padding: 50px 0;
-      color: #888;
+    }
+    .empty-cart i {
+      font-size: 60px;
+      color: #ddd;
+      margin-bottom: 20px;
     }
     .empty-cart h3 {
-      font-size: 24px;
+      color: #333;
       margin-bottom: 15px;
     }
-    .empty-cart a {
+    .empty-cart .shop-now-btn {
       display: inline-block;
-      background: #2196F3;
+      background: #76A713;
       color: white;
-      padding: 10px 20px;
+      padding: 10px 25px;
       border-radius: 4px;
       text-decoration: none;
       margin-top: 15px;
     }
   </style>
 </head>
-<body>
-<div class="container">
-  <header>
-    <h1>${systemName}</h1>
-    <nav>
-      <ul>
-        <li><a href="index.do">首页</a></li>
-        <li><a href="index.do?flag=shop">商品列表</a></li>
-        <li><a href="index.do?flag=cart" class="active">购物车</a></li>
-        <#if login_user_acct == "guest">
-        <li><a href="${LOG_SUCC_GO2_FRONT}">登录</a></li>
-        <#else>
-        <li><a href="#">${login_user_acct}</a></li>
-        <li><a href="logout.do">退出</a></li>
-      </#if>
-      </ul>
-    </nav>
-  </header>
 
-  <main>
-    <h2>购物车</h2>
-
-    <#if getCart?? && getCart?size gt 0>
-    <table class="cart-table">
-      <thead>
-      <tr>
-        <th>商品</th>
-        <th>单价</th>
-        <th>数量</th>
-        <th>小计</th>
-        <th>操作</th>
-      </tr>
-      </thead>
-      <tbody>
-      <#list getCart as item>
-      <tr data-huohao="${item.huohao}">
-        <td>${item.shangpinmingcheng}</td>
-        <td>¥${item.price}</td>
-        <td>
-          <div class="quantity-control">
-            <button class="decrease-qty">-</button>
-            <input type="text" class="item-qty" value="${item.quantity}" readonly>
-            <button class="increase-qty">+</button>
-          </div>
-        </td>
-        <td>¥${item.subtotal}</td>
-        <td><span class="remove-item">删除</span></td>
-      </tr>
-      </#list>
-      </tbody>
-    </table>
-
-    <div class="cart-summary">
-      <div class="cart-total">总计: ¥${Session.cartTotal}</div>
-      <button class="checkout-btn">结算</button>
-    </div>
-    <#else>
-    <div class="empty-cart">
-      <h3>购物车是空的</h3>
-      <p>快去添加商品吧</p>
-      <a href="index.do?flag=shop">去购物</a>
-    </div>
-  </#if>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 ${systemName} - All Rights Reserved</p>
-  </footer>
+<body class="organio-wrapper">
+<div id="preloader"></div>
+<div class="up">
+  <a href="#" class="scrollup text-center"><i class="fas fa-chevron-up"></i></a>
 </div>
+
+<header id="organio-header" class="organio-header-section header-style-three">
+  <div class="or-header-top">
+    <div class="container">
+      <div class="or-header-top-content d-flex justify-content-between align-items-center">
+        <div class="or-header-top-slug">
+          欢迎访问本平台 &nbsp;welcome to our system
+        </div>
+        <div class="or-header-top-social">
+          <a href="#"><i class="fab fa-qq"></i></a>
+          <a href="#"><i class="fab fa-weibo"></i></a>
+          <a href="#"><i class="fab fa-weixin"></i></a>
+          <a href="#"><i class="fas fa-envelope"></i></a>
+        </div>
+        <div class="or-header-top-login-btn position-relative">
+
+          #if( $ResultMap.login_user_acct == "" )
+          <a href="$ResultMap.LOG_SUCC_GO2_FRONT">用户登录</a>
+          #else
+          <a href="$ResultMap.LOG_SUCC_GO2_APP">你好！$ResultMap.login_user_acct，&nbsp;&nbsp;进入管理</a>
+          #end
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="or-header-main-menu">
+    <div class="container">
+      <div class="or-header-main-menu-content d-flex justify-content-between align-items-center">
+        <div class="site-logo">
+          <a href="/WEB-ROOT/front/index/index.do"> <b><font size="5">$ResultMap.systemName</font></b> </a>
+        </div>
+        <div class="or-header-main-navigation-btn d-flex">
+          <nav class="main-navigation-area clearfix ul-li">
+            <ul class="menu-navigation">
+              <li><a href="/WEB-ROOT/front/index/index.do">HOME</a></li>
+              <li><a href="/WEB-ROOT/front/index/index.do?flag=shop">商品购买</a></li>
+              <li><a href="/WEB-ROOT/front/index/index.do?flag=cart" class="active">购物车</a></li>
+              <li><a href="/WEB-ROOT/front/index/index.do?flag=about">平台介绍</a></li>
+              <li class="dropdown">
+                <a href="#">所有分类</a>
+                <ul class="dropdown-menu clearfix">
+                  #foreach( $fenlei in $ResultMap.fenlei )
+                  <li><a href="/WEB-ROOT/front/index/index.do?flag=category&fenlei=$fenlei.fenleimingchen">$fenlei.fenleimingchen</a></li>
+                  #end
+                </ul>
+              </li>
+              <li><a href="/WEB-ROOT/front/index/index.do?flag=contact">在线服务</a></li>
+            </ul>
+          </nav>
+          <div class="or-header-right-btn">
+            <button class="search-box-outer"><i class="fas fa-search"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="mobile_menu position-relative">
+        <div class="mobile_menu_button open_mobile_menu">
+          <i class="fal fa-bars"></i>
+        </div>
+        <div class="mobile_menu_wrap">
+          <div class="mobile_menu_overlay open_mobile_menu"></div>
+          <div class="mobile_menu_content">
+            <div class="mobile_menu_close open_mobile_menu">
+              <i class="fal fa-times"></i>
+            </div>
+            <div class="m-brand-logo">
+            </div>
+            <div class="mobile-search-wrapper position-relative">
+              <form id="searchForm">
+                <input id="mingchenbiaoti" type="text" placeholder="输入查询关键字">
+                <button onclick="doSearch();"><i class="fas fa-search"></i></button>
+              </form>
+            </div>
+            <nav class="mobile-main-navigation  clearfix ul-li">
+              <ul id="m-main-nav" class="navbar-nav text-capitalize clearfix">
+                <li><a href="/WEB-ROOT/front/index/index.do">HOME</a></li>
+                <li><a href="/WEB-ROOT/front/index/index.do?flag=shop">商品购买</a></li>
+                <li><a href="/WEB-ROOT/front/index/index.do?flag=cart" class="active">购物车</a></li>
+                <li><a href="/WEB-ROOT/front/index/index.do?flag=about">平台介绍</a></li>
+                <li class="dropdown">
+                  <a href="#">所有分类</a>
+                  <ul class="dropdown-menu clearfix">
+                    #foreach( $fenlei in $ResultMap.fenlei )
+                    <li><a href="/WEB-ROOT/front/index/index.do?flag=category&fenlei=$fenlei.fenleimingchen">$fenlei.fenleimingchen</a></li>
+                    #end
+                  </ul>
+                </li>
+                <li><a href="/WEB-ROOT/front/index/index.do?flag=contact">在线服务</a></li>
+                <li>
+
+                  #if( $ResultMap.login_user_acct == "" )
+                  <a href="$ResultMap.LOG_SUCC_GO2_FRONT"> <strong><b><font color="#76A713" size="3">用户登录</font></b></strong> </a>
+                  #else
+                  <a href="$ResultMap.LOG_SUCC_GO2_APP"> <strong><b><font color="#76A713" size="3">你好！$ResultMap.login_user_acct，&nbsp;&nbsp;进入管理</font></b></strong></a>
+                  #end
+
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="search-popup">
+  <button class="close-search style-two"><span class="fal fa-times"></span></button>
+  <button class="close-search"><span class="fa fa-arrow-up"></span></button>
+  <form id="searchForm1">
+    <div class="form-group">
+      <input type="search" id="mingchenbiaoti1" placeholder="输入查询关键字" required="">
+      <button type="button" onclick="doSearch1();"><i class="fa fa-search"></i></button>
+    </div>
+  </form>
+</div>
+
+<section id="or-page-title" class="or-page-title-section position-relative" data-background="/WEB-ROOT/front/index/index105/assets/img/bg/page-title-bg.jpg">
+  <div class="or-page-title-content text-center">
+    <div class="container">
+      <div class="or-page-title-text headline">
+        <h1>购物车</h1>
+        <ul>
+          <li><a href="/WEB-ROOT/front/index/index.do">首页</a></li>
+          <li>我的购物车</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="or-cart-page" class="or-cart-page-section pt-100 pb-100">
+  <div class="container">
+    #if( $ResultMap.login_user_acct == "" )
+    <div class="text-center py-5">
+      <h3>请先登录</h3>
+      <p>登录后才能查看您的购物车</p>
+      <a href="$ResultMap.LOG_SUCC_GO2_FRONT" class="checkout-btn mt-3">登录</a>
+    </div>
+    #elseif( $ResultMap.getCart && $ResultMap.getCart.size() > 0 )
+    <div class="cart-content">
+      <table class="cart-table">
+        <thead>
+        <tr>
+          <th>商品信息</th>
+          <th>单价</th>
+          <th>数量</th>
+          <th>金额</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        #foreach( $item in $ResultMap.getCart )
+        <tr>
+          <td>
+            <div class="d-flex align-items-center">
+              <div class="product-info">
+                <div class="product-name">$item.shangpinmingcheng</div>
+                <div class="product-id">货号: $item.huohao</div>
+              </div>
+            </div>
+          </td>
+          <td>￥$item.price</td>
+          <td>
+            <div class="quantity-control">
+              <div class="quantity-btn minus" data-huohao="$item.huohao">-</div>
+              <input type="text" class="quantity-input" value="$item.quantity" readonly>
+              <div class="quantity-btn plus" data-huohao="$item.huohao">+</div>
+            </div>
+          </td>
+          <td>￥$item.subtotal</td>
+          <td>
+            <div class="remove-item" data-huohao="$item.huohao"><i class="fas fa-trash-alt"></i> 删除</div>
+          </td>
+        </tr>
+        #end
+        </tbody>
+      </table>
+
+      <div class="cart-total">
+        <h3>订单合计</h3>
+        <div class="total-row">
+          <div class="total-title">商品总计:</div>
+          <div class="total-amount">￥$ResultMap.Session.cartTotal</div>
+        </div>
+        <button class="checkout-btn" id="checkout-btn">提交订单</button>
+      </div>
+    </div>
+    #else
+    <div class="empty-cart">
+      <i class="fas fa-shopping-cart"></i>
+      <h3>您的购物车是空的</h3>
+      <p>您还没有添加任何商品到购物车</p>
+      <a href="/WEB-ROOT/front/index/index.do?flag=shop" class="shop-now-btn">立即购物</a>
+    </div>
+    #end
+  </div>
+</section>
+
+<footer id="or-footer-1" class="or-footer-section-1" data-background="/WEB-ROOT/front/index/index105/assets/img/bg-footer-top.png">
+  <div class="or-footer-newslatter-1">
+    <div class="container">
+      <div class="or-footer-newslatter-content headline  position-relative" data-background="">
+        <span class="or-footer-newslatter-img"></span>
+        <div class="or-footer-newslatter-text-form">
+          <h3> <a href="/servlet/RegisterServlet"> <b><font size="5" color="white">成为平台用户，点我注册！</font></b>  </a> </h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="or-footer-widget-wrapper-1">
+    <div class="container">
+      <div class="row">
+
+        #foreach( $lm in $ResultMap.lanmu )
+        <div class="col-lg-3 col-md-6">
+          <div class="or-footer-widget  headline pera-content ul-li-block">
+            <div class="or-menu-widget">
+              <h2 class="widget-title">$lm.lanmumingcheng</h2>
+              <ul>
+                #foreach( $wz in $lm.wenzhang )
+                <li><a href="/WEB-ROOT/front/index/index.do?flag=wenzhang&id=$wz.id">$wz.wenzhangbiaoti</a></li>
+                #end
+              </ul>
+            </div>
+          </div>
+        </div>
+        #if(${velocityCount}==4) #break #end #end
+
+      </div>
+    </div>
+  </div>
+  <div class="or-footer-copyright text-center" data-background="/WEB-ROOT/front/index/index105/assets/img/bg-footer-bottom.png">
+    <span>   <a href="/WEB-ROOT/front/index/index.do"> <b><font size="4" color="white">$ResultMap.systemName</font></b></a> </span>
+  </div>
+</footer>
+
+<script src="/WEB-ROOT/front/index/index105/assets/js/jquery.min.js"></script>
+<script src="/WEB-ROOT/front/index/index105/assets/js/bootstrap.min.js"></script>
+<script src="/WEB-ROOT/front/index/index105/assets/js/popper.min.js"></script>
+<script src="/WEB-ROOT/front/index/index105/assets/js/jquery.magnific-popup.min.js"></script>
+<script src="/WEB-ROOT/front/index/index105/assets/js/appear.js"></script>
+<script src="/WEB-ROOT/front/index/index105/assets/js/slick.js"></script>
+<script src="/WEB-ROOT/front/index/index105/assets/js/jquery.counterup.min.js"></script>
+<script src="/WEB-ROOT/front/index/index105/assets/js/waypoints.min.js"></script>
+<script src="/WEB-ROOT/front/index/index105/assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="/WEB-ROOT/front/index/index105/assets/js/wow.min.js"></script>
+<script src="/WEB-ROOT/front/index/index105/assets/js/imagesloaded.pkgd.min.js"></script>
+<script src="/WEB-ROOT/front/index/index105/assets/js/parallax-scroll.js"></script>
+<script src="/WEB-ROOT/front/index/index105/assets/js/script.js"></script>
 
 <script>
   $(document).ready(function() {
     // 增加商品数量
-    $('.increase-qty').click(function() {
-      var row = $(this).closest('tr');
-      var huohao = row.data('huohao');
-      var inputField = row.find('.item-qty');
-      var currentVal = parseInt(inputField.val());
+    $('.quantity-btn.plus').click(function() {
+      var huohao = $(this).data('huohao');
 
       $.ajax({
         url: 'index.do?flag=addToCart',
@@ -172,65 +390,70 @@
           quantity: 1
         },
         success: function(response) {
-          if(response.indexOf('已更新') > -1) {
-            location.reload();
-          } else {
-            alert(response);
-          }
-        },
-        error: function() {
-          alert('操作失败，请重试');
-        }
-      });
-    });
-
-// 减少商品数量
-    $('.decrease-qty').click(function() {
-      var row = $(this).closest('tr');
-      var inputField = row.find('.item-qty');
-      var currentVal = parseInt(inputField.val());
-
-      if(currentVal > 1) {
-        // 减少数量
-        updateCartItemQuantity(row.data('huohao'), currentVal - 1);
-      } else {
-        // 如果只有1个，提示是否要删除
-        if(confirm('确定要从购物车中移除此商品吗？')) {
-          removeCartItem(row.data('huohao'));
-        }
-      }
-    });
-
-    // 删除商品
-    $('.remove-item').click(function() {
-      var row = $(this).closest('tr');
-      var huohao = row.data('huohao');
-
-      if(confirm('确定要从购物车中移除此商品吗？')) {
-        removeCartItem(huohao);
-      }
-    });
-
-    // 更新购物车商品数量
-    function updateCartItemQuantity(huohao, quantity) {
-      $.ajax({
-        url: 'index.do?flag=updateCart',
-        type: 'POST',
-        data: {
-          huohao: huohao,
-          quantity: quantity
-        },
-        success: function(response) {
           location.reload();
         },
         error: function() {
           alert('操作失败，请重试');
         }
       });
-    }
+    });
 
-    // 从购物车中移除商品
-    function removeCartItem(huohao) {
+    // 减少商品数量
+    $('.quantity-btn.minus').click(function() {
+      var huohao = $(this).data('huohao');
+      var inputEl = $(this).closest('.quantity-control').find('.quantity-input');
+      var currentQty = parseInt(inputEl.val());
+
+      if(currentQty > 1) {
+        $.ajax({
+          url: 'index.do?flag=updateCart',
+          type: 'POST',
+          data: {
+            huohao: huohao,
+            quantity: currentQty - 1
+          },
+          success: function(response) {
+            location.reload();
+          },
+          error: function() {
+            alert('操作失败，请重试');
+          }
+        });
+      } else {
+        if(confirm('确定要从购物车中移除此商品吗？')) {
+          removeFromCart(huohao);
+        }
+      }
+    });
+
+    // 删除商品
+    $('.remove-item').click(function() {
+      var huohao = $(this).data('huohao');
+
+      if(confirm('确定要从购物车中移除此商品吗？')) {
+        removeFromCart(huohao);
+      }
+    });
+
+    // 结算
+    $('#checkout-btn').click(function() {
+      if(confirm('确认提交订单吗？')) {
+        $.ajax({
+          url: 'index.do?flag=checkout',
+          type: 'POST',
+          success: function(response) {
+            alert(response);
+            location.href = '/WEB-ROOT/front/index/index.do';
+          },
+          error: function() {
+            alert('提交订单失败，请重试');
+          }
+        });
+      }
+    });
+
+    // 从购物车移除商品
+    function removeFromCart(huohao) {
       $.ajax({
         url: 'index.do?flag=removeFromCart',
         type: 'POST',
@@ -245,23 +468,6 @@
         }
       });
     }
-
-    // 结算
-    $('.checkout-btn').click(function() {
-      if(confirm('确认提交订单吗？')) {
-        $.ajax({
-          url: 'index.do?flag=checkout',
-          type: 'POST',
-          success: function(response) {
-            alert(response);
-            location.href = 'index.do';
-          },
-          error: function() {
-            alert('结算失败，请重试');
-          }
-        });
-      }
-    });
   });
 </script>
 </body>
