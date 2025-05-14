@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+		<title>$ResultMap.systemName</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/fontawesome-all.css">
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/flaticon.css">
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/animate.css">
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/jquery.mCustomScrollbar.min.css">
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/slick.css">
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/slick-theme.css">
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/style.css">
+		
+		<script type="text/javascript">
+			function doSearch() {
+				var mingchenbiaoti = document.getElementById("mingchenbiaoti").value;
+				if (mingchenbiaoti == null || mingchenbiaoti == "") {
+					return;
+				}
+				var searchForm = document.getElementById("searchForm");
+				searchForm.action = "/WEB-ROOT/front/index/index.do?flag=category&mingchenbiaoti=" + mingchenbiaoti ;
+				searchForm.method = "post";
+				searchForm.submit();
+			}
+			
+			function doSearch1() {
+				var mingchenbiaoti = document.getElementById("mingchenbiaoti1").value;
+				if (mingchenbiaoti == null || mingchenbiaoti == "") {
+					return;
+				}
+				var searchForm = document.getElementById("searchForm1");
+				searchForm.action = "/WEB-ROOT/front/index/index.do?flag=category&mingchenbiaoti=" + mingchenbiaoti ;
+				searchForm.method = "post";
+				searchForm.submit();
+			}
+			
+			function doSearch2() {
+				var mingchenbiaoti = document.getElementById("mingchenbiaoti2").value;
+				if (mingchenbiaoti == null || mingchenbiaoti == "") {
+					return;
+				}
+				var searchForm = document.getElementById("searchForm2");
+				searchForm.action = "/WEB-ROOT/front/index/index.do?flag=category&mingchenbiaoti=" + mingchenbiaoti ;
+				searchForm.method = "post";
+				searchForm.submit();
+			}
+			
+			function doComment() {
+				if (window.XMLHttpRequest) {
+					http_request = new XMLHttpRequest();
+				} else if (window.ActiveXObject) {
+					http_request = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+		
+				var pinglunid = document.getElementById("pinglunid").value;
+				var comments = document.getElementById("mycomment").value;
+				var postUrl = "/WEB-ROOT/front/index/index.do?flag=comment&pinglunid=" + pinglunid + "&comments=" + comments;
+		
+				http_request.onreadystatechange = callBackShouCang;
+				http_request.open('POST', postUrl, true);
+				http_request.send(null);
+		
+			}
+		
+			function doShouCang(id) {
+				if (window.XMLHttpRequest) {
+					http_request = new XMLHttpRequest();
+				} else if (window.ActiveXObject) {
+					http_request = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+
+				var postUrl = "/WEB-ROOT/front/index/index.do?flag=doShouCang&id=" + id;
+
+				http_request.onreadystatechange = callBackShouCang;
+				http_request.open('POST', postUrl, true);
+				
+				var url = document.location.href ;
+				http_request.setRequestHeader("Context-Type","application/json");
+				http_request.send( "url=" + url );
+
+
+			}
+		
+			function doDianZan(id) {
+				if (window.XMLHttpRequest) {
+					http_request = new XMLHttpRequest();
+				} else if (window.ActiveXObject) {
+					http_request = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+		
+				var postUrl = "/WEB-ROOT/front/index/index.do?flag=doDianZan&id=" + id;
+		
+				http_request.onreadystatechange = callBackShouCang;
+				http_request.open('POST', postUrl, true);
+				http_request.send(null);
+		
+			}
+		
+			function callBackShouCang() {
+				if (http_request.readyState == 4) {
+					if (http_request.status == 200) {
+						alert(http_request.responseText);
+						window.location.reload();
+					}
+				}
+			}
+		</script>
+		
+		
+		
+	</head>
+
+	<body class="organio-wrapper">
+		<div id="preloader"></div>
+		<div class="up">
+			<a href="#" class="scrollup text-center"><i class="fas fa-chevron-up"></i></a>
+		</div>
+	
+		<header id="organio-header" class="organio-header-section header-style-three">
+			<div class="or-header-top">
+				<div class="container">
+					<div class="or-header-top-content d-flex justify-content-between align-items-center">
+						<div class="or-header-top-slug">
+							欢迎访问本平台 &nbsp;welcome to our system
+						</div>
+						<div class="or-header-top-social">
+							<a href="#"><i class="fab fa-qq"></i></a>
+							<a href="#"><i class="fab fa-weibo"></i></a>
+							<a href="#"><i class="fab fa-weixin"></i></a>
+							<a href="#"><i class="fas fa-envelope"></i></a>
+						</div>
+						<div class="or-header-top-login-btn position-relative">
+						
+							#if( $ResultMap.login_user_acct == "" ) 
+						    <a href="$ResultMap.LOG_SUCC_GO2_FRONT">用户登录</a> 
+						    #else
+						    <a href="$ResultMap.LOG_SUCC_GO2_APP">你好！$ResultMap.login_user_acct，&nbsp;&nbsp;进入管理</a>
+						    #end
+						    
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="or-header-main-menu">
+				<div class="container">
+					<div class="or-header-main-menu-content d-flex justify-content-between align-items-center">
+						<div class="site-logo">
+							<a href="/WEB-ROOT/front/index/index.do"> <b><font size="5">$ResultMap.systemName</font></b> </a>
+						</div>
+						<div class="or-header-main-navigation-btn d-flex">
+							<nav class="main-navigation-area clearfix ul-li">
+								<ul class="menu-navigation">
+									<li><a href="/WEB-ROOT/front/index/index.do">HOME</a></li>
+									<li><a href="/WEB-ROOT/front/index/index.do?flag=about">平台介绍</a></li>
+									<li class="dropdown">
+										<a href="#">所有分类</a>
+										<ul class="dropdown-menu clearfix">
+											#foreach( $fenlei in $ResultMap.fenlei ) 
+						                    <li><a href="/WEB-ROOT/front/index/index.do?flag=category&fenlei=$fenlei.fenleimingchen">$fenlei.fenleimingchen</a></li>
+						                    #end
+										</ul>
+									</li>
+									<li><a href="/WEB-ROOT/front/index/index.do?flag=contact">在线服务</a></li>
+								</ul>		
+							</nav>
+							<div class="or-header-right-btn">
+								<button class="search-box-outer"><i class="fas fa-search"></i></button>
+							</div>
+						</div>
+					</div>
+					<div class="mobile_menu position-relative">
+						<div class="mobile_menu_button open_mobile_menu">
+							<i class="fal fa-bars"></i>
+						</div>
+						<div class="mobile_menu_wrap">
+							<div class="mobile_menu_overlay open_mobile_menu"></div>
+							<div class="mobile_menu_content">
+								<div class="mobile_menu_close open_mobile_menu">
+									<i class="fal fa-times"></i>
+								</div>
+								<div class="m-brand-logo">
+									<!--  
+									#if( $ResultMap.login_user_acct == "" ) 
+								    <a href="$ResultMap.LOG_SUCC_GO2_FRONT">用户登录</a> 
+								    #else
+								    <a href="$ResultMap.LOG_SUCC_GO2_APP">你好！$ResultMap.login_user_acct，&nbsp;&nbsp;进入管理</a>
+								    #end
+								    -->
+								</div>
+								<div class="mobile-search-wrapper position-relative">
+									<form id="searchForm">
+										<input id="mingchenbiaoti" type="text" placeholder="输入查询关键字">
+										<button onclick="doSearch();"><i class="fas fa-search"></i></button>
+									</form>
+								</div>
+								<nav class="mobile-main-navigation  clearfix ul-li">
+									<ul id="m-main-nav" class="navbar-nav text-capitalize clearfix">
+										<li><a href="/WEB-ROOT/front/index/index.do">HOME</a></li>
+										<li><a href="/WEB-ROOT/front/index/index.do?flag=about">平台介绍</a></li>
+										<li class="dropdown">
+											<a href="#">所有分类</a>
+											<ul class="dropdown-menu clearfix">
+												#foreach( $fenlei in $ResultMap.fenlei ) 
+							                    <li><a href="/WEB-ROOT/front/index/index.do?flag=category&fenlei=$fenlei.fenleimingchen">$fenlei.fenleimingchen</a></li>
+							                    #end
+											</ul>
+										</li>
+										<li><a href="/WEB-ROOT/front/index/index.do?flag=contact">在线服务</a></li>
+										<li>
+										
+										#if( $ResultMap.login_user_acct == "" ) 
+									    <a href="$ResultMap.LOG_SUCC_GO2_FRONT"> <strong><b><font color="#76A713" size="3">用户登录</font></b></strong> </a> 
+									    #else
+									    <a href="$ResultMap.LOG_SUCC_GO2_APP"> <strong><b><font color="#76A713" size="3">你好！$ResultMap.login_user_acct，&nbsp;&nbsp;进入管理</font></b></strong></a>
+									    #end
+										
+										</li>
+									</ul>
+								</nav>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+		
+		
+		<div class="search-popup">
+			<button class="close-search style-two"><span class="fal fa-times"></span></button>
+			<button class="close-search"><span class="fa fa-arrow-up"></span></button>
+			<form id="searchForm1">
+				<div class="form-group">
+					<input type="search" id="mingchenbiaoti1" placeholder="输入查询关键字" required="">
+					<button type="button" onclick="doSearch1();"><i class="fa fa-search"></i></button>
+				</div>
+			</form>
+		</div>
+		
+		
+		<section id="or-breadcrumbs" class="or-breadcrumbs-section position-relative" data-background="/WEB-ROOT/front/index/index105/assets/img/bg3.jpg">
+			<div class="background_overlay"></div>
+			<div class="container">
+				<div class="or-breadcrumbs-content text-center">
+					<br><br><br><br><br><br>
+					<div class="page-title headline"><h1>查看详情</h1></div>
+					<div class="or-breadcrumbs-items ul-li">
+						<ul>
+							<li><a href="/WEB-ROOT/front/index/index.do"><font size="4" color="white">HOME</font></a></li>
+							<li>查看详情</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</section>
+	
+			
+		#foreach( $single in $ResultMap.single )
+		<section id="or-blog-details" class="or-blog-details-section">
+			<div class="container">
+				<div class="or-blog-details-content">
+					<div class="row">
+						<div class="col-lg-9">
+							<div class="or-blog-details-text-inner headline pera-content">
+								<!--  
+								<div class="blog-details-img position-relative">
+									#foreach( $tpList in $single.tpList ) 
+				                    <img src="$tpList.picPath" style="width: 100%; height: 380px;"> 
+				                    #if(${velocityCount}==1) #break #end #end
+								</div>
+								-->
+								<div class="or-blog-details-item">
+									<div class="blog-details-text headline">
+										<h3>$single.mingchenbiaoti</h3>
+										
+										<div class="ord-blog-meta-2  position-relative text-capitalize">
+											<a href="#"><i class="far fa-clock"></i> $single.fabushijian</a>
+											<a href="#"><i class="far fa-user"></i> by $single.faburen</a>
+											<a href="#"><i class="fas fa-tags"></i> $single.attr1</a>
+										</div>
+										<article>
+											$single.miaoshuyi_d：$single.miaoshuyi<br> 
+											$single.miaoshuer_d：$single.miaoshuer<br> 
+											$single.miaoshusan_d：$single.miaoshusan<br> 
+											
+											#if($single.miaoshusi!="") $single.miaoshusi_d：$single.miaoshusi<br> #end 
+											#if($single.miaoshuwu!="") $single.miaoshuwu_d：$single.miaoshuwu<br> #end
+										</article>
+										
+										<br><br>
+										
+										<article>
+											$single.xiangqingmiaoshu
+										</article>
+										<article>
+											#if( $single.fuJian != "" ) 
+					                    	<a href=/WEB-ROOT/front/pub/dl.jsp?p=$single.fuJian>点此下载附件</a> 
+					                    	<br> <br> 
+					                    	#end
+										</article>
+									</div>
+									
+								</div>
+								
+							</div>
+							<div class="or-blog-comment headline">
+								<h3>用户评论信息</h3>
+								<div class="or-blog-comment-block-wrapper">
+									#foreach( $plList in $single.plList )
+									<div class="or-blog-comment-block">
+										<div class="or-blog-comment-img float-left">
+											<img src="/WEB-ROOT/front/index/index105/assets/img/face${velocityCount}.jpg" style="width:100px;height:100px;">
+										</div>
+										<div class="or-blog-comment-text headline pera-content position-relative">
+											<h4><a href="#">$plList.pinglunren</a></h4>
+											<span>$plList.pinglunshijian</span>
+											<p>$plList.pinglunnarong
+											</p>
+										</div>
+									</div>
+									#end
+								</div>
+								<h3>我要留言</h3>
+								<div class="prd-blog-comment-form ">
+									<form id="commentForm">
+										<div class="prd-comment-form-input">
+											<input type="hidden" name="pinglunid" id="pinglunid" value="$single.mingchenbiaoti">
+											<textarea id="mycomment" placeholder="请填写留言内容" ></textarea>
+											<br><br>
+											<div class="or-shop-banner-innerbox1 position-relative wow fadeInUp ">
+												<div class="or-shop-banner-text1 headline">
+													<a class="sb-btn1 wow fadeInUp" href="#" onclick="doComment();">提交评论<i class="fas fa-long-arrow-right"></i></a>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3">
+							<div class="or-side-bar top-sticky-sidebar">
+								<div class="or-side-bar-widget">
+									<div class="or-widget-wrap">
+										<div class="or-search-widget position-relative">
+											<form id="searchForm2">
+												<input type="text" id="mingchenbiaoti2" placeholder="输入关键字">
+												<button onclick="doSearch2();"><i class="far fa-search"></i></button>
+											</form>
+										</div>
+									</div>
+									<div class="or-widget-wrap headline ul-li-block">
+										<div class="or-cat-widget position-relative">
+											<h3 class="widget-title">全部分类</h3>
+											<ul>
+												#foreach( $fenlei in $ResultMap.fenlei )
+					                            <li><a href="/WEB-ROOT/front/index/index.do?flag=category&fenlei=$fenlei.fenleimingchen">$fenlei.fenleimingchen</a></li>
+					                            #end
+											</ul>
+										</div>
+									</div>
+									<div class="or-widget-wrap headline ul-li-block">
+										<div class="or-rec-widget position-relative">
+											<h3 class="widget-title">智能推送</h3>
+											#foreach( $getCategory in $ResultMap.getCategory )
+	                    					#if( $getCategory.mingchenbiaoti != $single.mingchenbiaoti )
+											<div class="or-recent-blog-img-text clearfix">
+												<div class="or-recent-blog-img float-left">
+													#foreach( $tpList in $getCategory.tpList ) 
+							                        <img src="$tpList.picPath" style="width:80px;">
+							                        #if(${velocityCount}==1) #break #end #end
+												</div>
+												<div class="or-recent-blog-text headline">
+													<h3><a href="/WEB-ROOT/front/index/index.do?flag=single&id=$getCategory.id&fenlei=$getCategory.suoshufenlei">$getCategory.mingchenbiaoti</a></h3>
+													<span><i class="far fa-calendar-alt"></i> $getCategory.fabushijian</span>
+												</div>
+											</div>
+											#end
+	                    					#if(${velocityCount}==4) #break #end #end
+											
+										</div>
+									</div>
+									
+									<div class="or-widget-wrap headline ul-li">
+										<div class="or-tag-widget position-relative">
+											<h3 class="widget-title">热门标签</h3>
+											<ul>
+												#foreach( $fenlei in $ResultMap.fenlei )
+					                            <li><a href="/WEB-ROOT/front/index/index.do?flag=category&fenlei=$fenlei.fenleimingchen">$fenlei.fenleimingchen</a></li>
+					                            #end
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		#end
+		
+		
+		<footer id="or-footer-1" class="or-footer-section-1" data-background="/WEB-ROOT/front/index/index105/assets/img/bg-footer-top.png">
+			<div class="or-footer-newslatter-1">
+				<div class="container">
+					<div class="or-footer-newslatter-content headline  position-relative" data-background="">
+						<span class="or-footer-newslatter-img"></span>
+						<div class="or-footer-newslatter-text-form">
+							<h3> <a href="/servlet/RegisterServlet"> <b><font size="5" color="white">成为平台用户，点我注册！</font></b>  </a> </h3>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="or-footer-widget-wrapper-1">
+				<div class="container">
+					<div class="row">
+						
+						#foreach( $lm in $ResultMap.lanmu ) 
+						<div class="col-lg-3 col-md-6">	
+							<div class="or-footer-widget  headline pera-content ul-li-block">
+								<div class="or-menu-widget">
+									<h2 class="widget-title">$lm.lanmumingcheng</h2>
+									<ul>
+										#foreach( $wz in $lm.wenzhang )
+										<li><a href="/WEB-ROOT/front/index/index.do?flag=wenzhang&id=$wz.id">$wz.wenzhangbiaoti</a></li>
+										#end
+									</ul>
+								</div>
+							</div>
+						</div>
+						#if(${velocityCount}==4) #break #end #end
+						
+					</div>
+				</div>
+			</div>
+			<div class="or-footer-copyright text-center" data-background="/WEB-ROOT/front/index/index105/assets/img/bg-footer-bottom.png">
+				<span>   <a href="/WEB-ROOT/front/index/index.do"> <b><font size="4" color="white">$ResultMap.systemName</font></b></a> </span>
+			</div>
+		</footer>
+	
+	
+		<script src="/WEB-ROOT/front/index/index105/assets/js/jquery.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/bootstrap.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/popper.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/jquery.magnific-popup.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/appear.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/slick.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/jquery.counterup.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/waypoints.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/wow.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/imagesloaded.pkgd.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/parallax-scroll.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/script.js"></script>	
+	
+	</body>
+	
+</html>		

@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<meta content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" name="viewport">
+	<meta content="yes" name="apple-mobile-web-app-capable">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style">
+			<meta content="IE=9; IE=8; IE=7; IE=EDGE" http-equiv="X-UA-Compatible">
+				<meta http-equiv="Content-Type" content="text/html; charset=GBK" />
+				<title>Welcome To ${SYSTEM_NAME}</title>
+				<link rel="stylesheet" type="text/css" href="/WEB-ROOT/app/index/style27/css/bootstrap.min.css">
+					<link rel="stylesheet" type="text/css" href="/WEB-ROOT/app/index/style27/css/new.css">
+						<link rel="stylesheet" type="text/css" href="/WEB-ROOT/app/index/style27/css/font-awesome.min.css">
+							<!--[if lt IE 9]>
+		  <script src="/WEB-ROOT/app/index/style27/js/html5shiv.js"></script>
+		  <script src="/WEB-ROOT/app/index/style27/js/respond.min.js"></script>
+		<![endif]-->
+							<script type="text/javascript" src="/WEB-ROOT/app/index/style27/js/jquery.js"></script>
+							<script type="text/javascript" src="/WEB-ROOT/app/index/style27/js/bootstrap.min.js"></script>
+							<script type="text/javascript" src="/WEB-ROOT/app/index/style27/js/jquery.scrollUp.js"></script>
+							<!-- jQuery UI JS -->
+							<script src="/WEB-ROOT/app/index/style27/js/jquery-ui-v1.10.3.js"></script>
+							<!-- Custom JS -->
+							<script src="/WEB-ROOT/app/index/style27/js/menu.js"></script>
+							<script type="text/javascript" src="/WEB-ROOT/app/index/style27/js/jquery.layer.js"></script>
+							<link rel="stylesheet" href="/WEB-ROOT/app/index/style27/js/skin/layer.css">
+								<script type="text/javascript" src="/WEB-ROOT/app/index/style27/js/jquery.countdown.js"></script>
+								<script type="text/javascript" src="/WEB-ROOT/app/index/style27/js/validate.js"></script>
+								<script src="/WEB-ROOT/app/index/style27/js/beau.js"></script>
+
+								<script type="text/javascript">
+									function changeUrl(url, ob) {
+										var lis = document.getElementsByName("menuLi");
+								
+										for (var i = 0; i < lis.length; i++) {
+											lis[i].className = "has-sub" ;
+										}
+										document.getElementById("menuLi_" + ob).className = "active has-sub";
+								
+										document.getElementById("contentDiv").src = url ;
+								
+									}
+									function quit() {
+										window.location.href = "/" ;
+									}
+									function updateInfo() {
+										document.getElementById("contentDiv").src = "/WEB-ROOT/app/sysManage/systemUserManage.do?from=self" ;
+									}
+								</script>
+</head>
+
+<body>
+	<header> <a href="#" class="logo"> ${SYSTEM_NAME} </a>
+	<div class="pull-right">
+		<ul id="mini-nav" class="clearfix">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<li class="list-box user-profile"><a id="drop7" href="#" role="button" class="dropdown-toggle user-avtar" data-toggle="dropdown"> <img src="/WEB-ROOT/app/index/style27/images/user5.png" alt="zm9999"></a>
+				<ul class="dropdown-menu server-activity">
+					<li>
+						<p class="center-align-text">
+							欢迎您, <b>${LoginUserAcct}</b> !
+						</p>
+					</li>
+					<li>
+						<p>
+							<i class="fa fa-cog text-info"></i><span onclick="updateInfo();">资料修改</span>
+						</p>
+					</li>
+					<li>
+						<div class="demo-btn-group clearfix">
+							<button class="btn btn-danger" onclick="quit();">安全退出</button>
+						</div>
+					</li>
+				</ul></li>
+
+		</ul>
+
+	</div>
+	</header>
+
+	<!-- Main Container start -->
+	<div class="dashboard-container">
+
+		<div class="container">
+			<!-- Top Nav Start -->
+			<div id="cssmenu">
+				<div id="menu-button">Menu</div>
+				<ul>
+					#set($index=0) #set($arr = ["fa fa-home","fa fa-signal","fa fa-users","fa fa-sitemap","fa fa-bar-chart-o","fa fa-comments","fa fa-fire","fa fa-sign-out","fa fa-home","fa fa-signal","fa fa-users","fa fa-sitemap","fa fa-bar-chart-o","fa fa-comments","fa fa-fire","fa
+					fa-sign-out"]) #foreach($menu in ${ResultMap.menuList}) #set($index=$index+1)
+					<li name="menuLi" id="menuLi_$velocityCount" class="has-sub"><span class="submenu-button"></span> <a href="javascript:void(0);"> <i class="$arr.get($velocityCount)"></i>$menu.text
+					</a>
+						<ul>
+							#foreach($submenu in $menu.innerList)
+							<li><a href="#" onclick="changeUrl('$submenu.menu_todo','$index');">$submenu.text</a></li> #end
+						</ul></li> #end
+				</ul>
+			</div>
+
+			<!-- Sub Nav End -->
+			<div class="dashboard-wrapper">
+				<iframe scrolling="auto" rameborder="0" src="/WEB-ROOT/app/index/home.do" id="contentDiv" name="contentDiv" width="100%" frameborder="0" scrolling="yes" frameBorder="no" height="520"></iframe>
+			</div>
+			<footer>
+			<p align="center">${SYSTEM_DESIGNER}</p>
+			</footer>
+		</div>
+	</div>
+</body>
+</html>

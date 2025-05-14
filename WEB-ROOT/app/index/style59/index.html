@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=GBK" />
+  <title>${SYSTEM_NAME}</title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" name="viewport">
+  
+  <link rel="stylesheet" href="/WEB-ROOT/app/index/style59/dist/modules/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/WEB-ROOT/app/index/style59/dist/modules/ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="/WEB-ROOT/app/index/style59/dist/modules/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css">
+  <link rel="stylesheet" href="/WEB-ROOT/app/index/style59/dist/modules/flag-icon-css/css/flag-icon.min.css">
+  <link rel="stylesheet" href="/WEB-ROOT/app/index/style59/dist/css/style.css">
+  
+  <script>
+		function changeUrl1(url,t1,t2,mainA) {
+			
+			document.getElementById("mainContent").src = url;
+			document.getElementById("mainContent").height="495";
+			document.getElementById("title1").innerHTML =  t1 + " / " + t2 ;
+			
+			document.getElementById("row2").style.display = "none";
+			
+			
+			//手机端折叠
+			if( document.body.clientWidth < 700 ){
+				document.body.className = "sidebar-gone";
+			}
+			
+		}
+		
+  </script>
+  
+</head>
+
+<body>
+  <div id="app">
+    <div class="main-wrapper">
+      <div class="navbar-bg"></div>
+      <nav class="navbar navbar-expand-lg main-navbar">
+        <form class="form-inline mr-auto">
+          <ul class="navbar-nav mr-3">
+            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="ion ion-navicon-round"></i></a></li>
+          </ul>
+        </form>
+        <ul class="navbar-nav navbar-right">
+        
+          
+          
+          <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg">
+            <i class="ion ion-android-person d-lg-none"></i>
+            <div class="d-sm-none d-lg-inline-block">您好：${LoginUserAcct}</div></a>
+            <div class="dropdown-menu dropdown-menu-right">
+              <a href="/WEB-ROOT/front/index/index.do" class="dropdown-item has-icon">
+                <i class="ion ion-home"></i> 返回主页
+              </a>
+              <a href="/login.do" class="dropdown-item has-icon">
+                <i class="ion ion-log-out"></i> 重新登录
+              </a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+      <div class="main-sidebar">
+        <aside id="sidebar-wrapper">
+          <div class="sidebar-brand">
+            <a href="/WEB-ROOT/app/index.do">${SYSTEM_NAME}</a>
+          </div>
+          <div class="sidebar-user">
+            <div class="sidebar-user-picture">
+              <img alt="image" src="/WEB-ROOT/app/index/style59/dist/img/avatar/avatar-1.jpg">
+            </div>
+            <div class="sidebar-user-details">
+              <div class="user-name">${LoginUserAcct}</div>
+              <div class="user-role">
+                欢迎您回来
+              </div>
+            </div>
+          </div>
+          
+          <ul class="sidebar-menu">
+          	#set($arr = ["ion ion-speedometer","ion ion-speedometer","ion ion-flag","ion ion-home","ion ion-clipboard","ion ion-stats-bars","ion ion-ios-location-outline","ion ion-ios-copy-outline","ion ion-ios-nutrition","ion ion-heart","ion ion-ios-information-outline","ion ion-speedometer","ion ion-speedometer","ion ion-flag","ion ion-home","ion ion-clipboard","ion ion-stats-bars","ion ion-ios-location-outline","ion ion-ios-copy-outline","ion ion-ios-nutrition","ion ion-heart","ion ion-ios-information-outline","ion ion-ios-information-outline"]) 
+   	        #set($index=1)
+	        #foreach($menu in ${ResultMap.menuList})
+            <li>
+              <a href="#" class="has-dropdown"><i class="$arr.get($velocityCount)"></i><span>$menu.text</span></a>
+              <ul class="menu-dropdown">
+              	#foreach($submenu in $menu.innerList)	
+                <li><a href="#" onclick="changeUrl1('$submenu.menu_todo','$menu.text','$submenu.text');"><i class="ion ion-ios-circle-outline"></i> $submenu.text</a></li>
+                #end
+              </ul>
+            </li>
+            #set($index=$index+1) 
+		    #end
+          </ul>
+          
+          <div class="p-3 mt-4 mb-4">
+            <a href="/WEB-ROOT/front/index/index.do" class="btn btn-danger btn-shadow btn-round has-icon has-icon-nofloat btn-block">
+              <i class="ion ion-home"></i> <div>返回主页</div>
+            </a>
+          </div>
+        </aside>
+      </div>
+      <div class="main-content">
+        <section class="section">
+          <h1 class="section-header" style="text-align: center;">
+            <div style="text-align:center;"> <center>${SYSTEM_NAME}</center></div>
+          </h1>
+          <div class="row" id="row2">
+            <div class="col-lg-3 col-md-6 col-12">
+              <div class="card card-sm-3">
+                <div class="card-icon bg-primary">
+                  <i class="ion ion-person"></i>
+                </div>
+                <div class="card-wrap">
+                  <div class="card-header">
+                    <h4>注册用户</h4>
+                  </div>
+                  <div class="card-body">
+                    30+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+              <div class="card card-sm-3">
+                <div class="card-icon bg-danger">
+                  <i class="ion ion-ios-paper-outline"></i>
+                </div>
+                <div class="card-wrap">
+                  <div class="card-header">
+                    <h4>最新资讯</h4>
+                  </div>
+                  <div class="card-body">
+                    42
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+              <div class="card card-sm-3">
+                <div class="card-icon bg-warning">
+                  <i class="ion ion-paper-airplane"></i>
+                </div>
+                <div class="card-wrap">
+                  <div class="card-header">
+                    <h4>用户反馈</h4>
+                  </div>
+                  <div class="card-body">
+                    286
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+              <div class="card card-sm-3">
+                <div class="card-icon bg-success">
+                  <i class="ion ion-record"></i>
+                </div>
+                <div class="card-wrap">
+                  <div class="card-header">
+                    <h4>系统公告</h4>
+                  </div>
+                  <div class="card-body">
+                    6
+                  </div>
+                </div>
+              </div>
+            </div>                  
+          </div>
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-12 col-sm-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4 id="title1">HOME</h4>
+                </div>
+                <div class="card-body">
+                  	<iframe id="mainContent" scrolling=no src='/WEB-ROOT/app/index/home.do' frameborder='0' width='100%' height='365' ></iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+         
+         
+          
+        </section>
+      </div>
+      
+    </div>
+  </div>
+
+  <script src="/WEB-ROOT/app/index/style59/dist/modules/jquery.min.js"></script>
+  <script src="/WEB-ROOT/app/index/style59/dist/modules/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/WEB-ROOT/app/index/style59/dist/modules/nicescroll/jquery.nicescroll.min.js"></script>
+
+  
+
+  
+  <script src="/WEB-ROOT/app/index/style59/dist/js/scripts.js"></script>
+</body>
+</html>

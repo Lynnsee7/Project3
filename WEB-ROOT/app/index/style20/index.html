@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="gbk">
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
+    <title>${SYSTEM_NAME}</title>
+	<link href="/WEB-ROOT/app/index/style20/css/bootstrap.css" rel="stylesheet" type='text/css' />
+	<!-- Custom Theme files -->
+	<link href="/WEB-ROOT/app/index/style20/css/style.css" rel="stylesheet" type="text/css" media="all" />
+	<!-- Custom Theme files -->
+	<script src="/WEB-ROOT/app/index/style20/js/jquery.min.js"></script>
+	<!-- Custom Theme files -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+	
+	
+	</script>
+	<script>$(document).ready(function(c) {
+		$('.alert-close2').on('click', function(c){
+			$('.graph').fadeOut('slow', function(c){
+		  		$('.graph').remove();
+			});
+		});	  
+	});
+	</script>
+	<script>$(document).ready(function(c) {
+		$('.alert-close3').on('click', function(c){
+			$('.site-report').fadeOut('slow', function(c){
+		  		$('.site-report').remove();
+			});
+		});	  
+	});
+	</script>
+	
+	
+	
+	<script src="/WEB-ROOT/app/index/style20/js/easyResponsiveTabs.js" type="text/javascript"></script>
+    <script type="text/javascript">
+	    $(document).ready(function () {
+	        $('#horizontalTab,#horizontalTab1,#horizontalTab2').easyResponsiveTabs({
+	            type: 'default', //Types: default, vertical, accordion           
+	            width: 'auto', //auto or any width like 600px
+	            fit: true   // 100% fit in a container
+	        });
+	    });
+	   </script>
+	<link href="/WEB-ROOT/app/index/style20/css/nav.css" rel="stylesheet" type="text/css" media="all"/>
+	<script src="/WEB-ROOT/app/index/style20/js/main.js"></script> <!-- Resource jQuery -->
+	
+	
+    <style type="text/css">
+
+        .amcharts-graph-g1 .amcharts-graph-stroke {
+            stroke-dasharray: 3px 3px;
+            stroke-linejoin: round;
+            stroke-linecap: round;
+            -webkit-animation: am-moving-dashes 1s linear infinite;
+            animation: am-moving-dashes 1s linear infinite;
+        }
+
+        @-webkit-keyframes am-moving-dashes {
+            100% {
+                stroke-dashoffset: -30px;
+            }
+        }
+        @keyframes am-moving-dashes {
+            100% {
+                stroke-dashoffset: -30px;
+            }
+        }
+
+
+        .lastBullet {
+            -webkit-animation: am-pulsating 1s ease-out infinite;
+            animation: am-pulsating 1s ease-out infinite;
+        }
+        @-webkit-keyframes am-pulsating {
+            0% {
+                stroke-opacity: 1;
+                stroke-width: 0px;
+            }
+            100% {
+                stroke-opacity: 0;
+                stroke-width: 50px;
+            }
+        }
+        @keyframes am-pulsating {
+            0% {
+                stroke-opacity: 1;
+                stroke-width: 0px;
+            }
+            100% {
+                stroke-opacity: 0;
+                stroke-width: 50px;
+            }
+        }
+
+        .amcharts-graph-column-front {
+            -webkit-transition: all .3s .3s ease-out;
+            transition: all .3s .3s ease-out;
+        }
+        .amcharts-graph-column-front:hover {
+            fill: #496375;
+            stroke: #496375;
+            -webkit-transition: all .3s ease-out;
+            transition: all .3s ease-out;
+        }
+
+
+        .amcharts-graph-g2 {
+          stroke-linejoin: round;
+          stroke-linecap: round;
+          stroke-dasharray: 500%;
+          stroke-dasharray: 0 \0/;    /* fixes IE prob */
+          stroke-dashoffset: 0 \0/;   /* fixes IE prob */
+          -webkit-animation: am-draw 40s;
+          animation: am-draw 40s;
+        }
+        @-webkit-keyframes am-draw {
+            0% {
+                stroke-dashoffset: 500%;
+            }
+            100% {
+                stroke-dashoffset: 0px;
+            }
+        }
+        @keyframes am-draw {
+            0% {
+                stroke-dashoffset: 500%;
+            }
+            100% {
+                stroke-dashoffset: 0px;
+            }
+        }
+    </style>
+    <script type="text/javascript">
+		function changeNowMenu(s1,s2){
+			document.getElementById("nowmenu1").innerHTML = s1 ;
+			document.getElementById("nowmenu2").innerHTML = s2 ;
+		}
+	</script>
+</head>
+<body>
+	<div class="total-content">
+		<div class="col-md-3 side-bar">
+			<div class="logo text-center">
+				<a href="#">${SYSTEM_NAME}</a>
+			</div>
+			#set($index=0) 
+			#foreach($menu in ${ResultMap.menuList})
+			<div class="navigation">
+				<h3>$menu.text</h3>
+				#foreach($submenu in $menu.innerList)
+				<ul>
+					<li><a href="#"><i ></i></a></li>
+					<li><a href="$submenu.menu_todo" target="frame1" onclick="changeNowMenu('$menu.text','$submenu.text');">$submenu.text</a></li>
+				</ul>
+				#end
+			</div>
+			#set($index=$index+1) 
+			#end
+			
+		</div>
+		<div class="col-md-9 content">
+			<div class="home-strip">
+				<div class="view">
+					<ul>
+						<li><a href="#"><i class="refresh"></i></a></li>
+						<li class="messages"><a href="#"><i class="msgs"></i></a></li>
+						<li class="notifications"><a href="#"><i class="bell"></i></a></li>
+					</ul>
+				</div>
+				<div class="search">
+					<div class="search2">
+					  <form>
+						<input type="submit" value="">
+						<input type="text" value="" onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = '';}"/>
+					  </form>
+					</div>
+				</div>
+				<div class="member">
+					<p><a href="#"><i class="men"></i></a><a href="#">${LoginUserAcct}</a></p>
+					<div id="dd" class="wrapper-dropdown-2" tabindex="1"><span><img src="/WEB-ROOT/app/index/style20/images/settings.png"/></span>
+							<ul class="dropdown">
+									<li><a href="#">个人资料 </a></li>
+									<li><a href="#">设置</a></li>
+									<li><a href="#">帮助</a></li>
+									<li><a href="/">退出系统</a></li>
+							</ul>
+					</div>
+			<!-----end-wrapper-dropdown-2---->
+			<!-----start-script---->
+			<script type="text/javascript">
+							function DropDown(el) {
+								this.dd = el;
+								this.initEvents();
+							}
+							DropDown.prototype = {
+								initEvents : function() {
+									var obj = this;
+				
+									obj.dd.on('click', function(event){
+										$(this).toggleClass('active');
+										event.stopPropagation();
+									});	
+								}
+							}
+							$(function() {
+				
+								var dd = new DropDown( $('#dd') );
+				
+								$(document).click(function() {
+									// all dropdowns
+									$('.wrapper-dropdown-2').removeClass('active');
+								});
+				
+							});
+			</script>
+			<div class="clearfix"></div>			
+			</div>
+            
+			<div class="clearfix"></div>	
+				</div>
+				<div class="clearfix"></div>
+			<p class="home"><a href="#"><strong><font id="nowmenu1" size="2" face="微软雅黑">主页</font></a></strong> >  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font id="nowmenu2" size="2" face="微软雅黑"></font></p>
+			
+			
+			<div class="cd-tabs">
+			
+	<ul class="cd-tabs-content">
+		<iframe id="frame1"  name="frame1" src="/WEB-ROOT/app/index/home.do" 
+				frameborder="0" scrolling="yes" frameBorder="no" width="100%" height="540">
+		</iframe>
+	</ul> 
+</div> 
+
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<div class="footer">
+			<div class="copyright text-center">
+					<p>Copyright &copy; $!{SYSTEM_DESIGNER}</p>
+			</div>		
+		</div>
+</body>
+</html>

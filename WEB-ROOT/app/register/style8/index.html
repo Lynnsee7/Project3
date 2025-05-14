@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>用户注册</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="application/x-javascript">addEventListener("load", function() {
+		setTimeout(hideURLbar, 0);
+	}, false);
+	function hideURLbar() {
+		window.scrollTo(0, 1);
+	}
+</script>
+
+<link href="/WEB-ROOT/app/login/style24/css/style.css" rel="stylesheet" type="text/css" media="all" />
+
+
+
+<link rel="stylesheet" type="text/css" href="/WEB-ROOT/skin/css/ext-all.css" />
+  <script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-base.js" charset="gbk"></script>
+  <script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-all.js" charset="gbk"></script>
+  <script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-lang-zh_CN.js" charset="gbk"></script>
+
+<style type="text/css">
+h1 {
+    font-size: 50px;
+    font-weight: 500;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin: 35px 0 35px 0;
+    padding: 0;
+    color: #f5f0f0;
+}
+label.w3ls-opt {
+    font-size: 15px;
+    font-weight: 500;
+    text-align: left;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+    padding: 10px 0;
+	color: #fff;
+	font-family: 'Quicksand', sans-serif;
+}
+label.w3ls-opt {
+    width: 30%;
+    display: inline-block;
+	float: left;
+	
+</style>
+
+
+
+<script type="text/javascript">
+  	function doSubmit(){
+		    var userAcct = document.getElementById("userAcct").value ; 
+		    var userName = document.getElementById("userName").value ; 
+			var userPass = document.getElementById("userPass").value ; 
+			if( userAcct == "" ){
+				alert( "帐号为空，请填写！" );
+				return ;
+			}
+			if( userPass == "" ){
+				alert( "登录密码为空，请填写！" );
+				return ;
+			}
+			if( userName == "" ){
+				alert( "昵称为空，请填写！" );
+				return ;
+			}
+			
+			Ext.Ajax.request({
+				waitMsg : '数据提交中......',
+				url : '/login.do',
+				method : 'POST',
+				success : function(response, options) {
+					var responseArray = Ext.util.JSON.decode(response.responseText);
+					if(responseArray.success){
+						Ext.MessageBox.alert( "系统提示","注册成功！" , function(){ window.location.href = "/" ; });
+						
+					}else{
+						Ext.MessageBox.alert( responseArray.msg );
+					}
+				},
+				params : {
+					flag : "doRegister",
+					userAcct : userAcct ,
+					userPass : userPass , 
+					userName : userName
+				}
+			});
+			
+		}
+  </script>
+
+</head>
+<body>
+	<h1>
+		用户<span>注册</span>
+	</h1>
+	<div class="w3ls-main">
+		<div class="w3ls-form">
+			<form>
+				<ul class="fields">
+					<li>
+						<br><br>
+						<label class="w3ls-opt">登录帐号<span class="w3ls-star"> * </span></label>
+						<div class="w3ls-name">
+							<input type="text" id="userAcct" name="userAcct" maxlength="16" placeholder="登录帐号" required=" " />
+							<br><br>
+						</div></li>
+					<li>
+						<br><br>
+						<label class="w3ls-opt">用户昵称<span class="w3ls-star"> * </span></label>
+						<div class="w3ls-name">
+							<input type="text" id="userName" name="userName"  maxlength="18" placeholder="用户昵称" required=" " />
+							<br><br>
+						</div></li>
+					<li>
+						<br><br>
+						<label class="w3ls-opt">登录密码<span class="w3ls-star"> * </span></label>
+						<div class="w3ls-name">
+							<input type="password" id="userPass" name="userPass" maxlength="16" placeholder="登录密码" required="" />
+							<br><br><br>
+						</div></li>
+					
+					
+				</ul>
+				<div class="clear"></div>
+				<div class="w3ls-btn">
+					<input type="button" value="注册新账号" onclick="doSubmit();">
+				</div>
+			</form>
+		</div>
+	</div>
+	<footer>
+		  <a href="#"> &copy; 版权所有</a>
+	</footer>
+</body>
+</html>

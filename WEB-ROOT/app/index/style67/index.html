@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=GBK" />
+  		<title>${SYSTEM_NAME}</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		
+		<link rel="stylesheet" href="/WEB-ROOT/app/index/style67/assets/vendors/mdi/css/materialdesignicons.min.css" />
+		<link rel="stylesheet" href="/WEB-ROOT/app/index/style67/assets/vendors/flag-icon-css/css/flag-icon.min.css" />
+		<link rel="stylesheet" href="/WEB-ROOT/app/index/style67/assets/vendors/css/vendor.bundle.base.css" />
+		<link rel="stylesheet" href="/WEB-ROOT/app/index/style67/assets/vendors/font-awesome/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="/WEB-ROOT/app/index/style67/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css" />
+		<link rel="stylesheet" href="/WEB-ROOT/app/index/style67/assets/css/style.css" />
+		
+		<script>
+			function changeUrl1(url,t1,t2,mainA) {
+				
+				//document.getElementById("title1").innerHTML =  t1 + "&nbsp;/&nbsp;" + t2;
+				
+				document.getElementById("row1").style.display = "none";
+				document.getElementById("row2").style.display = "";
+				//document.getElementById("row3").style.display = "";
+				
+				
+				document.getElementById("mainContent").src = url;
+				document.getElementById("mainContent").height="580";
+				
+				
+				//手机端折叠
+				if( document.body.clientWidth < 700 ){
+					document.getElementById("sidebar").className = "sidebar sidebar-offcanvas";
+				}
+				
+			}
+			
+			function doJump( url ){
+				window.location.href = url ;
+			}
+			
+		 </script>
+
+	</head>
+	
+	<body>
+		<div class="container-scroller">
+			<nav class="sidebar sidebar-offcanvas" id="sidebar">
+				<div class="text-center sidebar-brand-wrapper align-items-center" align="center" style="text-align: center;">
+					<br> <font color="#00CCCD">${SYSTEM_NAME}</font> 
+				</div>
+				<ul class="nav">
+					<li class="nav-item nav-profile"><a href="#" class="nav-link">
+							<div class="nav-profile-image">
+								<img src="/WEB-ROOT/app/index/style67/assets/images/tx-8.jpg" alt="profile" /> <span class="login-status online"></span>
+							</div>
+							<div class="nav-profile-text d-flex flex-column pr-3">
+								<span class="font-weight-medium mb-2">${LoginUserAcct}</span> <span class="font-weight-normal">欢迎登录</span>
+							</div> 
+					</a>
+					</li>
+					
+					<li class="nav-item">
+					<a class="nav-link" href="/WEB-ROOT/app/index.do"> <i class="mdi mdi-home menu-icon"></i> <span class="menu-title">HOME</span></a>
+					</li>
+					
+					
+					#set($arr = ["menu-icon mdi mdi-floor-plan","mdi mdi-crosshairs-gps menu-icon","mdi mdi-contacts menu-icon","mdi mdi-format-list-bulleted menu-icon","mdi mdi-chart-bar menu-icon","mdi mdi-table-large menu-icon","mdi mdi-file-document-box menu-icon","menu-icon mdi mdi-power","menu-icon mdi mdi-account-outline","menu-icon mdi mdi-floor-plan","menu-icon mdi mdi-card-text-outline","menu-icon mdi mdi-chart-line","menu-icon mdi mdi-table","menu-icon mdi mdi-layers-outline","menu-icon mdi mdi-account-circle-outline","menu-icon mdi mdi-file-document","menu-icon mdi mdi-power","menu-icon mdi mdi-account-outline"]) 
+				  	#set($index=1)
+				  	#foreach($menu in ${ResultMap.menuList})
+					<li class="nav-item"><a class="nav-link" data-toggle="collapse" href="#ui-basic$velocityCount" aria-expanded="false" aria-controls="ui-basic$velocityCount"> <i class="$arr.get($velocityCount)"></i> <span class="menu-title">$menu.text</span> <i class="menu-arrow"></i>
+					</a>
+						<div class="collapse" id="ui-basic$velocityCount">
+							<ul class="nav flex-column sub-menu">
+								#foreach($submenu in $menu.innerList)
+								<li class="nav-item"><a class="nav-link" href="#" onclick="changeUrl1('$submenu.menu_todo','$menu.text','$submenu.text');">$submenu.text</a></li>
+								#end
+							</ul>
+						</div>
+					</li>
+					#set($index=$index+1) 
+	  	            #end
+	  	                
+					
+				</ul>
+			</nav>
+			
+			<div class="container-fluid page-body-wrapper">
+				
+				<nav class="navbar col-lg-12 col-12 p-lg-0 fixed-top d-flex flex-row">
+					<div class="navbar-menu-wrapper d-flex align-items-stretch justify-content-between">
+						<a class="navbar-brand brand-logo-mini align-self-center d-lg-none" href="/WEB-ROOT/app/index.do">
+						<font color="#00CCCD">${SYSTEM_NAME}</font>
+						</a>
+						<button class="navbar-toggler navbar-toggler align-self-center mr-2" type="button" data-toggle="minimize">
+							<i class="mdi mdi-menu"></i>
+						</button>
+						<ul class="navbar-nav">
+						</ul>
+						<ul class="navbar-nav navbar-nav-right ml-lg-auto">
+							<li class="nav-item nav-profile dropdown border-0">
+								<a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-toggle="dropdown"> 
+									<img class="nav-profile-img mr-2" alt="" src="/WEB-ROOT/app/index/style67/assets/images/tx-8.jpg" /> 
+									<span class="profile-name">${LoginUserAcct}</span>
+								</a>
+								<div class="dropdown-menu navbar-dropdown w-100" aria-labelledby="profileDropdown">
+									<a class="dropdown-item" href="/WEB-ROOT/front/index/index.do"> <i class="mdi mdi-cached mr-2 text-success"></i> 返回主页 </a> 
+									<a class="dropdown-item" href="/login.do"> <i class="mdi mdi-logout mr-2 text-primary"></i> 重新登录 </a>
+								</div></li>
+						</ul>
+						<button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+							<span class="mdi mdi-menu"></span>
+						</button>
+					</div>
+				</nav>
+				<div class="main-panel">
+					<div class="content-wrapper pb-0">
+						<div class="page-header flex-wrap">
+							<h3 class="mb-0">
+								${SYSTEM_NAME} <span class="pl-0 h6 pl-sm-2 text-muted d-inline-block">welcome to our platform</span>
+							</h3>
+							<div class="d-flex">
+								<button type="button" class="btn btn-sm btn-warning btn-icon-text border" onclick="doJump('/WEB-ROOT/front/index/index.do')">
+									<i class="mdi mdi-home btn-icon-prepend"></i> 返回主页
+								</button>
+								<button type="button" class="btn btn-sm btn-success btn-icon-text border ml-3" onclick="doJump('/login.do')">
+									<i class="mdi mdi-logout btn-icon-prepend"></i> 重新登录
+								</button>
+							</div>
+						</div>
+						<div class="row" id="row1">
+							<div class="col-xl-3 col-lg-12 stretch-card grid-margin" >
+								<div class="row">
+									<div class="col-xl-12 col-md-6 stretch-card grid-margin grid-margin-sm-0 pb-sm-3">
+										<div class="card bg-warning">
+											<div class="card-body px-3 py-4">
+												<div class="d-flex justify-content-between align-items-start">
+													<div class="color-card">
+														<p class="mb-0 color-card-head">模块划分</p>
+														<h2 class="text-white">
+															超多模块<span class="h5"></span>
+														</h2>
+													</div>
+													<i class="card-icon-indicator mdi mdi-table bg-inverse-icon-warning"></i>
+												</div>
+												<h6 class="text-white">功能升级不断</h6>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-12 col-md-6 stretch-card grid-margin grid-margin-sm-0 pb-sm-3">
+										<div class="card bg-danger">
+											<div class="card-body px-3 py-4">
+												<div class="d-flex justify-content-between align-items-start">
+													<div class="color-card">
+														<p class="mb-0 color-card-head">用户类型</p>
+														<h2 class="text-white">
+															可设置<span class="h5"></span>
+														</h2>
+													</div>
+													<i class="card-icon-indicator mdi mdi-account-circle bg-inverse-icon-danger"></i>
+												</div>
+												<h6 class="text-white">动态维护系统角色类型</h6>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-12 col-md-6 stretch-card grid-margin grid-margin-sm-0 pb-sm-3 pb-lg-0 pb-xl-3">
+										<div class="card bg-primary">
+											<div class="card-body px-3 py-4">
+												<div class="d-flex justify-content-between align-items-start">
+													<div class="color-card">
+														<p class="mb-0 color-card-head">数据安全</p>
+														<h2 class="text-white">
+															强加密<span class="h5"></span>
+														</h2>
+													</div>
+													<i class="card-icon-indicator mdi mdi-lock bg-inverse-icon-primary"></i>
+												</div>
+												<h6 class="text-white">敏感信息采用加密保存</h6>
+											</div>
+										</div>
+									</div>
+									<div class="col-xl-12 col-md-6 stretch-card pb-sm-3 pb-lg-0">
+										<div class="card bg-success">
+											<div class="card-body px-3 py-4">
+												<div class="d-flex justify-content-between align-items-start">
+													<div class="color-card">
+														<p class="mb-0 color-card-head">数据分析</p>
+														<h2 class="text-white">可视化</h2>
+													</div>
+													<i class="card-icon-indicator mdi mdi-chart-bar bg-inverse-icon-success"></i>
+												</div>
+												<h6 class="text-white">采用柱状图生成统计报表</h6>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-xl-9 stretch-card grid-margin">
+								<div class="card">
+									<div class="card-body">
+										<div class="row">
+											<div class="col-sm-12">
+												<h5 id="title1"></h5>
+												<iframe scrolling=no src='/WEB-ROOT/app/index/home.do' frameborder='0' width='99%' height='420' ></iframe>
+											</div>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						
+						<div class="row" id="row2" style="display:none">
+							<div class="col-sm-12">
+								<iframe id="mainContent" scrolling=no src='/WEB-ROOT/app/index/home.do' frameborder='0' width='100%' height='420' ></iframe>
+							</div>
+						</div>
+						
+					</div>
+          			
+          			<footer class="footer">
+		            <div class="d-sm-flex justify-content-center justify-content-sm-between">
+		              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">欢迎使用</span>
+		              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">  <a href="/WEB-ROOT/front/index/index.do">${SYSTEM_NAME}</a></span>
+		            </div>
+		          </footer>
+          			
+				</div>
+			</div>
+		</div>
+
+		<script src="/WEB-ROOT/app/index/style67/assets/vendors/js/vendor.bundle.base.js"></script>
+		<script src="/WEB-ROOT/app/index/style67/assets/vendors/chart.js/Chart.min.js"></script>
+		<script src="/WEB-ROOT/app/index/style67/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+		<script src="/WEB-ROOT/app/index/style67/assets/vendors/flot/jquery.flot.js"></script>
+		<script src="/WEB-ROOT/app/index/style67/assets/vendors/flot/jquery.flot.resize.js"></script>
+		<script src="/WEB-ROOT/app/index/style67/assets/vendors/flot/jquery.flot.categories.js"></script>
+		<script src="/WEB-ROOT/app/index/style67/assets/vendors/flot/jquery.flot.fillbetween.js"></script>
+		<script src="/WEB-ROOT/app/index/style67/assets/vendors/flot/jquery.flot.stack.js"></script>
+		<script src="/WEB-ROOT/app/index/style67/assets/vendors/flot/jquery.flot.pie.js"></script>
+		<script src="/WEB-ROOT/app/index/style67/assets/js/off-canvas.js"></script>
+		<script src="/WEB-ROOT/app/index/style67/assets/js/hoverable-collapse.js"></script>
+		<script src="/WEB-ROOT/app/index/style67/assets/js/misc.js"></script>
+		<script src="/WEB-ROOT/app/index/style67/assets/js/dashboard.js"></script>
+
+	</body>
+</html>

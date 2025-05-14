@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="gbk"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Gongyingshangxinxi">
+	
+	<!-- 得到记录条数-->
+	<select id="selecteListCount" resultClass="java.lang.Object" parameterClass="java.util.Map">
+		select count(*) from (
+			select a.id, a.gongyingshangmingcheng , a.dizhi , a.lianxiren , a.gonghuozhouqi , a.lianxidianhua ,a.itime,a.detail,a.deleteFlag
+		    from gongyingshangxinxi a
+			where 1=1 
+			<isNotEmpty prepend="and" property="id">
+				a.id<![CDATA[ = ]]>#id#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="gongyingshangmingchengSearch">
+a.gongyingshangmingcheng like '%$gongyingshangmingchengSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="dizhiSearch">
+a.dizhi like '%$dizhiSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="lianxirenSearch">
+a.lianxiren like '%$lianxirenSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="gonghuozhouqiSearch">
+a.gonghuozhouqi like '%$gonghuozhouqiSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="lianxidianhuaSearch">
+a.lianxidianhua like '%$lianxidianhuaSearch$%' 
+</isNotEmpty>
+
+			<isNotEmpty prepend="and" property="itimeStartSearch">
+				DATE_FORMAT(a.itime,'%Y-%m-%d %T') <![CDATA[ >= ]]> DATE_FORMAT(#itimeStartSearch#,'%Y-%m-%d %T')
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="itimeEndSearch">
+				DATE_FORMAT(a.itime,'%Y-%m-%d %T') <![CDATA[ <= ]]> DATE_FORMAT(#itimeEndSearch#,'%Y-%m-%d %T')
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="operatorId">
+				a.operatorId<![CDATA[ = ]]>#operatorId#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="deleteFlagSearch">
+				a.deleteFlag<![CDATA[ = ]]>#deleteFlagSearch#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="dataRight">
+				$dataRight$
+			</isNotEmpty>
+			<isNotEmpty property="orderby">
+				order by $orderby$
+			</isNotEmpty>
+		)table_a
+	</select>
+	
+	<!-- 得到记录-->
+	<select id="selecteList" resultClass="java.util.HashMap" parameterClass="java.util.Map">
+		select a.id, a.gongyingshangmingcheng , a.dizhi , a.lianxiren , a.gonghuozhouqi , a.lianxidianhua ,a.itime, a.detail,a.deleteFlag
+		from gongyingshangxinxi a
+		where 1=1 
+		<isNotEmpty prepend="and" property="id">
+			a.id<![CDATA[ = ]]>#id#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="gongyingshangmingchengSearch">
+a.gongyingshangmingcheng like '%$gongyingshangmingchengSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="dizhiSearch">
+a.dizhi like '%$dizhiSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="lianxirenSearch">
+a.lianxiren like '%$lianxirenSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="gonghuozhouqiSearch">
+a.gonghuozhouqi like '%$gonghuozhouqiSearch$%' 
+</isNotEmpty>
+<isNotEmpty prepend="and" property="lianxidianhuaSearch">
+a.lianxidianhua like '%$lianxidianhuaSearch$%' 
+</isNotEmpty>
+
+		<isNotEmpty prepend="and" property="itimeStartSearch">
+			DATE_FORMAT(a.itime,'%Y-%m-%d %T') <![CDATA[ >= ]]> DATE_FORMAT(#itimeStartSearch#,'%Y-%m-%d %T')
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="itimeEndSearch">
+			DATE_FORMAT(a.itime,'%Y-%m-%d %T') <![CDATA[ <= ]]> DATE_FORMAT(#itimeEndSearch#,'%Y-%m-%d %T')
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="operatorId">
+				a.operatorId<![CDATA[ = ]]>#operatorId#
+			</isNotEmpty>
+		<isNotEmpty prepend="and" property="deleteFlagSearch">
+			a.deleteFlag<![CDATA[ = ]]>#deleteFlagSearch#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="dataRight">
+			$dataRight$
+		</isNotEmpty>
+		<isNotEmpty property="orderby">
+			order by $orderby$
+		</isNotEmpty>
+	</select>
+	
+	
+	<!-- 新增-->
+	<update id="insertObj" parameterClass="java.util.Map">
+		insert into gongyingshangxinxi
+		(gongyingshangmingcheng,dizhi,lianxiren,gonghuozhouqi,lianxidianhua,operatorId,itime,detail) 
+		values(#gongyingshangmingcheng#,#dizhi#,#lianxiren#,#gonghuozhouqi#,#lianxidianhua#,#operatorId#,(select date_format(now(),'%Y-%m-%d %H:%i:%S ') from dual),#detail#)
+	</update>
+	
+	<!-- 修改-->
+	<update id="updateObj" parameterClass="java.util.Map">
+		update gongyingshangxinxi 
+		set gongyingshangmingcheng=#gongyingshangmingcheng#,dizhi=#dizhi#,lianxiren=#lianxiren#,gonghuozhouqi=#gonghuozhouqi#,lianxidianhua=#lianxidianhua#,
+		      itime=(select date_format(now(),'%Y-%m-%d %H:%i:%S ') from dual),detail=#detail#
+		where id=#id#
+	</update>
+	
+	<!-- 冻结或解冻-->
+	<update id="doDeleOrUnDele" parameterClass="java.util.Map">
+		update gongyingshangxinxi 
+		set deleteFlag=#deleteFlag#
+		where id in ( $id$ )
+	</update>
+	
+	<update id="doShenPi" parameterClass="java.util.Map">
+		update gongyingshangxinxi 
+		set zhuangtai=#zhuangtai#
+		where id in ( $id$ )
+	</update>
+	
+	
+</sqlMap>
+
+
+
+
+
+
+
+
+

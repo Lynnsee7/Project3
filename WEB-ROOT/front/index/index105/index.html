@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+		<title>$ResultMap.systemName</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/fontawesome-all.css">
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/flaticon.css">
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/animate.css">
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/jquery.mCustomScrollbar.min.css">
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/slick.css">
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/slick-theme.css">
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/style.css">
+		
+		<script type="text/javascript">
+			function doSearch() {
+				var mingchenbiaoti = document.getElementById("mingchenbiaoti").value;
+				if (mingchenbiaoti == null || mingchenbiaoti == "") {
+					return;
+				}
+				var searchForm = document.getElementById("searchForm");
+				searchForm.action = "/WEB-ROOT/front/index/index.do?flag=category&mingchenbiaoti=" + mingchenbiaoti ;
+				searchForm.method = "post";
+				searchForm.submit();
+			}
+			
+			function doSearch1() {
+				var mingchenbiaoti = document.getElementById("mingchenbiaoti1").value;
+				if (mingchenbiaoti == null || mingchenbiaoti == "") {
+					return;
+				}
+				var searchForm = document.getElementById("searchForm1");
+				searchForm.action = "/WEB-ROOT/front/index/index.do?flag=category&mingchenbiaoti=" + mingchenbiaoti ;
+				searchForm.method = "post";
+				searchForm.submit();
+			}
+		</script>
+		
+		
+		
+	</head>
+
+	<body class="organio-wrapper">
+		<div id="preloader"></div>
+		<div class="up">
+			<a href="#" class="scrollup text-center"><i class="fas fa-chevron-up"></i></a>
+		</div>
+	
+		<header id="organio-header" class="organio-header-section header-style-three">
+			<div class="or-header-top">
+				<div class="container">
+					<div class="or-header-top-content d-flex justify-content-between align-items-center">
+						<div class="or-header-top-slug">
+							欢迎访问本平台 &nbsp;welcome to our system
+						</div>
+						<div class="or-header-top-social">
+							<a href="#"><i class="fab fa-qq"></i></a>
+							<a href="#"><i class="fab fa-weibo"></i></a>
+							<a href="#"><i class="fab fa-weixin"></i></a>
+							<a href="#"><i class="fas fa-envelope"></i></a>
+						</div>
+						<div class="or-header-top-login-btn position-relative">
+						
+							#if( $ResultMap.login_user_acct == "" ) 
+						    <a href="$ResultMap.LOG_SUCC_GO2_FRONT">用户登录</a> 
+						    #else
+						    <a href="$ResultMap.LOG_SUCC_GO2_APP">你好！$ResultMap.login_user_acct，&nbsp;&nbsp;进入管理</a>
+						    #end
+						    
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="or-header-main-menu">
+				<div class="container">
+					<div class="or-header-main-menu-content d-flex justify-content-between align-items-center">
+						<div class="site-logo">
+							<a href="/WEB-ROOT/front/index/index.do"> <b><font size="5">$ResultMap.systemName</font></b> </a>
+						</div>
+						<div class="or-header-main-navigation-btn d-flex">
+							<nav class="main-navigation-area clearfix ul-li">
+								<ul class="menu-navigation">
+									<li><a href="/WEB-ROOT/front/index/index.do">HOME</a></li>
+<!--									 ==========Added: 0514-->
+									<li><a href="/WEB-ROOT/front/index/index.do?flag=shop">商品购买</a></li>
+									<li><a href="/WEB-ROOT/front/index/index.do?flag=cart">购物车</a></li>
+<!--									 ==========Added: 0514-->
+									<li><a href="/WEB-ROOT/front/index/index.do?flag=about">平台介绍</a></li>
+									<li class="dropdown">
+										<a href="#">所有分类</a>
+										<ul class="dropdown-menu clearfix">
+											#foreach( $fenlei in $ResultMap.fenlei ) 
+						                    <li><a href="/WEB-ROOT/front/index/index.do?flag=category&fenlei=$fenlei.fenleimingchen">$fenlei.fenleimingchen</a></li>
+						                    #end
+										</ul>
+									</li>
+									<li><a href="/WEB-ROOT/front/index/index.do?flag=contact">在线服务</a></li>
+								</ul>		
+							</nav>
+							<div class="or-header-right-btn">
+								<button class="search-box-outer"><i class="fas fa-search"></i></button>
+							</div>
+						</div>
+					</div>
+					<div class="mobile_menu position-relative">
+						<div class="mobile_menu_button open_mobile_menu">
+							<i class="fal fa-bars"></i>
+						</div>
+						<div class="mobile_menu_wrap">
+							<div class="mobile_menu_overlay open_mobile_menu"></div>
+							<div class="mobile_menu_content">
+								<div class="mobile_menu_close open_mobile_menu">
+									<i class="fal fa-times"></i>
+								</div>
+								<div class="m-brand-logo">
+									<!--  
+									#if( $ResultMap.login_user_acct == "" ) 
+								    <a href="$ResultMap.LOG_SUCC_GO2_FRONT">用户登录</a> 
+								    #else
+								    <a href="$ResultMap.LOG_SUCC_GO2_APP">你好！$ResultMap.login_user_acct，&nbsp;&nbsp;进入管理</a>
+								    #end
+								    -->
+								</div>
+								<div class="mobile-search-wrapper position-relative">
+									<form id="searchForm">
+										<input id="mingchenbiaoti" type="text" placeholder="输入查询关键字">
+										<button onclick="doSearch();"><i class="fas fa-search"></i></button>
+									</form>
+								</div>
+								<nav class="mobile-main-navigation  clearfix ul-li">
+									<ul id="m-main-nav" class="navbar-nav text-capitalize clearfix">
+										<li><a href="/WEB-ROOT/front/index/index.do">HOME</a></li>
+										<!--									 ==========Added: 0514-->
+										<li><a href="/WEB-ROOT/front/index/index.do?flag=shop">商品购买</a></li>
+										<li><a href="/WEB-ROOT/front/index/index.do?flag=cart">购物车</a></li>
+										<!--									 ==========Added: 0514-->
+										<li><a href="/WEB-ROOT/front/index/index.do?flag=about">平台介绍</a></li>
+										<li class="dropdown">
+											<a href="#">所有分类</a>
+											<ul class="dropdown-menu clearfix">
+												#foreach( $fenlei in $ResultMap.fenlei ) 
+							                    <li><a href="/WEB-ROOT/front/index/index.do?flag=category&fenlei=$fenlei.fenleimingchen">$fenlei.fenleimingchen</a></li>
+							                    #end
+											</ul>
+										</li>
+										<li><a href="/WEB-ROOT/front/index/index.do?flag=contact">在线服务</a></li>
+										<li>
+										
+										#if( $ResultMap.login_user_acct == "" ) 
+									    <a href="$ResultMap.LOG_SUCC_GO2_FRONT"> <strong><b><font color="#76A713" size="3">用户登录</font></b></strong> </a> 
+									    #else
+									    <a href="$ResultMap.LOG_SUCC_GO2_APP"> <strong><b><font color="#76A713" size="3">你好！$ResultMap.login_user_acct，&nbsp;&nbsp;进入管理</font></b></strong></a>
+									    #end
+										
+										</li>
+									</ul>
+								</nav>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+		
+		
+		<div class="search-popup">
+			<button class="close-search style-two"><span class="fal fa-times"></span></button>
+			<button class="close-search"><span class="fa fa-arrow-up"></span></button>
+			<form id="searchForm1">
+				<div class="form-group">
+					<input type="search" id="mingchenbiaoti1" placeholder="输入查询关键字" required="">
+					<button type="button" onclick="doSearch1();"><i class="fa fa-search"></i></button>
+				</div>
+			</form>
+		</div>
+		
+		
+		<section id="or-banner" class="or-banner-section" data-background="/WEB-ROOT/front/index/index105/assets/img/banner-bg1.jpg">
+			<div class="or-banner-content position-relative">
+				<div class="container">
+					<div class="or-banner-slider">
+						<div class="or-banner-slider-item-wrapper headline-2 pera-content text-center">
+							<div class="or-banner-slider-item">
+								  
+								<h1>&nbsp;</h1>
+								<p>&nbsp;</p>
+								<div class="or-banner-btn d-flex justify-content-center">
+									
+								</div>
+								
+							</div>
+						</div>
+						<div class="or-banner-slider-item-wrapper headline-2 pera-content text-center">
+							<div class="or-banner-slider-item">
+								<h1>&nbsp;</h1>
+								<p>&nbsp;</p>
+								<div class="or-banner-btn d-flex justify-content-center">
+									
+								</div>
+							</div>
+						</div>
+						<div class="or-banner-slider-item-wrapper headline-2 pera-content text-center">
+							<div class="or-banner-slider-item">
+								<h1>&nbsp;</h1>
+								<p>&nbsp;</p>
+								<div class="or-banner-btn d-flex justify-content-center">
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+	
+			</div>
+		</section>
+	
+			
+		<section id="or-shop-banner" class="or-shop-banner-section">
+			<div class="container">
+				<div class="or-shop-banner-content">
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="or-shop-banner-innerbox position-relative wow fadeInUp ">
+								<div class="or-shop-banner-text headline pera-content">
+									<h3>智能化管理平台</h3>
+									<p>$ResultMap.systemName采用最新的web技术，结合大数据以及人工智能算法将数据和业务功能整合。</p>
+									<a class="sb-btn wow fadeInUp" href="/WEB-ROOT/front/index/index.do?flag=contact">了解详情<i class="fas fa-long-arrow-right"></i></a>
+								</div>
+								<div class="or-shop-banner-img-wrapper">
+									<div class="or-shop-banner-img-1 position-absolute">
+										<img src="/WEB-ROOT/front/index/index105/assets/img/sb1.png" style="width:220px;height:140px;">
+									</div>
+									<div class="or-shop-banner-img-2 position-absolute">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="or-shop-banner-innerbox position-relative type-2  wow fadeInUp ">
+								<div class="or-shop-banner-text  headline pera-content">
+									<h3>信息资讯推送服务</h3>
+									<p>$ResultMap.systemName拥有海量数据，我们平台采用了内容推荐算法把适合您的信息资讯自动推送。</p>
+									<a class="sb-btn wow fadeInUp" href="/WEB-ROOT/front/index/index.do?flag=contact">了解详情<i class="fas fa-long-arrow-right"></i></a>
+								</div>
+								<div class="or-shop-banner-img-wrapper">
+									<div class="or-shop-banner-img-1 position-absolute">
+										<img src="/WEB-ROOT/front/index/index105/assets/img/sb2.png" style="width:220px;height:140px;">
+									</div>
+									<div class="or-shop-banner-img-2 position-absolute">
+									</div>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</section>
+	
+		<section id="or-why-choose" class="or-why-choose-section">
+			<div class="container">
+				<div class="or-why-choose-content">  
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="or-why-choose-feature position-relative">
+								<div class="row">
+									<div class="col-md-6 wow fadeInUp" data-wow-delay="00ms">
+										<div class="or-why-choose-feature-innerbox headline pera-content text-center">
+											<div class="or-why-choose-feature-icon position-relative d-flex align-items-center justify-content-center">
+												<i class="flaticon-return"></i>
+											</div>
+											<div class="or-why-choose-feature-text">
+												<h3>用户体验好</h3>
+												<p></p>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="or-why-choose-feature-innerbox headline pera-content text-center">
+											<div class="or-why-choose-feature-icon position-relative d-flex align-items-center justify-content-center">
+												<i class="flaticon-leaf"></i>
+											</div>
+											<div class="or-why-choose-feature-text">
+												<h3>信息资讯全</h3>
+												<p></p>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6 wow fadeInUp" data-wow-delay="200ms">
+										<div class="or-why-choose-feature-innerbox headline pera-content text-center">
+											<div class="or-why-choose-feature-icon position-relative d-flex align-items-center justify-content-center">
+												<i class="flaticon-headphones"></i>
+											</div>
+											<div class="or-why-choose-feature-text">
+												<h3>24小时客服</h3>
+												<p></p>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6 wow fadeInUp" data-wow-delay="400ms">
+										<div class="or-why-choose-feature-innerbox headline pera-content text-center">
+											<div class="or-why-choose-feature-icon position-relative d-flex align-items-center justify-content-center">
+												<i class="flaticon-credit-card"></i>
+											</div>
+											<div class="or-why-choose-feature-text">
+												<h3>个人资料保密</h3>
+												<p></p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-6 wow fadeInUp" data-wow-delay="600ms">
+							<div class="or-why-choose-text-wrapper">
+								<div class="or-section-title headline pera-content">
+									<span class="sub-title">为什么使用我们的平台？</span>
+									<h2 class="case-animate-time">$ResultMap.systemName的优势</h2>
+									<p>
+									$ResultMap.systemName正式上线于 <script> document.write( new Date().getFullYear() ) </script>年。 
+									采用最近技术设计了本平台。用户很好的用户体验。本平台根据资讯的分类，进行了数据的整合。方便您快速的检索。
+									
+									</p>
+									<p>
+									在使用的过程中也可以联系我们的24小时在线客服。有专业的技术人员为您提供服务。
+									您在本平台中的所有个人资料我们都会严格保密。不会提供给任何第三方平台。
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	
+		<section id="or-category" class="or-category-section" data-background="/WEB-ROOT/front/index/index105/assets/img/bg/cat-bg.jpg">
+			<div class="container">
+				<div class="or-section-title headline pera-content text-center middle-align wow fadeInUp" data-wow-delay="50ms">
+					<span class="sub-title">Latest information</span>
+					<h2 class="case-animate-time">最新资讯信息</h2>
+				</div>
+				<div class="or-category-content">
+					<div class="or-category-slider-wrapper position-relative">
+						<div class="or-category-slider-area">
+							
+							#set($ind=1) 
+							#foreach( $getAll in $ResultMap.getAll ) 
+							<div class="organio-inner-item">
+								<div class="or-product-innerbox-item type-$ind text-center position-relative">
+									<div class="e-commerce-btn">
+										<a href="/WEB-ROOT/front/index/index.do?flag=single&id=$getAll.id&fenlei=$getAll.suoshufenlei"><i class="fal fa-search"></i></a>
+										<a href="/WEB-ROOT/front/index/index.do?flag=single&id=$getAll.id&fenlei=$getAll.suoshufenlei"><i class="fal fa-heart"></i></a>
+										<a href="/WEB-ROOT/front/index/index.do?flag=single&id=$getAll.id&fenlei=$getAll.suoshufenlei"><i class="fal fa-eye"></i></a>
+									</div>
+									<div class="or-product-inner-img">
+										#foreach( $tpList in $getAll.tpList ) 
+					                    <img class="img-fluid rounded" src="$tpList.picPath" style="width:100%;height:200px;">
+					                    #if(${velocityCount}==1) #break #end #end
+									</div>
+									<div class="or-product-inner-text headline">
+										<h3><a href="/WEB-ROOT/front/index/index.do?flag=single&id=$getAll.id&fenlei=$getAll.suoshufenlei"> <font size="3">$getAll.mingchenbiaoti</font> </a></h3>
+										<span class="price">$getAll.faburen @$getAll.fabushijian</span>
+										<div class="or-product-rate ul-li">
+											<ul>
+												<li><i class="fas fa-star"></i></li>
+												<li><i class="fas fa-star"></i></li>
+												<li><i class="fas fa-star"></i></li>
+												<li><i class="fas fa-star"></i></li>
+												<li><i class="fas fa-star"></i></li>
+											</ul>
+										</div>
+									</div>
+									<div class="or-product-btn text-center">
+										<a class="d-flex justify-content-center align-items-center" href="/WEB-ROOT/front/index/index.do?flag=single&id=$getAll.id&fenlei=$getAll.suoshufenlei">查看详情</a>
+									</div>
+								</div>
+							</div>
+							#if( $ind==4 )  #set($ind=1)  
+							#else #set($ind=$ind+1) 
+							#end
+							#if(${velocityCount}==8) #break #end #end
+							
+						</div>
+						<div class="carousel_nav  clearfix">
+							<button type="button" class="or-category-left_arrow"><img src="/WEB-ROOT/front/index/index105/assets/img/arrow1.png" alt=""></button>
+							<button type="button" class="or-category-right_arrow"><img src="/WEB-ROOT/front/index/index105/assets/img/arrow2.png" alt=""></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>				
+	
+		
+	
+		<section id="or-funfact" class="or-funfact-section position-relative" data-background="/WEB-ROOT/front/index/index105/assets/img/bg/fn-bg.png">
+			<div class="container">
+				<div class="or-funfact-content">
+					<div class="row">
+						<div class="col-lg-3 col-sm-6"> 
+							<div class="or-funfact-innerbox position-relative d-flex align-items-center">
+								<div class="or-funfact-icon">
+									<i class="flaticon-rate"></i>
+								</div>
+								<div class="or-funfact-text headline pera-content">
+									<h3> <span class="counter">52</span> <sup>+</sup></h3>
+									<p>活跃用户</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-sm-6"> 
+							<div class="or-funfact-innerbox position-relative d-flex align-items-center">
+								<div class="or-funfact-icon">
+									<i class="flaticon-link"></i>
+								</div>
+								<div class="or-funfact-text headline pera-content">
+									<h3> <span class="counter">287</span> <sup>+</sup></h3>
+									<p>注册用户</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-sm-6"> 
+							<div class="or-funfact-innerbox position-relative d-flex align-items-center">
+								<div class="or-funfact-icon">
+									<i class="flaticon-product-design"></i>
+								</div>
+								<div class="or-funfact-text headline pera-content">
+									<h3> <span class="counter">945</span> <sup>+</sup></h3>
+									<p>资讯信息</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-sm-6"> 
+							<div class="or-funfact-innerbox position-relative d-flex align-items-center">
+								<div class="or-funfact-icon">
+									<i class="flaticon-award"></i>
+								</div>
+								<div class="or-funfact-text headline pera-content">
+									<h3> <span class="counter">3767</span> <sup>+</sup></h3>
+									<p>留言评论</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	
+	
+		
+		<section id="our-team" class="or-team-section">
+			<div class="container">
+				<div class="or-section-title headline pera-content text-center middle-align wow fadeInUp" data-wow-delay="0ms">
+					<span class="sub-title">Team Service </span>
+					<h2 class="case-animate-time">在线客服</h2>
+				</div>
+				<div class="or-team-content">
+					<div class="or-team-content-area">
+						<div class="or-team-slider">
+							
+							<div class="organio-inner-item">
+								<div class="or-team-innerbox">
+									<div class="or-team-img position-relative">
+										<img src="/WEB-ROOT/front/index/index105/assets/img/team-1.jpg" style="width:180px;height:180px;">
+									</div>
+									<div class="or-taam-item-holder">
+										<div class="or-team-meta text-center headline position-relative">
+											<h3><a href="javascript:void(0)"> <font color="#FF7800">陈绮丽</font></a></h3>
+											<span>139-0912-7812</span>
+										</div>
+										<div class="or-team-text-social pera-content text-center">
+											<div class="or-team-social">
+												<a href="#"><i class="fab fa-qq"></i></a>
+												<a href="#"><i class="fab fa-weibo"></i></a>
+												<a href="#"><i class="fab fa-weixin"></i></a>
+												<a href="#"><i class="fas fa-envelope"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="organio-inner-item">
+								<div class="or-team-innerbox">
+									<div class="or-team-img position-relative">
+										<img src="/WEB-ROOT/front/index/index105/assets/img/team-2.jpg" style="width:180px;height:180px;">
+									</div>
+									<div class="or-taam-item-holder">
+										<div class="or-team-meta text-center headline position-relative">
+											<h3><a href="javascript:void(0)"><font color="#FF7800">吴宇恒</font></a></h3>
+											<span>180-3347-9087</span>
+										</div>
+										<div class="or-team-text-social pera-content text-center">
+											<div class="or-team-social">
+												<a href="#"><i class="fab fa-qq"></i></a>
+												<a href="#"><i class="fab fa-weibo"></i></a>
+												<a href="#"><i class="fab fa-weixin"></i></a>
+												<a href="#"><i class="fas fa-envelope"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="organio-inner-item">
+								<div class="or-team-innerbox">
+									<div class="or-team-img position-relative">
+										<img src="/WEB-ROOT/front/index/index105/assets/img/team-3.jpg" style="width:180px;height:180px;">
+									</div>
+									<div class="or-taam-item-holder">
+										<div class="or-team-meta text-center headline position-relative">
+											<h3><a href="javascript:void(0)"><font color="#FF7800">赵羽茜</font></a></h3>
+											<span>177-1198-5574</span>
+										</div>
+										<div class="or-team-text-social pera-content text-center">
+											<div class="or-team-social">
+												<a href="#"><i class="fab fa-qq"></i></a>
+												<a href="#"><i class="fab fa-weibo"></i></a>
+												<a href="#"><i class="fab fa-weixin"></i></a>
+												<a href="#"><i class="fas fa-envelope"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+							<div class="organio-inner-item">
+								<div class="or-team-innerbox">
+									<div class="or-team-img position-relative">
+										<img src="/WEB-ROOT/front/index/index105/assets/img/team-4.jpg" style="width:180px;height:180px;">
+									</div>
+									<div class="or-taam-item-holder">
+										<div class="or-team-meta text-center headline position-relative">
+											<h3><a href="javascript:void(0)"><font color="#FF7800">李学斌</font></a></h3>
+											<span>161-8391-9381</span>
+										</div>
+										<div class="or-team-text-social pera-content text-center">
+											<div class="or-team-social">
+												<a href="#"><i class="fab fa-qq"></i></a>
+												<a href="#"><i class="fab fa-weibo"></i></a>
+												<a href="#"><i class="fab fa-weixin"></i></a>
+												<a href="#"><i class="fas fa-envelope"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	
+		
+		
+		<footer id="or-footer-1" class="or-footer-section-1" data-background="/WEB-ROOT/front/index/index105/assets/img/bg-footer-top.png">
+			<div class="or-footer-newslatter-1">
+				<div class="container">
+					<div class="or-footer-newslatter-content headline  position-relative" data-background="">
+						<span class="or-footer-newslatter-img"></span>
+						<div class="or-footer-newslatter-text-form">
+							<h3> <a href="/servlet/RegisterServlet"> <b><font size="5" color="white">成为平台用户，点我注册！</font></b>  </a> </h3>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="or-footer-widget-wrapper-1">
+				<div class="container">
+					<div class="row">
+						
+						#foreach( $lm in $ResultMap.lanmu ) 
+						<div class="col-lg-3 col-md-6">	
+							<div class="or-footer-widget  headline pera-content ul-li-block">
+								<div class="or-menu-widget">
+									<h2 class="widget-title">$lm.lanmumingcheng</h2>
+									<ul>
+										#foreach( $wz in $lm.wenzhang )
+										<li><a href="/WEB-ROOT/front/index/index.do?flag=wenzhang&id=$wz.id">$wz.wenzhangbiaoti</a></li>
+										#end
+									</ul>
+								</div>
+							</div>
+						</div>
+						#if(${velocityCount}==4) #break #end #end
+						
+					</div>
+				</div>
+			</div>
+			<div class="or-footer-copyright text-center" data-background="/WEB-ROOT/front/index/index105/assets/img/bg-footer-bottom.png">
+				<span>   <a href="/WEB-ROOT/front/index/index.do"> <b><font size="4" color="white">$ResultMap.systemName</font></b></a> </span>
+			</div>
+		</footer>
+	
+	
+		<script src="/WEB-ROOT/front/index/index105/assets/js/jquery.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/bootstrap.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/popper.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/jquery.magnific-popup.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/appear.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/slick.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/jquery.counterup.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/waypoints.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/wow.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/imagesloaded.pkgd.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/parallax-scroll.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/script.js"></script>	
+	
+	</body>
+	
+</html>		

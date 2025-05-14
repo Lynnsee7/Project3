@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+<title>注册</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+	addEventListener("load", function() {
+		setTimeout(hideURLbar, 0);
+	}, false);
+
+	function hideURLbar() {
+		window.scrollTo(0, 1);
+	}
+</script>
+
+<link href="/WEB-ROOT/app/register/style17/css/style.css" rel='stylesheet' type='text/css' />
+
+
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-base.js"></script>
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-all.js"></script>
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/WEB-ROOT/skin/js/pub/global/global.js"></script>
+
+<script type="text/javascript">
+	function doSubmit() {
+		var userAcct = document.getElementById("userAcct").value;
+		var userName = document.getElementById("userName").value;
+		var userPass = document.getElementById("userPass").value;
+		if (userAcct == "") {
+			alert("帐号为空，请填写！");
+			return;
+		}
+		if (userPass == "") {
+			alert("登录密码为空，请填写！");
+			return;
+		}
+		if (userName == "") {
+			alert("昵称为空，请填写！");
+			return;
+		}
+
+		Ext.Ajax.request({
+			waitMsg : '数据提交中......',
+			url : '/login.do',
+			method : 'POST',
+			success : function(response, options) {
+				var responseArray = Ext.util.JSON.decode(response.responseText);
+				if (responseArray.success) {
+					alert("注册成功！");
+					window.location.href = "/login.do" ;
+				} else {
+					alert(responseArray.msg);
+				}
+			},
+			params : {
+				flag : "doRegister",
+				userAcct : userAcct,
+				userPass : userPass,
+				userName : userName
+			}
+		});
+
+	}
+</script>
+
+
+</head>
+
+<body>
+	<header>
+		<h1 class="text-center">用户注册</h1>
+	</header>
+
+	<section class="w3ls-reg">
+		<form method="post" id="form" action="#">
+			<div class="row">
+				<div class="agile_full field">
+					<label for="labelName">登录帐号 <span>*</span></label> <input type="text" id="userAcct" name="userAcct" placeholder="" maxlength="16" class="form-control">
+					<div class="valid-message"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="agile_full field">
+					<label for="labelSurname">用户名称 <span>*</span></label> <input type="text" name="userName" id="userName" placeholder="" maxlength="16" class="form-control">
+					<div class="valid-message"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="agile_full field">
+					<label for="labelEmail">登录密码 <span>*</span></label> <input name="userPass" id="userPass" maxlength="16" placeholder="" type='password' class="form-control">
+					<div class="valid-message"></div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="agile_full field">
+					<button class="" type="button" onclick="doSubmit();">提交注册</button>
+				</div>
+			</div>
+		</form>
+	</section>
+
+	<footer class="copy-wthree text-center">
+		<p>
+			<a href="/login.do">返回登录</a>
+		</p>
+	</footer>
+
+	<script src="/WEB-ROOT/app/register/style17/js/jquery-2.2.3.min.js"></script>
+	<script src="/WEB-ROOT/app/register/style17/js/jquery.formValid.js"></script>
+
+</body>
+
+</html>

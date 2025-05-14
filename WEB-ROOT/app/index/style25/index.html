@@ -1,0 +1,95 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=GBK" />
+	<title>Welcome To ${SYSTEM_NAME}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    
+    <link href="/WEB-ROOT/app/index/style25/assets/css/dpl-min.css" rel="stylesheet" type="text/css" />
+    <link href="/WEB-ROOT/app/index/style25/assets/css/bui-min.css" rel="stylesheet" type="text/css" />
+    <link href="/WEB-ROOT/app/index/style25/assets/css/main-min.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<div class="header">
+
+    <div class="dl-title">
+        <!--<img src="/chinapost/Public//WEB-ROOT/app/index/style25/assets/img/top.png">-->
+        <font size="2" face="微软雅黑">${SYSTEM_NAME}</font>
+    </div>
+
+    <div class="dl-log">欢迎您，<span class="dl-log-user">${LoginUserAcct}</span><a href="/" title="退出系统" class="dl-log-quit">[退出]</a>
+    </div>
+</div>
+<div class="content">
+    <div class="dl-main-nav">
+        <div class="dl-inform"><div class="dl-inform-title"><s class="dl-inform-icon dl-up"></s></div></div>
+        <ul id="J_Nav"  class="nav-list ks-clear">
+            <li class="nav-item dl-selected">
+            	<div class="nav-item-inner nav-home">Home</div>
+            </li>
+            #foreach($menu in ${ResultMap.menuList})	
+            <li class="nav-item dl-selected">
+            	<div class="nav-item-inner nav-order">$menu.text</div>
+            </li>
+            #end
+        </ul>
+    </div>
+    <ul id="J_NavContent" class="dl-tab-conten">
+
+    </ul>
+</div>
+<script type="text/javascript" src="/WEB-ROOT/app/index/style25/assets/js/jquery-1.8.1.min.js"></script>
+<script type="text/javascript" src="/WEB-ROOT/app/index/style25/assets/js/bui-min.js"></script>
+<script type="text/javascript" src="/WEB-ROOT/app/index/style25/assets/js/common/main-min.js"></script>
+<script type="text/javascript" src="/WEB-ROOT/app/index/style25/assets/js/config-min.js"></script>
+<script>
+    BUI.use('common/main',function(){
+        var config = 
+        	[
+        		{
+        			id:'-1',
+        			homePage:'0',
+        			menu:[
+        			{
+        				text:'首页',
+	        			items:[
+	        			 	{id:'0',text:'Home',href:'/WEB-ROOT/app/index/home.do'}
+	        			]
+	        		}]
+        		}
+        		#foreach($menu in ${ResultMap.menuList})
+        		,
+        		{
+        			id:'$menu.id',
+        			homePage:'$menu.innerList.get(0).id',
+        			menu:[
+        			{
+        				text:'$menu.text',
+	        			items:[
+	        				#foreach($submenu in $menu.innerList)
+	        					#if( $velocityCount==1 )
+	        						{id:'$submenu.id',text:'$submenu.text',href:'$submenu.menu_todo'}
+	        					#end
+	        			 	#end
+	        			 	#foreach($submenu in $menu.innerList)
+	        					#if( $velocityCount!=1 )
+	        						,{id:'$submenu.id',text:'$submenu.text',href:'$submenu.menu_todo'}
+	        					#end
+	        			 	#end
+	        			]
+	        		}]
+        		}
+        		#end
+        	];
+        new PageUtil.MainPage({
+            modulesConfig : config
+        });
+    });
+</script>
+<div style="text-align:center;">	
+
+</div>
+</body>
+</html>

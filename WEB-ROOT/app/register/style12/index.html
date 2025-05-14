@@ -1,0 +1,92 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+<title>注册新用户</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="application/x-javascript">addEventListener("load", function() {
+		setTimeout(hideURLbar, 0);
+	}, false);
+	function hideURLbar() {
+		window.scrollTo(0, 1);
+	}
+</script>
+
+<link href="/WEB-ROOT/app/register/style12/css/bootstrap.css" rel='stylesheet' type='text/css' />
+
+<link href="/WEB-ROOT/app/register/style12/css/style.css" rel='stylesheet' type='text/css' />
+
+<link href="/WEB-ROOT/app/register/style12/css/font-awesome.css" rel="stylesheet">
+
+
+<script src="/WEB-ROOT/app/register/style12/js/jquery-1.11.1.min.js"></script>
+
+
+<link rel="stylesheet" type="text/css" href="/WEB-ROOT/skin/css/ext-all.css" />
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-base.js" charset="gbk"></script>
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-all.js" charset="gbk"></script>
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-lang-zh_CN.js" charset="gbk"></script>
+
+
+<script type="text/javascript">
+	function doSubmit() {
+		var userAcct = document.getElementById("userAcct").value;
+		var userName = document.getElementById("userName").value;
+		var userPass = document.getElementById("userPass").value;
+		if (userAcct == "") {
+			alert("帐号为空，请填写！");
+			return;
+		}
+		if (userPass == "") {
+			alert("登录密码为空，请填写！");
+			return;
+		}
+		if (userName == "") {
+			alert("昵称为空，请填写！");
+			return;
+		}
+
+		Ext.Ajax.request({
+			waitMsg : '数据提交中......',
+			url : '/login.do',
+			method : 'POST',
+			success : function(response, options) {
+				var responseArray = Ext.util.JSON.decode(response.responseText);
+				if (responseArray.success) {
+					alert("注册成功！");
+					window.location.href = "/login.do" ;
+				} else {
+					alert(responseArray.msg);
+				}
+			},
+			params : {
+				flag : "doRegister",
+				userAcct : userAcct,
+				userPass : userPass,
+				userName : userName
+			}
+		});
+
+	}
+</script>
+
+</head>
+<body class="login-bg">
+	<div class="login-body">
+		<div class="login-heading">
+			<h1>新用户注册</h1>
+		</div>
+		<div class="login-info">
+			<form>
+				<input type="text" class="user" id="userAcct" name="userAcct" placeholder="登录帐号" maxlength="16" required=""> <input type="text" class="user" name="userName" id="userName" placeholder="用户姓名" maxlength="16" required=""> <input type="password" class="lock"
+					name="userPass" id="userPass" maxlength="16" placeholder="登录密码" required=""> <input type="button" name="Sign In" value="提交注册" onclick="doSubmit();">
+				<div class="signup-text">
+					<a href="/login.do">返回登录</a>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="copyright login-copyright"></div>
+</body>
+</html>

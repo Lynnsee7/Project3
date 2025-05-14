@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+		<title>$ResultMap.systemName</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/fontawesome-all.css">
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/flaticon.css">
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/animate.css">
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/jquery.mCustomScrollbar.min.css">
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/slick.css">
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/slick-theme.css">
+		<link rel="stylesheet" href="/WEB-ROOT/front/index/index105/assets/css/style.css">
+		
+		<script type="text/javascript">
+			function doSearch() {
+				var mingchenbiaoti = document.getElementById("mingchenbiaoti").value;
+				if (mingchenbiaoti == null || mingchenbiaoti == "") {
+					return;
+				}
+				var searchForm = document.getElementById("searchForm");
+				searchForm.action = "/WEB-ROOT/front/index/index.do?flag=category&mingchenbiaoti=" + mingchenbiaoti ;
+				searchForm.method = "post";
+				searchForm.submit();
+			}
+			
+			function doSearch1() {
+				var mingchenbiaoti = document.getElementById("mingchenbiaoti1").value;
+				if (mingchenbiaoti == null || mingchenbiaoti == "") {
+					return;
+				}
+				var searchForm = document.getElementById("searchForm1");
+				searchForm.action = "/WEB-ROOT/front/index/index.do?flag=category&mingchenbiaoti=" + mingchenbiaoti ;
+				searchForm.method = "post";
+				searchForm.submit();
+			}
+		</script>
+		
+		
+		
+	</head>
+
+	<body class="organio-wrapper">
+		<div id="preloader"></div>
+		<div class="up">
+			<a href="#" class="scrollup text-center"><i class="fas fa-chevron-up"></i></a>
+		</div>
+	
+		<header id="organio-header" class="organio-header-section header-style-three">
+			<div class="or-header-top">
+				<div class="container">
+					<div class="or-header-top-content d-flex justify-content-between align-items-center">
+						<div class="or-header-top-slug">
+							欢迎访问本平台 &nbsp;welcome to our system
+						</div>
+						<div class="or-header-top-social">
+							<a href="#"><i class="fab fa-qq"></i></a>
+							<a href="#"><i class="fab fa-weibo"></i></a>
+							<a href="#"><i class="fab fa-weixin"></i></a>
+							<a href="#"><i class="fas fa-envelope"></i></a>
+						</div>
+						<div class="or-header-top-login-btn position-relative">
+						
+							#if( $ResultMap.login_user_acct == "" ) 
+						    <a href="$ResultMap.LOG_SUCC_GO2_FRONT">用户登录</a> 
+						    #else
+						    <a href="$ResultMap.LOG_SUCC_GO2_APP">你好！$ResultMap.login_user_acct，&nbsp;&nbsp;进入管理</a>
+						    #end
+						    
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="or-header-main-menu">
+				<div class="container">
+					<div class="or-header-main-menu-content d-flex justify-content-between align-items-center">
+						<div class="site-logo">
+							<a href="/WEB-ROOT/front/index/index.do"> <b><font size="5">$ResultMap.systemName</font></b> </a>
+						</div>
+						<div class="or-header-main-navigation-btn d-flex">
+							<nav class="main-navigation-area clearfix ul-li">
+								<ul class="menu-navigation">
+									<li><a href="/WEB-ROOT/front/index/index.do">HOME</a></li>
+									<li><a href="/WEB-ROOT/front/index/index.do?flag=about">平台介绍</a></li>
+									<li class="dropdown">
+										<a href="#">所有分类</a>
+										<ul class="dropdown-menu clearfix">
+											#foreach( $fenlei in $ResultMap.fenlei ) 
+						                    <li><a href="/WEB-ROOT/front/index/index.do?flag=category&fenlei=$fenlei.fenleimingchen">$fenlei.fenleimingchen</a></li>
+						                    #end
+										</ul>
+									</li>
+									<li><a href="/WEB-ROOT/front/index/index.do?flag=contact">在线服务</a></li>
+								</ul>		
+							</nav>
+							<div class="or-header-right-btn">
+								<button class="search-box-outer"><i class="fas fa-search"></i></button>
+							</div>
+						</div>
+					</div>
+					<div class="mobile_menu position-relative">
+						<div class="mobile_menu_button open_mobile_menu">
+							<i class="fal fa-bars"></i>
+						</div>
+						<div class="mobile_menu_wrap">
+							<div class="mobile_menu_overlay open_mobile_menu"></div>
+							<div class="mobile_menu_content">
+								<div class="mobile_menu_close open_mobile_menu">
+									<i class="fal fa-times"></i>
+								</div>
+								<div class="m-brand-logo">
+									<!--  
+									#if( $ResultMap.login_user_acct == "" ) 
+								    <a href="$ResultMap.LOG_SUCC_GO2_FRONT">用户登录</a> 
+								    #else
+								    <a href="$ResultMap.LOG_SUCC_GO2_APP">你好！$ResultMap.login_user_acct，&nbsp;&nbsp;进入管理</a>
+								    #end
+								    -->
+								</div>
+								<div class="mobile-search-wrapper position-relative">
+									<form id="searchForm">
+										<input id="mingchenbiaoti" type="text" placeholder="输入查询关键字">
+										<button onclick="doSearch();"><i class="fas fa-search"></i></button>
+									</form>
+								</div>
+								<nav class="mobile-main-navigation  clearfix ul-li">
+									<ul id="m-main-nav" class="navbar-nav text-capitalize clearfix">
+										<li><a href="/WEB-ROOT/front/index/index.do">HOME</a></li>
+										<li><a href="/WEB-ROOT/front/index/index.do?flag=about">平台介绍</a></li>
+										<li class="dropdown">
+											<a href="#">所有分类</a>
+											<ul class="dropdown-menu clearfix">
+												#foreach( $fenlei in $ResultMap.fenlei ) 
+							                    <li><a href="/WEB-ROOT/front/index/index.do?flag=category&fenlei=$fenlei.fenleimingchen">$fenlei.fenleimingchen</a></li>
+							                    #end
+											</ul>
+										</li>
+										<li><a href="/WEB-ROOT/front/index/index.do?flag=contact">在线服务</a></li>
+										<li>
+										
+										#if( $ResultMap.login_user_acct == "" ) 
+									    <a href="$ResultMap.LOG_SUCC_GO2_FRONT"> <strong><b><font color="#76A713" size="3">用户登录</font></b></strong> </a> 
+									    #else
+									    <a href="$ResultMap.LOG_SUCC_GO2_APP"> <strong><b><font color="#76A713" size="3">你好！$ResultMap.login_user_acct，&nbsp;&nbsp;进入管理</font></b></strong></a>
+									    #end
+										
+										</li>
+									</ul>
+								</nav>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+		
+		
+		<div class="search-popup">
+			<button class="close-search style-two"><span class="fal fa-times"></span></button>
+			<button class="close-search"><span class="fa fa-arrow-up"></span></button>
+			<form id="searchForm1">
+				<div class="form-group">
+					<input type="search" id="mingchenbiaoti1" placeholder="输入查询关键字" required="">
+					<button type="button" onclick="doSearch1();"><i class="fa fa-search"></i></button>
+				</div>
+			</form>
+		</div>
+		
+		
+		<section id="or-breadcrumbs" class="or-breadcrumbs-section position-relative" data-background="/WEB-ROOT/front/index/index105/assets/img/bg3.jpg">
+			<div class="background_overlay"></div>
+			<div class="container">
+				<div class="or-breadcrumbs-content text-center">
+					<br><br><br><br><br><br>
+					<div class="page-title headline"><h1>在线服务</h1></div>
+					<div class="or-breadcrumbs-items ul-li">
+						<ul>
+							<li><a href="/WEB-ROOT/front/index/index.do"><font size="4" color="white">HOME</font></a></li>
+							<li>在线服务</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</section>
+	
+			
+		<section id="or-contact-info" class="or-contact-info-section">
+			<div class="container">
+				<div class="row justify-content-center">
+					<div class="col-lg-4 col-md-6">
+						<div class="or-contact-innerbox headline or-contact-innerbox-layout1">
+							<div class="item--inner bg-image">
+								<div class="item--icon icon-psb">
+									<i aria-hidden="true" class="flaticon-map"></i>
+								</div>
+								<h4 class="item--title"> 官方微信</h4>
+								<div class="item--description"> weixingf </div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-6">
+						<div class="or-contact-innerbox headline or-contact-innerbox-layout1">
+							<div class="item--inner bg-image">
+								<div class="item--icon icon-psb">
+									<i aria-hidden="true" class="flaticon-phone-call"></i>
+								</div>
+								<h4 class="item--title">客服热线</h4>
+								<div class="item--description"> 400-101-9876 </div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-md-6">
+						<div class="or-contact-innerbox headline or-contact-innerbox-layout1">
+							<div class="item--inner bg-image">
+								<div class="item--icon icon-psb">
+									<i aria-hidden="true" class="flaticon-email"></i>
+								</div>
+								<h4 class="item--title">电子邮箱</h4>
+								<div class="item--description">hello@admin.com</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br><br><br><br><br><br><br><br>
+		</section>
+		
+		
+		<footer id="or-footer-1" class="or-footer-section-1" data-background="/WEB-ROOT/front/index/index105/assets/img/bg-footer-top.png">
+			<div class="or-footer-newslatter-1">
+				<div class="container">
+					<div class="or-footer-newslatter-content headline  position-relative" data-background="">
+						<span class="or-footer-newslatter-img"></span>
+						<div class="or-footer-newslatter-text-form">
+							<h3> <a href="/servlet/RegisterServlet"> <b><font size="5" color="white">成为平台用户，点我注册！</font></b>  </a> </h3>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="or-footer-widget-wrapper-1">
+				<div class="container">
+					<div class="row">
+						
+						#foreach( $lm in $ResultMap.lanmu ) 
+						<div class="col-lg-3 col-md-6">	
+							<div class="or-footer-widget  headline pera-content ul-li-block">
+								<div class="or-menu-widget">
+									<h2 class="widget-title">$lm.lanmumingcheng</h2>
+									<ul>
+										#foreach( $wz in $lm.wenzhang )
+										<li><a href="/WEB-ROOT/front/index/index.do?flag=wenzhang&id=$wz.id">$wz.wenzhangbiaoti</a></li>
+										#end
+									</ul>
+								</div>
+							</div>
+						</div>
+						#if(${velocityCount}==4) #break #end #end
+						
+					</div>
+				</div>
+			</div>
+			<div class="or-footer-copyright text-center" data-background="/WEB-ROOT/front/index/index105/assets/img/bg-footer-bottom.png">
+				<span>   <a href="/WEB-ROOT/front/index/index.do"> <b><font size="4" color="white">$ResultMap.systemName</font></b></a> </span>
+			</div>
+		</footer>
+	
+	
+		<script src="/WEB-ROOT/front/index/index105/assets/js/jquery.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/bootstrap.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/popper.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/jquery.magnific-popup.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/appear.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/slick.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/jquery.counterup.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/waypoints.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/wow.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/imagesloaded.pkgd.min.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/parallax-scroll.js"></script>
+		<script src="/WEB-ROOT/front/index/index105/assets/js/script.js"></script>	
+	
+	</body>
+	
+</html>		

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	    <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+	    <property name="viewNames" value="*.jsp" />
+	</bean>
+	<bean id="velocityConfig"
+		class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+		<property name="resourceLoaderPath" value="/" />
+		<property name="velocityProperties">
+			<props>
+				<prop key="input.encoding">GBK</prop>
+				<prop key="output.encoding">GBK</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+		<property name="contentType">
+			<value>text/html;charset=GBK</value>
+		</property>
+	</bean>
+
+	<bean id="urlMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<!--
+			<property name="interceptors"> 
+				<bean class="util.RequestEncodingInterceptor"></bean>
+			</property>
+		-->
+		  
+		<property name="urlPathHelper">
+			<bean class="org.springframework.web.util.UrlPathHelper">
+				<property name="urlDecode" value="true"></property>
+				<property name="defaultEncoding" value="UTF-8"></property>
+			</bean>
+		</property>
+		
+		<property name="mappings">
+			<props>
+				<prop key="/setup.do">Setup</prop>
+				<prop key="/login.do">Login</prop>
+				<prop key="/WEB-ROOT/app/index.do">index</prop>
+				<prop key="/WEB-ROOT/app/index/home.do">home</prop>
+				<prop key="/WEB-ROOT/app/topPanel.do">topPanel</prop>
+				<prop key="/WEB-ROOT/app/menuTree.do">MenuTree</prop>
+				<prop key="/WEB-ROOT/app/sysManage/systemUserManage.do">SystemUserManage</prop>
+				<prop key="/WEB-ROOT/app/sysManage/userMenuManage.do">UserMenuManage</prop>
+				<prop key="/WEB-ROOT/app/sysManage/orgManage.do">OrgManage</prop>
+				<prop key="/WEB-ROOT/app/sysManage/setting.do">Setting</prop>
+				<prop key="/WEB-ROOT/app/util/ext/userCombo.do">UserCombo</prop>
+				<prop key="/WEB-ROOT/app/util/ext/orgComboTree.do">OrgComboTree</prop>
+				<prop key="/WEB-ROOT/app/helper/db.do">DB</prop>
+				<prop key="/WEB-ROOT/app/helper/code.do">Code</prop>
+				<prop key="/WEB-ROOT/app/helper/tech.do">Tech</prop>
+				<prop key="/WEB-ROOT/app/helper/setup.do">HowSetup</prop>
+				<prop key="/WEB-ROOT/app/helper/uninstall.do">Uninstall</prop>	
+				<prop key="/WEB-ROOT/front/index/index.do">FrontIndex</prop>
+				<prop key="/WEB-ROOT/app/wangzhanguanli/lanmuguanli.do">LANMUGUANLI</prop> 
+				<prop key="/WEB-ROOT/app/wangzhanguanli/wenzhangguanli.do">WENZHANGGUANLI</prop> 
+				<prop key="/WEB-ROOT/app/wangzhanguanli/shouyehuandengpian.do">SHOUYEHUANDENGPIAN</prop> 
+
+
+
+<prop key="/WEB-ROOT/app/chengyunshangguanli/chengyunshangxinxi.do">CHENGYUNSHANGXINXI</prop> 
+<prop key="/WEB-ROOT/app/jibencanshu/shangpinleixing.do">SHANGPINLEIXING</prop> 
+
+
+
+
+
+
+<prop key="/WEB-ROOT/app/xiaoshouguanli/jiageshezhi.do">JIAGESHEZHI</prop> 
+
+<prop key="/WEB-ROOT/app/xiaoshouguanli/xiaoshouxinxi.do">XIAOSHOUXINXI</prop> 
+
+
+
+<prop key="/WEB-ROOT/app/huiyuanguanli/huiyuanxinxi.do">HUIYUANXINXI</prop> 
+<prop key="/WEB-ROOT/app/caigouguanli/caigouxinxi.do">CAIGOUXINXI</prop> 
+<prop key="/WEB-ROOT/app/renliziyuanguanli/neibuyuangongguanli.do">NEIBUYUANGONGGUANLI</prop> 
+<prop key="/WEB-ROOT/app/huiyuanjifenguanli/huiyuanjifen.do">HUIYUANJIFEN</prop> 
+<prop key="/WEB-ROOT/app/caiwuguanli/caigoutubiaotongji.do">CAIGOUTUBIAOTONGJI</prop> 
+<prop key="/WEB-ROOT/app/caiwuguanli/xiaoshoutubiaotongji.do">XIAOSHOUTUBIAOTONGJI</prop> 
+
+<prop key="/WEB-ROOT/app/gongyingshangguanli/gongyingshangxinxi.do">GONGYINGSHANGXINXI</prop> 
+<prop key="/WEB-ROOT/app/caigouguanli/zidongcaigoudan.do">ZIDONGCAIGOUDAN</prop> 
+<prop key="/WEB-ROOT/app/cangkuguanli/cangkuxinxi.do">CANGKUXINXI</prop> 
+<prop key="/WEB-ROOT/app/cangkuguanli/churukuxinxi.do">CHURUKUXINXI</prop> 
+<prop key="/WEB-ROOT/app/baosunguanli/baosunxinxi.do">BAOSUNXINXI</prop> 
+<prop key="/WEB-ROOT/app/huiyuanjifenguanli/jifenduihuan.do">JIFENDUIHUAN</prop> 
+
+
+<prop key="/WEB-ROOT/app/xinxifabuguanli/xinxifabu.do">XINXIFABU</prop> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			</props>
+		</property>
+	</bean>
+
+	<bean id="Setup" class="app.pub.setup.Setup"></bean>
+	<bean id="Login" class="app.login.LoginCMD"></bean>
+	<bean id="home" class="app.index.Home"></bean>
+	<bean id="topPanel" class="app.index.TopPanel"></bean>
+	<bean id="index" class="app.index.Index"></bean>
+	<bean id="MenuTree" class="app.pub.tree.MenuTree"></bean>
+	<bean id="OrgComboTree" class="app.pub.ext.OrgComboTree"></bean>
+	<bean id="MainMenuRedirect" class="app.pub.mainMenuRedirect.MainMenuRedirect"></bean>
+	<bean id="SystemUserManage" class="app.sysManage.systemUserManage.SystemUserManage"></bean>
+	<bean id="Setting" class="app.sysManage.setting.Setting"></bean>
+	<bean id="UserMenuManage" class="app.sysManage.systemUserManage.UserMenuManage"></bean>
+	<bean id="UserCombo" class="app.pub.ext.UserCombo"></bean>
+	<bean id="OrgManage" class="app.sysManage.orgManage.OrgManage"></bean>
+	<bean id="DB" class="app.helper.db.DB"></bean>
+	<bean id="Code" class="app.helper.code.Code"></bean>
+	<bean id="Tech" class="app.helper.tech.Tech"></bean>
+	<bean id="HowSetup" class="app.helper.setup.Setup"></bean>
+    <bean id="Uninstall" class="app.helper.uninstall.Uninstall"></bean>
+    <bean id="FrontIndex" class="front.index.Index"></bean>
+    <bean id="LANMUGUANLI" class="app.wangzhanguanli.lanmuguanli.Lanmuguanli"></bean> 
+    <bean id="WENZHANGGUANLI" class="app.wangzhanguanli.wenzhangguanli.Wenzhangguanli"></bean> 
+    <bean id="SHOUYEHUANDENGPIAN" class="app.wangzhanguanli.shouyehuandengpian.Shouyehuandengpian"></bean> 
+
+
+
+<bean id="CHENGYUNSHANGXINXI" class="app.chengyunshangguanli.chengyunshangxinxi.Chengyunshangxinxi"></bean> 
+<bean id="SHANGPINLEIXING" class="app.jibencanshu.shangpinleixing.Shangpinleixing"></bean> 
+
+
+
+
+
+
+<bean id="JIAGESHEZHI" class="app.xiaoshouguanli.jiageshezhi.Jiageshezhi"></bean> 
+
+<bean id="XIAOSHOUXINXI" class="app.xiaoshouguanli.xiaoshouxinxi.Xiaoshouxinxi"></bean> 
+
+
+
+<bean id="HUIYUANXINXI" class="app.huiyuanguanli.huiyuanxinxi.Huiyuanxinxi"></bean> 
+<bean id="CAIGOUXINXI" class="app.caigouguanli.caigouxinxi.Caigouxinxi"></bean> 
+<bean id="NEIBUYUANGONGGUANLI" class="app.renliziyuanguanli.neibuyuangongguanli.Neibuyuangongguanli"></bean> 
+<bean id="HUIYUANJIFEN" class="app.huiyuanjifenguanli.huiyuanjifen.Huiyuanjifen"></bean> 
+<bean id="CAIGOUTUBIAOTONGJI" class="app.caiwuguanli.caigoutubiaotongji.Caigoutubiaotongji"></bean> 
+<bean id="XIAOSHOUTUBIAOTONGJI" class="app.caiwuguanli.xiaoshoutubiaotongji.Xiaoshoutubiaotongji"></bean> 
+
+<bean id="GONGYINGSHANGXINXI" class="app.gongyingshangguanli.gongyingshangxinxi.Gongyingshangxinxi"></bean> 
+<bean id="ZIDONGCAIGOUDAN" class="app.caigouguanli.zidongcaigoudan.Zidongcaigoudan"></bean> 
+<bean id="CANGKUXINXI" class="app.cangkuguanli.cangkuxinxi.Cangkuxinxi"></bean> 
+<bean id="CHURUKUXINXI" class="app.cangkuguanli.churukuxinxi.Churukuxinxi"></bean> 
+<bean id="BAOSUNXINXI" class="app.baosunguanli.baosunxinxi.Baosunxinxi"></bean> 
+<bean id="JIFENDUIHUAN" class="app.huiyuanjifenguanli.jifenduihuan.Jifenduihuan"></bean> 
+
+
+
+
+
+
+
+<bean id="XINXIFABU" class="app.xinxifabuguanli.xinxifabu.Xinxifabu"></bean> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</beans>

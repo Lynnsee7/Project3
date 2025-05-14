@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=GBK" />
+	<title>Welcome To ${SYSTEM_NAME}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    
+    <link href="/WEB-ROOT/app/index/style24/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/WEB-ROOT/app/index/style24/css/new.css" rel="stylesheet"> 
+    <link href="/WEB-ROOT/app/index/style24/css/charts-graphs.css" rel="stylesheet">
+    <!-- Datepicker CSS -->
+    <link rel="stylesheet" type="text/css" href="/WEB-ROOT/app/index/style24/css/datepicker.css">
+
+    <link href="/WEB-ROOT/app/index/style24/fonts/font-awesome.min.css" rel="stylesheet">
+
+    <!-- HTML5 shiv and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="/WEB-ROOT/app/index/style24/js/html5shiv.js"></script>
+      <script src="/WEB-ROOT/app/index/style24/js/respond.min.js"></script>
+    <![endif]-->
+    
+    <script type="text/javascript">
+    	function changeUrl(url){
+			document.getElementById("contentDiv").src = url ;
+			//return false;
+		}
+    </script>
+    
+  </head>
+
+  <body>
+
+    <!-- Header Start -->
+    <header>
+      <a href="/WEB-ROOT/app/index.do" class="logo">
+      	<font size="2" face="微软雅黑" color="orange">${SYSTEM_NAME}</font>
+      </a>
+      <div class="pull-right">
+    	
+        <ul id="mini-nav" class="clearfix">
+          &nbsp;&nbsp;<font size="2" face="微软雅黑" color="orange">欢迎您：${LoginUserAcct}</font>   
+          <li class="list-box user-profile"> 
+            <a id="drop7" href="#" role="button" class="dropdown-toggle user-avtar" data-toggle="dropdown">
+            	 <img src="/WEB-ROOT/app/index/style24/img/user4.png" alt="Bluemoon User">
+            </a>
+            <ul class="dropdown-menu server-activity">
+              <li>
+                <p>
+                	<i class="fa fa-cog text-info"></i><font face="微软雅黑" color="black" onclick="changeUrl('/WEB-ROOT/app/sysManage/systemUserManage.do?from=self');">用户信息</font></p>
+              </li>
+              <li>
+                <p><i class="fa fa-fire text-warning"></i> 分享到</p>
+              </li>
+              <li>
+                <div class="demo-btn-group clearfix">
+                  <a href="#" data-original-title="" title="">
+                    <i class="fa fa-facebook fa-lg icon-rounded info-bg"></i>
+                  </a>
+                  <a href="#" data-original-title="" title="">
+                    <i class="fa fa-twitter fa-lg icon-rounded twitter-bg"></i>
+                  </a>
+                  <a href="#" data-original-title="" title="">
+                    <i class="fa fa-linkedin fa-lg icon-rounded linkedin-bg"></i>
+                  </a>
+                  <a href="#" data-original-title="" title="">
+                    <i class="fa fa-pinterest fa-lg icon-rounded danger-bg"></i>
+                  </a>
+                  <a href="#" data-original-title="" title="">
+                    <i class="fa fa-google-plus fa-lg icon-rounded success-bg"></i>
+                  </a>
+                </div>
+              </li>
+              <li>
+                <div class="demo-btn-group clearfix">
+               		<a href="#" onclick="javascript:window.location.href='/';return false;">
+               		<font face="微软雅黑" color="black">安全退出</font>
+               		</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </header>
+    <!-- Header End -->
+
+    <!-- Main Container start -->
+    <div class="dashboard-container">
+
+      <div class="container">
+        <!-- Top Nav Start -->
+        <div id='cssmenu'>
+          <ul>
+          	#set($arr = ["fa fa-dashboard","fa fa-align-justify","fa fa-bar-chart-o","fa fa-flask","fa fa-dashboard","fa fa-table","fa fa-picture-o","fa fa-calendar","fa fa-font","fa fa-dashboard","fa fa-align-justify","fa fa-bar-chart-o","fa fa-flask","fa fa-dashboard","fa fa-table","fa fa-picture-o","fa fa-calendar","fa fa-font"])
+            <li class='active'>
+              <a href='#'>
+                <i class="fa fa-dashboard"></i>
+                	首页
+              </a>
+            </li>
+            #foreach($menu in ${ResultMap.menuList})
+            <li >
+              <a href='#'><i class="$arr.get($velocityCount)"></i>$menu.text</a>
+              <ul>
+              	 #foreach($submenu in $menu.innerList)
+                 <li><a href="#" onclick="changeUrl('$submenu.menu_todo');">$submenu.text</a></li>
+				 #end
+              </ul>
+            </li>
+            #end
+           
+            
+          </ul>
+        </div>
+        <!-- Top Nav End -->
+
+        <div class="dashboard-wrapper-lg">
+          <div class="row">
+           	<iframe scrolling="auto" rameborder="0"
+						src="/WEB-ROOT/app/index/home.do" id="contentDiv" name="contentDiv" width="100%" frameborder="0" scrolling="yes" frameBorder="no"
+						height="520"></iframe>
+          </div>
+        </div>
+
+        <footer>
+          <p align="center"> ${SYSTEM_DESIGNER} </p>
+        </footer>
+
+      </div>
+    </div>
+    <!-- Main Container end -->
+
+    <script src="/WEB-ROOT/app/index/style24/js/jquery.js"></script>
+    <script src="/WEB-ROOT/app/index/style24/js/bootstrap.min.js"></script>
+    <script src="/WEB-ROOT/app/index/style24/js/jquery.scrollUp.js"></script>
+    
+    <!-- jQuery UI JS -->
+    <script src="/WEB-ROOT/app/index/style24/js/jquery-ui-v1.10.3.js"></script>
+
+   
+
+    <!-- Custom JS -->
+    <script src="/WEB-ROOT/app/index/style24/js/menu.js"></script>
+   
+    
+    
+
+  </body>
+</html>

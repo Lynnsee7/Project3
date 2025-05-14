@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="gbk"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Jifenduihuan">
+
+	<!-- 得到记录条数 -->
+	<select id="selecteListCount" resultClass="java.lang.Object"
+		parameterClass="java.util.Map">
+		select count(*) from (
+		select a.id, a.huiyuanhao , a.duihuanwupin , a.duihuanriqi , a.shiyongjifen
+		,a.itime,a.detail,a.deleteFlag
+		from jifenduihuan a 
+		where 1=1
+		<isNotEmpty prepend="and" property="id">
+			a.id<![CDATA[ = ]]>#id#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="huiyuanhaoSearch">
+			a.huiyuanhao like '%$huiyuanhaoSearch$%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="duihuanwupinSearch">
+			a.duihuanwupin like '%$duihuanwupinSearch$%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="duihuanriqiSearch">
+			a.duihuanriqi like '%$duihuanriqiSearch$%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="shiyongjifenSearch">
+			a.shiyongjifen like '%$shiyongjifenSearch$%'
+		</isNotEmpty>
+
+		<isNotEmpty prepend="and" property="itimeStartSearch">
+			DATE_FORMAT(a.itime,'%Y-%m-%d %T') <![CDATA[ >= ]]>
+			DATE_FORMAT(#itimeStartSearch#,'%Y-%m-%d %T')
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="itimeEndSearch">
+			DATE_FORMAT(a.itime,'%Y-%m-%d %T') <![CDATA[ <= ]]>
+			DATE_FORMAT(#itimeEndSearch#,'%Y-%m-%d %T')
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="operatorId">
+			a.operatorId<![CDATA[ = ]]>#operatorId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="deleteFlagSearch">
+			a.deleteFlag<![CDATA[ = ]]>#deleteFlagSearch#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="dataRight">
+			$dataRight$
+		</isNotEmpty>
+		<isNotEmpty property="orderby">
+			order by $orderby$
+		</isNotEmpty>
+		)table_a
+	</select>
+
+	<!-- 得到记录 -->
+	<select id="selecteList" resultClass="java.util.HashMap"
+		parameterClass="java.util.Map">
+		select a.id, a.huiyuanhao , a.duihuanwupin , a.duihuanriqi ,
+		a.shiyongjifen ,a.itime, a.detail,a.deleteFlag
+		from jifenduihuan a
+		where 1=1
+		<isNotEmpty prepend="and" property="id">
+			a.id<![CDATA[ = ]]>#id#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="huiyuanhaoSearch">
+			a.huiyuanhao like '%$huiyuanhaoSearch$%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="duihuanwupinSearch">
+			a.duihuanwupin like '%$duihuanwupinSearch$%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="duihuanriqiSearch">
+			a.duihuanriqi like '%$duihuanriqiSearch$%'
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="shiyongjifenSearch">
+			a.shiyongjifen like '%$shiyongjifenSearch$%'
+		</isNotEmpty>
+
+		<isNotEmpty prepend="and" property="itimeStartSearch">
+			DATE_FORMAT(a.itime,'%Y-%m-%d %T') <![CDATA[ >= ]]>
+			DATE_FORMAT(#itimeStartSearch#,'%Y-%m-%d %T')
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="itimeEndSearch">
+			DATE_FORMAT(a.itime,'%Y-%m-%d %T') <![CDATA[ <= ]]>
+			DATE_FORMAT(#itimeEndSearch#,'%Y-%m-%d %T')
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="operatorId">
+			a.operatorId<![CDATA[ = ]]>#operatorId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="deleteFlagSearch">
+			a.deleteFlag<![CDATA[ = ]]>#deleteFlagSearch#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="dataRight">
+			$dataRight$
+		</isNotEmpty>
+		<isNotEmpty property="orderby">
+			order by $orderby$
+		</isNotEmpty>
+	</select>
+
+
+	<!-- 新增 -->
+	<update id="insertObj" parameterClass="java.util.Map">
+		insert into jifenduihuan
+		(huiyuanhao,duihuanwupin,duihuanriqi,shiyongjifen,operatorId,itime,detail)
+		values(#huiyuanhao#,#duihuanwupin#,#duihuanriqi#,#shiyongjifen#,#operatorId#,(select
+		date_format(now(),'%Y-%m-%d %H:%i:%S ') from dual),#detail#)
+	</update>
+
+	<!-- 修改 -->
+	<update id="updateObj" parameterClass="java.util.Map">
+		update jifenduihuan
+		set
+		huiyuanhao=#huiyuanhao#,duihuanwupin=#duihuanwupin#,duihuanriqi=#duihuanriqi#,shiyongjifen=#shiyongjifen#,
+		itime=(select date_format(now(),'%Y-%m-%d %H:%i:%S ') from
+		dual),detail=#detail#
+		where id=#id#
+	</update>
+
+	<!-- 冻结或解冻 -->
+	<update id="doDeleOrUnDele" parameterClass="java.util.Map">
+		update jifenduihuan
+		set deleteFlag=#deleteFlag#
+		where id in ( $id$ )
+	</update>
+
+	<update id="doShenPi" parameterClass="java.util.Map">
+		update jifenduihuan
+		set zhuangtai=#zhuangtai#
+		where id in ( $id$ )
+	</update>
+
+
+</sqlMap>
+
+
+
+
+
+
+
+
+

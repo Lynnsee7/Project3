@@ -1,0 +1,121 @@
+
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+<title>登录</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+	addEventListener("load", function() {
+		setTimeout(hideURLbar, 0);
+	}, false);
+
+	function hideURLbar() {
+		window.scrollTo(0, 1);
+	}
+</script>
+<link href="/WEB-ROOT/app/register/style14/css/font-awesome.css" rel="stylesheet">
+<link href="/WEB-ROOT/app/register/style14/css/style.css" rel='stylesheet' type='text/css' />
+
+
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-base.js"></script>
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-all.js"></script>
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/WEB-ROOT/skin/js/pub/global/global.js"></script>
+
+<script type="text/javascript">
+	function doSubmit() {
+		var userAcct = document.getElementById("userAcct").value;
+		var userName = document.getElementById("userName").value;
+		var userPass = document.getElementById("userPass").value;
+		if (userAcct == "") {
+			alert("帐号为空，请填写！");
+			return;
+		}
+		if (userPass == "") {
+			alert("登录密码为空，请填写！");
+			return;
+		}
+		if (userName == "") {
+			alert("昵称为空，请填写！");
+			return;
+		}
+
+		Ext.Ajax.request({
+			waitMsg : '数据提交中......',
+			url : '/login.do',
+			method : 'POST',
+			success : function(response, options) {
+				var responseArray = Ext.util.JSON.decode(response.responseText);
+				if (responseArray.success) {
+					alert("注册成功！");
+					window.location.href = "/login.do" ;
+				} else {
+					alert(responseArray.msg);
+				}
+			},
+			params : {
+				flag : "doRegister",
+				userAcct : userAcct,
+				userPass : userPass,
+				userName : userName
+			}
+		});
+
+	}
+</script>
+
+
+</head>
+
+<body>
+	<h1>注册新帐号</h1>
+	<div class="w3ls-login box box--big">
+		<form action="#" method="post">
+			<div class="agile-field-txt">
+				<label> <i class="fa fa-user" aria-hidden="true"></i> 用户帐号
+				</label> <input type="text" id="userAcct" name="userAcct" placeholder="登录帐号" maxlength="16" required="" />
+			</div>
+			<div class="agile-field-txt">
+				<label> <i class="fa fa-list" aria-hidden="true"></i> 用户名称
+				</label> <input type="text" name="userName" id="userName" placeholder="用户姓名" maxlength="16" required="" />
+			</div>
+			<div class="agile-field-txt">
+				<label> <i class="fa fa-lock" aria-hidden="true"></i> 登录密码
+				</label> <input type="password" name="userPass" id="userPass" maxlength="16" placeholder="登录密码"   required="" />
+				<div class="agile_label">
+					<input id="check3" name="check3" type="checkbox" value="显示密码" onclick="myFunction()"> <label class="check" for="check3">显示密码</label>
+				</div>
+			</div>
+
+			<script>
+				function myFunction() {
+					var x = document.getElementById("userPass");
+					if (x.type === "password") {
+						x.type = "text";
+					} else {
+						x.type = "password";
+					}
+				}
+			</script>
+
+			<div class="w3ls-bot">
+
+				<div class="form-end">
+					<input type="button" value="提交注册" onclick="doSubmit();">
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</form>
+	</div>
+
+	<div class="copy-wthree">
+		<p>
+			<a href="/login.do" > <font color="white">返回登录</font></a>
+		</p>
+	</div>
+
+</body>
+
+</html>

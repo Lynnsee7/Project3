@@ -1,0 +1,108 @@
+<!DOCTYPE html >
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>用户登录</title>
+<link href="/WEB-ROOT/app/login/style3/admin.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="/WEB-ROOT/skin/css/ext-all.css" />
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-base.js"></script>
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-all.js"></script>
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-lang-zh_CN.js"></script>
+<script>
+		function doSubmit(){
+				var username = document.getElementById("username").value ;
+				var password = document.getElementById("password").value ;
+				if( username == "" ){
+					alert("账户名不能为空！");
+					doFocus('username');
+					return ;
+				}
+				if( password == "" ){
+					alert("登陆密码不能为空！");
+					doFocus('password');
+					return ;
+				}
+				
+				/*
+				if( !validate () ){ 
+					return ;
+				}
+				*/
+				
+				ajaxLogin();
+			}
+			
+			function ajaxLogin(){
+				Ext.Ajax.request({
+					waitMsg : '数据提交中......',
+					url : '/login.do',
+					method : 'POST',
+					success : function(response, options) {
+						var responseArray = Ext.util.JSON.decode(response.responseText);
+						if(responseArray.success){
+							window.location.href = "/WEB-ROOT/app/index.do" ;
+						}else{
+							document.all.form_err.innerHTML = responseArray.msg;
+						}
+					},
+					params : {
+						flag : "doLogin",
+						username : document.getElementById("username").value ,
+						password : document.getElementById("password").value
+					}
+				});
+			} 
+			
+			function doRegiste(){
+				 window.location.href = "/WEB-ROOT/app/login/register.jsp" ;
+			}
+</script>
+</head>
+
+<body >
+	<div class="admin_login">
+		<div class="admin_left">
+			<p class="admin_img"></p>
+		</div>
+		<form action="" method="post" name="myForm">
+			<div class="admin_right">
+				<center>
+					<h2>
+						<font size="5" face="微软雅黑">用户登录</font>
+					</h2>
+				</center>
+				<div class="admin_ktop">
+					<p class="admin_lotb"></p>
+				</div>
+				<div class="admin_kmiddle">
+					<ul>
+						<li>
+							<div class="bl">帐&nbsp;&nbsp;&nbsp;号：</div>
+							<div class="br">
+								<input  name="username" id="username" class="logput1" size="30"  type="text">
+							</div></li>
+						<li>
+							<div class="bl">密&nbsp;&nbsp;&nbsp;码：</div>
+							<div class="br">
+								<input name="password"  name="password" id="password"   size="30" class="logput1" type="password">
+							</div>
+						</li>
+					</ul>
+					<br>
+					<div class="log_in">
+						<input name="button" type="button"  onclick="doSubmit()" class="log_button" value="登  录" /> 
+						<input name="button" type="button"  onclick="doRegiste()"  class="log_button" value="注  册" />
+					</div>
+				</div>
+				<div class="admin_kbottom">
+					<div class="admin_tb"></div>
+				</div>
+
+			</div>
+
+		</form>
+	</div>
+
+</body>
+</html>
+

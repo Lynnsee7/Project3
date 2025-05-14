@@ -1,0 +1,106 @@
+
+<!DOCTYPE HTML>
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+<title>注册新用户</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script type="application/x-javascript">
+	addEventListener("load", function() {
+		setTimeout(hideURLbar, 0);
+	}, false);
+
+	function hideURLbar() {
+		window.scrollTo(0, 1);
+	}
+</script>
+
+
+
+<link rel="stylesheet" type="text/css" href="/WEB-ROOT/skin/css/ext-all.css" />
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-base.js" charset="gbk"></script>
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-all.js" charset="gbk"></script>
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-lang-zh_CN.js" charset="gbk"></script>
+
+<link href="/WEB-ROOT/app/register/style11/css/style.css" rel='stylesheet' type='text/css' />
+
+<script type="text/javascript">
+	function doSubmit() {
+		var userAcct = document.getElementById("userAcct").value;
+		var userName = document.getElementById("userName").value;
+		var userPass = document.getElementById("userPass").value;
+		if (userAcct == "") {
+			alert("帐号为空，请填写！");
+			return;
+		}
+		if (userPass == "") {
+			alert("登录密码为空，请填写！");
+			return;
+		}
+		if (userName == "") {
+			alert("昵称为空，请填写！");
+			return;
+		}
+
+		Ext.Ajax.request({
+			waitMsg : '数据提交中......',
+			url : '/login.do',
+			method : 'POST',
+			success : function(response, options) {
+				var responseArray = Ext.util.JSON.decode(response.responseText);
+				if (responseArray.success) {
+					alert("注册成功！");
+					window.location.href = "/login.do" ;
+				} else {
+					alert(responseArray.msg);
+				}
+			},
+			params : {
+				flag : "doRegister",
+				userAcct : userAcct,
+				userPass : userPass,
+				userName : userName
+			}
+		});
+
+	}
+</script>
+    
+</head>
+
+<body>
+	<h1>新用户注册</h1>
+	<div class="contact-main-w3-agile">
+		<div class="top-section-wthree">
+			<h2 class="sub-title">Register A New User</h2>
+			<p></p>
+		</div>
+		<div class="form-agileits-w3layouts">
+			<form action="#" method="post">
+				<div class="form-w3layouts-fields">
+					<input type="text" id="userAcct" name="userAcct" placeholder="登录帐号" maxlength="16" required="" />
+				</div>
+				<div class="form-w3layouts-fields">
+					<input type="text" name="userName" id="userName" placeholder="用户昵称" maxlength="16" required="" />
+				</div>
+				<div class="form-w3layouts-fields">
+					<input type="password" name="userPass"  id="userPass" maxlength="16"  placeholder="登录密码" required="" />
+				</div>
+				<input type="button" value="提交注册" onclick="doSubmit();" >
+			</form>
+		</div>
+
+	</div>
+	<div class="clear"></div>
+	<div class="copy-right-agileinfo">
+		<p>
+			<a href="/login.do" >返回登录</a>
+		</p>
+	</div>
+
+</body>
+
+</html>

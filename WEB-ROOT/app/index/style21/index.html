@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="gbk">
+<meta http-equiv="X-UA-Compatible" content="IE=9" />
+<title>${SYSTEM_NAME}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="/WEB-ROOT/app/index/style21/js/jquery.js"></script>
+<link rel='icon' href='/WEB-ROOT/app/index/style21/css/img/favicon.ico'
+	type='image/ico' />
+
+<!--[if lt IE 9]>
+    <script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="/WEB-ROOT/app/index/style21/js/ie.js"></script>
+    <![endif]-->
+
+<!-- Le styles -->
+
+<link href="/WEB-ROOT/app/index/style21/css/reset.css" rel="stylesheet">
+<link href="/WEB-ROOT/app/index/style21/css/grid.css" rel="stylesheet">
+<link href="/WEB-ROOT/app/index/style21/css/nivo.css" rel="stylesheet">
+<link href="/WEB-ROOT/app/index/style21/css/custom.css" rel="stylesheet">
+<link href="/WEB-ROOT/app/index/style21/css/custom_colors.html"
+	rel="stylesheet">
+	
+	<script type="text/javascript">
+		function clickSubMenu(s1,s2){
+			var subLevel = $('#subLevel');
+	        var activeMenu = $('.active-menu-item');
+	
+	        if(subLevel.hasClass('active-sub-level')){
+	
+	            if(activeMenu.length > 0){
+	
+	                activeMenu.removeClass('active-menu-item background-color');
+	                subLevel.children('ul').fadeOut('fast');
+	
+	            }
+	
+	            subLevel.removeClass('active-sub-level');
+	            $(this).children('div').removeClass('opener-minus').addClass('opener-plus');
+	
+	        }else{
+	
+	            subLevel.addClass('active-sub-level');
+	            $(this).children('div').removeClass('opener-plus').addClass('opener-minus');
+	
+	        }
+	        
+	        document.getElementById("nowmenu1").innerHTML = s1 ;
+			document.getElementById("nowmenu2").innerHTML = s2 ;
+		}
+	</script>
+	
+</head>
+
+<body>
+
+	<div id="page_wrap">
+
+		<header>
+
+			<div class="logo-container">
+
+				<a id="logo" href="#"> 
+				<!--  
+            	<img src="/WEB-ROOT/app/index/style21/css/img/logo.png" alt="Metro Creative Design">
+            	--> 
+            	<font color="#33BBBB">${SYSTEM_NAME}</font>
+				</a>
+
+			</div>
+			<!-- Logo Side ENDS -->
+
+			<nav>
+
+				<ul id="menu">
+					#set($index=0) 
+					#foreach($menu in ${ResultMap.menuList})
+					<li>
+						<div class="menu-abs-bg background-color"></div>
+						<div class="home-icon menu-specs">
+							<a href="#menu$index" >$menu.text</a>
+						</div>
+						<ul>
+							#foreach($submenu in $menu.innerList)
+	                        <li><div class="sub-menu-bg background-color"></div><a href="$submenu.menu_todo">$submenu.text</a></li>
+	                        #end
+	                    </ul>
+					</li>
+					#set($index=$index+1) 
+					#end
+				</ul>
+				<!-- Menu ENDS -->
+
+			</nav>
+			<!-- Nav ENDS -->
+
+			<div class="search-and-misc">
+
+				<font color="white">欢迎您： ${LoginUserAcct} | <a href="/">退出系统</a></font>
+
+			</div>
+
+		</header>
+		<!-- Left Side ENDS -->
+
+		<div id="subLevel" class="border-color background-color">
+
+			<div id="opener" class="border-left-color border-top-color">
+				<div class="opener-plus"></div>
+			</div>
+			#set($index=0) 
+			#foreach($menu in ${ResultMap.menuList})
+			<ul id="menu$index">
+				#foreach($submenu in $menu.innerList)
+				<li><a class="border-color-darker" href="$submenu.menu_todo" target="frame1"  onclick="clickSubMenu('$menu.text','$submenu.text');">$submenu.text</a></li>
+				#end
+			</ul>
+			#set($index=$index+1) 
+			#end
+
+		</div>
+		<!-- Sub Level ENDS -->
+
+		<div class="rightSide">
+
+			
+
+			<div class="row">
+				<br><br>
+				&nbsp;&nbsp;<font id="nowmenu1" face="微软雅黑" size="2" color="#E94C37">Home</font>&nbsp;/&nbsp;<font id="nowmenu2" face="微软雅黑" size="2" color="#2EA3DC"></font>
+				<iframe id="frame1"  name="frame1" src="/WEB-ROOT/app/index/home.do" 
+						frameborder="0" scrolling="yes" frameBorder="no" width="100%" height="660">
+				</iframe>
+
+			</div>
+
+			
+
+
+			<div class="row footer background-color">
+				<br>
+				<p style="text-align: center;">Copyright &copy; $!{SYSTEM_DESIGNER}</p>
+			</div>
+
+		</div>
+		<!-- RightSide ENDS -->
+
+	</div>
+
+	<div id="toTop"></div>
+
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="/WEB-ROOT/app/index/style21/js/isotope.js"></script>
+
+	<script src="/WEB-ROOT/app/index/style21/js/caroufredsel.js"></script>
+	<script src="/WEB-ROOT/app/index/style21/js/nivo.js"></script>
+	<script src="/WEB-ROOT/app/index/style21/js/jquery.mousewheel.js"></script>
+	<script src="/WEB-ROOT/app/index/style21/js/tinyscrollbar.js"></script>
+	<script src="/WEB-ROOT/app/index/style21/js/custom.js"></script>
+	<!--[if lte IE 9]>
+	<script src="/WEB-ROOT/app/index/style21/js/respond.min.js"></script>
+	<![endif]-->
+</body>
+</html>

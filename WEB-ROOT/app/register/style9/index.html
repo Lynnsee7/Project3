@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+	<title>新用户注册</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<script>
+		addEventListener("load", function () {
+			setTimeout(hideURLbar, 0);
+		}, false);
+
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+	</script>
+	
+	<link href="/WEB-ROOT/app/login/style28/css/style.css" rel="stylesheet" type="text/css" media="all" />
+	
+	<link rel="stylesheet" href="/WEB-ROOT/app/login/style28/css/font-awesome.css">
+	
+	<link rel="stylesheet" type="text/css" href="/WEB-ROOT/skin/css/ext-all.css" />
+  <script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-base.js" charset="gbk"></script>
+  <script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-all.js" charset="gbk"></script>
+  <script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-lang-zh_CN.js" charset="gbk"></script>
+
+<script type="text/javascript">
+  	function doSubmit(){
+		    var userAcct = document.getElementById("userAcct").value ; 
+		    var userName = document.getElementById("userName").value ; 
+			var userPass = document.getElementById("userPass").value ; 
+			if( userAcct == "" ){
+				alert( "帐号为空，请填写！" );
+				return ;
+			}
+			if( userPass == "" ){
+				alert( "登录密码为空，请填写！" );
+				return ;
+			}
+			if( userName == "" ){
+				alert( "昵称为空，请填写！" );
+				return ;
+			}
+			
+			Ext.Ajax.request({
+				waitMsg : '数据提交中......',
+				url : '/login.do',
+				method : 'POST',
+				success : function(response, options) {
+					var responseArray = Ext.util.JSON.decode(response.responseText);
+					if(responseArray.success){
+						Ext.MessageBox.alert( "系统提示","注册成功！" , function(){ window.location.href = "/" ; });
+						
+					}else{
+						Ext.MessageBox.alert( responseArray.msg );
+					}
+				},
+				params : {
+					flag : "doRegister",
+					userAcct : userAcct ,
+					userPass : userPass , 
+					userName : userName
+				}
+			});
+			
+		}
+  </script>
+	
+    
+	
+</head>
+
+<body>
+	
+	<div class="main-agileits">
+		<br><br>
+		<h1>新用户注册
+			<img src="/WEB-ROOT/app/login/style28/images/logo.png" alt="">
+		</h1>
+		<br>
+		<div class="register-form">
+			<form action="#" method="post">
+				<br>
+				<div class="fields-grid">
+					<div class="styled-input">
+						<span class="fa fa-user" aria-hidden="true"></span>
+						<input type="text" id="userAcct" name="userAcct" placeholder="账号" maxlength="16" required="">
+					</div>
+					<div class="styled-input">
+						<span class="fa fa-user" aria-hidden="true"></span>
+						<input type="text" id="userName" name="userName" maxlength="18"  placeholder="昵称" required="">
+					</div>
+					<div class="styled-input">
+						<span class="fa fa-pencil" aria-hidden="true"></span>
+						<input type="password" id="userPass" name="userPass" placeholder="密码" maxlength="16" required="">
+					</div>
+					<div class="clear"> </div>
+				</div>
+				<input type="button" onclick="doSubmit();" value="提交注册">
+			</form>
+		</div>
+	</div>
+	
+	<div class="w3copyright-agile">
+		<h2> 
+			<a href="#">欢迎使用我们的系统</a>
+		</h2>
+	</div>
+	
+	<script src="/WEB-ROOT/app/login/style28/js/jquery-2.1.4.min.js"></script>
+
+	
+	<link rel="stylesheet" href="/WEB-ROOT/app/login/style28/css/jquery-ui.css" />
+	<script src="/WEB-ROOT/app/login/style28/js/jquery-ui.js"></script>
+	<script>
+		$(function () {
+			$("#datepicker,#datepicker1,#datepicker2,#datepicker3").datepicker();
+		});
+	</script>
+	
+
+</body>
+
+</html>

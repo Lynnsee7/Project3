@@ -1,0 +1,133 @@
+
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+<title>登录</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+	addEventListener("load", function() {
+		setTimeout(hideURLbar, 0);
+	}, false);
+
+	function hideURLbar() {
+		window.scrollTo(0, 1);
+	}
+</script>
+<link href="/WEB-ROOT/app/login/style36/css/font-awesome.css" rel="stylesheet">
+<link href="/WEB-ROOT/app/login/style36/css/style.css" rel='stylesheet' type='text/css' />
+
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-base.js"></script>
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-all.js"></script>
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/WEB-ROOT/skin/js/pub/global/global.js"></script>
+
+<script type="text/javascript">
+	function doSubmit() {
+		var username = document.getElementById("username").value;
+		var password = document.getElementById("password").value;
+		if (username == "") {
+			alert("账户名不能为空！");
+			doFocus('username');
+			return;
+		}
+		if (password == "") {
+			alert("登陆密码不能为空！");
+			doFocus('password');
+			return;
+		}
+
+		/*
+		if( !validate () ){ 
+			return ;
+		}
+		*/
+
+		ajaxLogin();
+	}
+
+	function doKeyPress() {
+		if (window.event.keyCode == 13) {
+			doSubmit();
+		}
+	}
+
+	function ajaxLogin() {
+		Ext.Ajax.request({
+			waitMsg : '数据提交中......',
+			url : '/login.do',
+			method : 'POST',
+			success : function(response, options) {
+				var responseArray = Ext.util.JSON.decode(response.responseText);
+				if (responseArray.success) {
+					window.location.href = LOGIN_SUCC_GO_PAGE ;
+				} else {
+					alert(responseArray.msg);
+				}
+			},
+			params : {
+				flag : "doLogin",
+				username : document.getElementById("username").value,
+				password : document.getElementById("password").value
+			}
+		});
+	}
+
+	function doRegiste() {
+		window.location.href = "/WEB-ROOT/app/register/style25/index.html" ;
+	}
+
+
+	
+</script>
+
+
+</head>
+
+<body>
+	<h1>系统登录</h1>
+	<div class="w3ls-login box box--big">
+		<form action="#" method="post">
+			<div class="agile-field-txt">
+				<label> <i class="fa fa-user" aria-hidden="true"></i> 用户名
+				</label> <input type="text" name="username" id="username" placeholder="登录帐号" required="" />
+			</div>
+			<div class="agile-field-txt">
+				<label> <i class="fa fa-envelope" aria-hidden="true"></i> 登录密码
+				</label> <input type="password" name="password" id="password" placeholder="登录密码" required="" />
+				<div class="agile_label">
+					<input id="check3" name="check3" type="checkbox" value="显示密码" onclick="myFunction()"> <label class="check" for="check3">显示密码</label>
+				</div>
+			</div>
+
+			<script>
+				function myFunction() {
+					var x = document.getElementById("password");
+					if (x.type === "password") {
+						x.type = "text";
+					} else {
+						x.type = "password";
+					}
+				}
+			</script>
+
+			<div class="w3ls-bot">
+
+				<div class="form-end">
+					<input type="button" value="登  录" onclick="doSubmit();">
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</form>
+	</div>
+
+	<div class="copy-wthree">
+		<p>
+			<a href="#" onclick="doRegiste()"> <font color="white">没有帐号？</font></a>
+		</p>
+	</div>
+
+</body>
+
+</html>

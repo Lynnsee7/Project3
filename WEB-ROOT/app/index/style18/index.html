@@ -1,0 +1,128 @@
+<!doctype html>
+<html class="no-js">
+<head>
+  <meta charset="gbk">
+  <meta http-equiv="X-UA-Compatible" content="IE=9" />
+  <title>${SYSTEM_NAME}</title>
+  <meta name="description" content="这是一个 index 页面">
+  <meta name="keywords" content="index">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="renderer" content="webkit">
+  <link rel="icon" type="image/png" href="/WEB-ROOT/app/index/style18/assets/i/favicon.png">
+  <link rel="apple-touch-icon-precomposed" href="/WEB-ROOT/app/index/style18/assets/i/app-icon72x72@2x.png">
+  <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+  <link rel="stylesheet" href="/WEB-ROOT/app/index/style18/assets/css/amazeui.min.css"/>
+  <link rel="stylesheet" href="/WEB-ROOT/app/index/style18/assets/css/admin.css">
+  <script type="text/javascript">
+		function changeNowMenu(s1,s2){
+			document.getElementById("nowmenu1").innerHTML = s1 ;
+			document.getElementById("nowmenu2").innerHTML = s2 ;
+		}
+	</script>
+</head>
+<body>
+
+
+<header class="am-topbar admin-header">
+  <div class="am-topbar-brand">
+    <strong>${SYSTEM_NAME}</strong> <small>welcome</small>
+  </div>
+
+  <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
+
+  <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+
+    <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list">
+      <li class="am-dropdown" data-am-dropdown>
+        <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">
+          <span class="am-icon-users"></span> 管理员 <span class="am-icon-caret-down"></span>
+        </a>
+        <ul class="am-dropdown-content">
+          <li><a href="#"><span class="am-icon-user"></span> 资料</a></li>
+          <li><a href="#"><span class="am-icon-cog"></span> 设置</a></li>
+          <li><a href="/"><span class="am-icon-power-off"></span> 退出</a></li>
+        </ul>
+      </li>
+      <li><a href="javascript:;" id="admin-fullscreen"><span class="am-icon-arrows-alt"></span> <span class="admin-fullText">开启全屏</span></a></li>
+    </ul>
+  </div>
+</header>
+
+<div class="am-cf admin-main">
+  <!-- sidebar start -->
+  <div class="admin-sidebar">
+    <ul class="am-list admin-sidebar-list">
+      <li><a href="/"><span class="am-icon-home"></span> 首页</a></li>
+      #set($index=0)
+      #foreach($menu in ${ResultMap.menuList})
+      <li class="admin-parent">
+        <a class="am-cf" data-am-collapse="{target: '#collapse-nav$index'}"><span class="am-icon-pencil-square-o"></span> $menu.text <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
+        <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav$index">
+          #foreach($submenu in $menu.innerList)
+          <li><a href="$submenu.menu_todo" target="frame1" onclick="changeNowMenu('$menu.text','$submenu.text');" class="am-cf"><span class="am-icon-check"></span> $submenu.text </a></li>
+          #end
+        </ul>
+      </li>
+      #set($index=$index+1)
+      #end
+      <li><a href="/"><span class="am-icon-sign-out"></span> 注销</a></li>
+    </ul>
+
+    <div class="am-panel am-panel-default admin-sidebar-panel">
+      <div class="am-panel-bd">
+        <p><span class="am-icon-bookmark"></span> 公告</p>
+        <p>祝贺：系统已经正式上线。<br>—— Admin</p>
+      </div>
+    </div>
+
+    <div class="am-panel am-panel-default admin-sidebar-panel">
+      <div class="am-panel-bd">
+        <p><span class="am-icon-tag"></span> FAQ</p>
+        <p>快速使用指南!</p>
+      </div>
+    </div>
+  </div>
+  <!-- sidebar end -->
+
+  <!-- content start -->
+  <div class="admin-content">
+
+    <div class="am-cf am-padding">
+      <div class="am-fl am-cf"><strong class="am-text-primary am-text-lg" id="nowmenu1">首页</strong> / <small id="nowmenu2">Home Page</small></div>
+    </div>
+
+    
+
+    <div class="am-g">
+      <div class="am-u-sm-12">
+        <iframe id="frame1"  name="frame1" src="/WEB-ROOT/app/index/home.do"
+					frameborder="0" scrolling="yes" frameBorder="no" width="100%"
+					height="608"></iframe>
+      </div>
+    </div>
+
+  </div>
+  <!-- content end -->
+
+</div>
+
+<footer>
+  <hr>
+  <center><p class="am-padding-left"> $!{SYSTEM_DESIGNER} </p></center> 
+</footer>
+
+<!--[if lt IE 9]>
+<script src="/WEB-ROOT/app/index/style18/assets/js/jquery1.11.1.min.js"></script>
+<script src="/WEB-ROOT/app/index/style18/assets/js/modernizr.js"></script>
+<script src="/WEB-ROOT/app/index/style18/assets/js/polyfill/rem.min.js"></script>
+<script src="/WEB-ROOT/app/index/style18/assets/js/polyfill/respond.min.js"></script>
+<script src="/WEB-ROOT/app/index/style18/assets/js/amazeui.legacy.js" charset="gbk"></script>
+<![endif]-->
+
+<!--[if (gte IE 9)|!(IE)]><!-->
+<script src="/WEB-ROOT/app/index/style18/assets/js/jquery.min.js" charset="gbk"></script>
+<script src="/WEB-ROOT/app/index/style18/assets/js/amazeui.min.js" charset="gbk"></script>
+<!--<![endif]-->
+<script src="/WEB-ROOT/app/index/style18/assets/js/app.js" charset="gbk"></script>
+</body>
+</html>

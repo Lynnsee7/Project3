@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+<title>注册</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+	addEventListener("load", function() {
+		setTimeout(hideURLbar, 0);
+	}, false);
+
+	function hideURLbar() {
+		window.scrollTo(0, 1);
+	}
+</script>
+
+<link href="/WEB-ROOT/app/register/style25/css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all">
+<link href="/WEB-ROOT/app/register/style25/css/style.css" rel="stylesheet" type="text/css" media="all" />
+
+
+
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-base.js"></script>
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-all.js"></script>
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-lang-zh_CN.js"></script>
+<script type="text/javascript" src="/WEB-ROOT/skin/js/pub/global/global.js"></script>
+
+<script type="text/javascript">
+	function doSubmit() {
+		var userAcct = document.getElementById("userAcct").value;
+		var userName = document.getElementById("userName").value;
+		var userPass = document.getElementById("userPass").value;
+
+		if (userAcct == "") {
+			alert("帐号为空，请填写！");
+			return;
+		}
+		if (userPass == "") {
+			alert("登录密码为空，请填写！");
+			return;
+		}
+		if (userName == "") {
+			alert("昵称为空，请填写！");
+			return;
+		}
+
+		Ext.Ajax.request({
+			waitMsg : '数据提交中......',
+			url : '/login.do',
+			method : 'POST',
+			success : function(response, options) {
+				var responseArray = Ext.util.JSON.decode(response.responseText);
+				if (responseArray.success) {
+					alert("注册成功！");
+					window.location.href = "/login.do" ;
+				} else {
+					alert(responseArray.msg);
+				}
+			},
+			params : {
+				flag : "doRegister",
+				userAcct : userAcct,
+				userPass : userPass,
+				userName : userName
+			}
+		});
+
+	}
+</script>
+
+</head>
+<body>
+
+	<div class="signupform">
+		<div class="container">
+			<div class="agile_info">
+				<div class="w3l_form">
+					<div class="left_grid_info">
+						<h1>注册为新用户</h1>
+						<p>美好的用户体验，从便捷的注册开始。</p>
+						<img src="/WEB-ROOT/app/register/style25/images/image.jpg" alt="" />
+					</div>
+				</div>
+				<div class="w3_info">
+					<h2>填写您的个人注册信息</h2>
+					<p>Register your Account</p>
+					<form action="#" method="post">
+						<label>登录账户</label>
+						<div class="input-group">
+							<span class="fa fa-user" aria-hidden="true"></span> <input type="text" id="userAcct" name="userAcct" placeholder="用户账户" required="">
+						</div>
+						<label>账户名称</label>
+						<div class="input-group">
+							<span class="fa fa-table" aria-hidden="true"></span> <input type="text" id="userName" name="userName" placeholder="用户昵称" required="">
+						</div>
+						<label>登录密码</label>
+						<div class="input-group">
+							<span class="fa fa-lock" aria-hidden="true"></span> <input type="Password" id="userPass" name="userPass" placeholder="登录密码" required="">
+						</div>
+						<button class="btn btn-danger btn-block" type="button" onclick="doSubmit();">提交注册</button>
+					</form>
+					<p class="account">
+						已经有帐号了？ <a href="/login.do"> 点此去登录 </a>
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="footer">
+			<p>
+				&copy; <a href="#">欢迎注册本系统</a>
+			</p>
+		</div>
+
+	</div>
+
+</body>
+</html>

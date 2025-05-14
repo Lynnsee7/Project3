@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+	    <meta http-equiv="Content-Type" content="text/html; charset=GBK" />
+		<title>${SYSTEM_NAME}</title>
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	    
+	    <link rel="stylesheet" href="/WEB-ROOT/app/index/style75/assets/css/style.css">
+		
+		<script>
+			function changeUrl1(url,t1,t2,mainA) {
+				
+				document.getElementById("title1").innerHTML =  t1 + "&nbsp;/&nbsp;" + t2;
+				
+				document.getElementById("row0").style.display = "none";
+				document.getElementById("row1").style.display = "none";
+				document.getElementById("row2").style.display = "none";
+				document.getElementById("row3").style.display = "none";
+				document.getElementById("row4").style.display = "none";
+				document.getElementById("row5").style.display = "";
+				
+				
+				document.getElementById("mainContent").src = url;
+				document.getElementById("mainContent").height="590";
+				
+				
+				//手机端折叠
+				if( document.body.clientWidth < 700 ){
+					document.getElementById("accordionSidebar").className = "pcoded-navbar";
+					//document.getElementById("page-top").className = "m-header";
+				}
+				
+			}
+			
+			function doJump( url ){
+				window.location.href = url ;
+			}
+			
+		 </script>
+		
+	</head>
+	<body class="">
+		<div class="loader-bg">
+			<div class="loader-track">
+				<div class="loader-fill"></div>
+			</div>
+		</div>
+		<nav class="pcoded-navbar  " id="accordionSidebar">
+			<div class="navbar-wrapper  ">
+				<div class="navbar-content scroll-div " >
+					<div class="">
+						<div class="main-menu-header">
+							<img class="img-radius" src="/WEB-ROOT/app/index/style75/assets/images/user/user8.jpg" alt="User-Profile-Image">
+							<div class="user-details">
+								<span></span>
+								<div id="more-details">你好：${LoginUserAcct}<i class="fa fa-chevron-down m-l-5"></i></div>
+							</div>
+						</div>
+						<div class="collapse" id="nav-user-link">
+							<ul class="list-unstyled">
+								<li class="list-group-item"><a href="/WEB-ROOT/front/index/index.do"><i class="feather icon-home m-r-5"></i>回到主页</a></li>
+								<li class="list-group-item"><a href="/login.do"><i class="feather icon-log-out m-r-5"></i>切换用户</a></li>
+							</ul>
+						</div>
+					</div>
+					
+					<ul class="nav pcoded-inner-navbar ">
+						<li class="nav-item pcoded-menu-caption">
+							<label>功能菜单</label>
+						</li>
+						
+						#set($arr = ["feather icon-home","feather icon-layout","feather icon-box","feather icon-file-text","feather icon-align-justify","feather icon-pie-chart","feather icon-map","feather icon-log-out","feather icon-sidebar","feather icon-home","feather icon-layout","feather icon-box","feather icon-file-text","feather icon-align-justify","feather icon-pie-chart","feather icon-map","feather icon-log-out","feather icon-sidebar"]) 
+						#set($index=1)
+						#foreach($menu in ${ResultMap.menuList})
+						<li class="nav-item pcoded-hasmenu">
+						    <a href="#!" class="nav-link "><span class="pcoded-micon"><i class="$arr.get($velocityCount)"></i></span><span class="pcoded-mtext">$menu.text</span></a>
+						    <ul class="pcoded-submenu">
+						        #foreach($submenu in $menu.innerList)
+						        <li><a href="#" onclick="changeUrl1('$submenu.menu_todo','$menu.text','$submenu.text');">$submenu.text</a></li>
+						        #end
+						    </ul>
+						</li>
+						#set($index=$index+1) 
+						#end
+						
+						<li class="nav-item pcoded-menu-caption">
+						    <label>快捷操作</label>
+						</li>
+						<li class="nav-item">
+						    <a href="/WEB-ROOT/front/index/index.do" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">回到主页</span></a>
+						</li>
+						<li class="nav-item">
+						    <a href="/login.do" class="nav-link "><span class="pcoded-micon"><i class="feather icon-log-out"></i></span><span class="pcoded-mtext">切换用户</span></a>
+						</li>
+						
+					</ul>
+					
+					<div class="card text-center">
+						<div class="card-block">
+							<i class="feather icon-sunset f-40"></i>
+							<h6 class="mt-3">欢迎访问</h6>
+							<p>${SYSTEM_NAME}</p>
+							<a href="/WEB-ROOT/front/index/index.do" class="btn btn-warning btn-sm text-white m-0">HOME</a>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</nav>
+		
+		<header class="navbar pcoded-header navbar-expand-lg navbar-light header-dark">
+					<div class="m-header">
+						<a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
+						<a href="#!" class="b-brand">
+							<b><font size="3">${SYSTEM_NAME}</font></b>
+						</a>
+						<a href="#!" class="mob-toggler">
+							<i class="feather icon-more-vertical"></i>
+						</a>
+					</div>
+					<div class="collapse navbar-collapse">
+						<ul class="navbar-nav ml-auto">
+							<li>
+								<div class="dropdown drp-user">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<i class="feather icon-user"></i>
+									</a>
+									<div class="dropdown-menu dropdown-menu-right profile-notification">
+										<div class="pro-head">
+											<img src="/WEB-ROOT/app/index/style75/assets/images/user/user8.jpg" class="img-radius" alt="User-Profile-Image">
+											<span>你好：${LoginUserAcct}</span>
+											<a href="/login.do" class="dud-logout" title="Logout">
+												<i class="feather icon-log-out"></i>
+											</a>
+										</div>
+										<ul class="pro-body">
+											<li><a href="/WEB-ROOT/front/index/index.do" class="dropdown-item"><i class="feather icon-home"></i> 返回主页</a></li>
+											<li><a href="/login.do" class="dropdown-item"><i class="feather icon-log-out"></i>切换用户</a></li>
+										</ul>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+		</header>
+		
+		<div class="pcoded-main-container">
+		    <div class="pcoded-content">
+		        <div class="page-header">
+		            <div class="page-block">
+		                <div class="row align-items-center">
+		                    <div class="col-md-12">
+		                        <ul class="breadcrumb">
+		                            <li class="breadcrumb-item"><i class="feather icon-home"></i></li>
+		                            <li class="breadcrumb-item" id="title1">Home</li>
+		                        </ul>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+	
+		        <div class="row">
+		            <div class="col-md-12 col-xl-4" id="row0">
+		                <div class="card flat-card">
+		                    <div class="row-table">
+		                        <div class="col-sm-6 card-body br">
+		                            <div class="row">
+		                                <div class="col-sm-4">
+		                                    <i class="icon feather icon-eye text-c-green mb-1 d-block"></i>
+		                                </div>
+		                                <div class="col-sm-8 text-md-center">
+		                                    <h5>100+</h5>
+		                                    <span>浏览访问</span>
+		                                </div>
+		                            </div>
+		                        </div>
+		                        <div class="col-sm-6 card-body">
+		                            <div class="row">
+		                                <div class="col-sm-4">
+		                                    <i class="icon feather icon-heart text-c-red mb-1 d-block"></i>
+		                                </div>
+		                                <div class="col-sm-8 text-md-center">
+		                                    <h5>96%</h5>
+		                                    <span>满意度</span>
+		                                </div>
+		                            </div>
+		                        </div>
+		                    </div>
+		                    <div class="row-table">
+		                        <div class="col-sm-6 card-body br">
+		                            <div class="row">
+		                                <div class="col-sm-4">
+		                                    <i class="icon feather icon-file-text text-c-blue mb-1 d-block"></i>
+		                                </div>
+		                                <div class="col-sm-8 text-md-center">
+		                                    <h5>800 +</h5>
+		                                    <span>上传资料</span>
+		                                </div>
+		                            </div>
+		                        </div>
+		                        <div class="col-sm-6 card-body">
+		                            <div class="row">
+		                                <div class="col-sm-4">
+		                                    <i class="icon feather icon-mail text-c-yellow mb-1 d-block"></i>
+		                                </div>
+		                                <div class="col-sm-8 text-md-center">
+		                                    <h5>120</h5>
+		                                    <span>留言回复</span>
+		                                </div>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+	
+		                <div class="card flat-card widget-primary-card">
+		                    <div class="row-table">
+		                        <div class="col-sm-3 card-body">
+		                            <i class="feather icon-star-on"></i>
+		                        </div>
+		                        <div class="col-sm-9">
+		                            <h4>1200 +</h4>
+		                            <h6>公告资讯</h6>
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+	
+		            <div class="col-md-12 col-xl-4" id="row1">
+		                <div class="card flat-card">
+		                    <div class="row-table">
+		                        <div class="col-sm-6 card-body br">
+		                            <div class="row">
+		                                <div class="col-sm-4">
+		                                    <i class="icon feather icon-share-2 text-c-blue mb-1 d-block"></i>
+		                                </div>
+		                                <div class="col-sm-8 text-md-center">
+		                                    <h5>300+</h5>
+		                                    <span>推荐链接</span>
+		                                </div>
+		                            </div>
+		                        </div>
+		                        <div class="col-sm-6 card-body">
+		                            <div class="row">
+		                                <div class="col-sm-4">
+		                                    <i class="icon feather icon-wifi text-c-blue mb-1 d-block"></i>
+		                                </div>
+		                                <div class="col-sm-8 text-md-center">
+		                                    <h5>600+</h5>
+		                                    <span>访问数量</span>
+		                                </div>
+		                            </div>
+		                        </div>
+		                    </div>
+		                    <div class="row-table">
+		                        <div class="col-sm-6 card-body br">
+		                            <div class="row">
+		                                <div class="col-sm-4">
+		                                    <i class="icon feather icon-rotate-ccw text-c-blue mb-1 d-block"></i>
+		                                </div>
+		                                <div class="col-sm-8 text-md-center">
+		                                    <h5>355</h5>
+		                                    <span>信息反馈</span>
+		                                </div>
+		                            </div>
+		                        </div>
+		                        <div class="col-sm-6 card-body">
+		                            <div class="row">
+		                                <div class="col-sm-4">
+		                                    <i class="icon feather icon-pie-chart text-c-blue mb-1 d-blockz"></i>
+		                                </div>
+		                                <div class="col-sm-8 text-md-center">
+		                                    <h5>20</h5>
+		                                    <span>统计分析</span>
+		                                </div>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		                <div class="card flat-card widget-purple-card">
+		                    <div class="row-table">
+		                        <div class="col-sm-3 card-body">
+		                            <i class="fas fa-trophy"></i>
+		                        </div>
+		                        <div class="col-sm-9">
+		                            <h4>67</h4>
+		                            <h6>好评点赞</h6>
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+	
+		            <div class="col-md-12 col-xl-4" id="row2">
+		                <div class="card support-bar overflow-hidden">
+		                    <div class="card-body pb-0">
+		                        <h2 class="m-0">350</h2>
+		                        <span class="text-c-blue">访问情况</span>
+		                        <p class="mb-3 mt-3">用户访问情况分析</p>
+		                    </div>
+		                    <div id="support-chart"></div>
+		                    <div class="card-footer bg-primary text-white">
+		                        <div class="row text-center">
+		                            <div class="col">
+		                                <h4 class="m-0 text-white">268</h4>
+		                                <span>月</span>
+		                            </div>
+		                            <div class="col">
+		                                <h4 class="m-0 text-white">25</h4>
+		                                <span>周</span>
+		                            </div>
+		                            <div class="col">
+		                                <h4 class="m-0 text-white">3</h4>
+		                                <span>日</span>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+	
+		            <div class="col-xl-8 col-md-12" id="row3">
+		                <div class="card table-card">
+		                    <div class="card-body p-0">
+		                        <div class="table-responsive">
+		                            <img src="/WEB-ROOT/app/index/style75/assets/images/bg107.jpg" style="width:100%;height:300px;">
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+		            
+		            <div class="col-xl-4 col-md-12" id="row4">
+		                <div class="card latest-update-card">
+		                    <div class="card-header">
+		                        <h5>最新资讯</h5>
+		                    </div>
+		                    <div class="card-body">
+		                        <div class="latest-update-box">
+		                            <div class="row p-t-30 p-b-30">
+		                                <div class="col-auto text-right update-meta">
+		                                    <p class="text-muted m-b-0 d-inline-flex">1月前</p>
+		                                    <i class="feather icon-info bg-twitter update-icon"></i>
+		                                </div>
+		                                <div class="col">
+		                                    <p class="text-muted m-b-0">平台已开通线上咨询服务。欢迎大家来电。</p>
+		                                </div>
+		                            </div>
+		                            <div class="row p-b-30">
+		                                <div class="col-auto text-right update-meta">
+		                                    <p class="text-muted m-b-0 d-inline-flex">2周前</p>
+		                                    <i class="feather icon-briefcase bg-c-red update-icon"></i>
+		                                </div>
+		                                <div class="col">
+		                                    <p class="text-muted m-b-0">本周六晚23:00-23:30将进行平台升级。</p>
+		                                </div>
+		                            </div>
+		                            <div class="row p-b-0">
+		                                <div class="col-auto text-right update-meta">
+		                                    <p class="text-muted m-b-0 d-inline-flex">本周</p>
+		                                    <i class="feather icon-file bg-facebook update-icon"></i>
+		                                </div>
+		                                <div class="col">
+		                                    <p class="text-muted m-b-10">平台累计活跃用户访问数量已超1000+。</p>
+		                                </div>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+		            
+		            <div class="col-lg-12 col-md-12" id="row5" style="display:none">
+		                <iframe id="mainContent" scrolling=no src='' frameborder='0' width='100%' height='540' ></iframe>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+		
+	    <script src="/WEB-ROOT/app/index/style75/assets/js/vendor-all.min.js"></script>
+	    <script src="/WEB-ROOT/app/index/style75/assets/js/plugins/bootstrap.min.js"></script>
+	    <script src="/WEB-ROOT/app/index/style75/assets/js/pcoded.min.js"></script>
+		<script src="/WEB-ROOT/app/index/style75/assets/js/plugins/apexcharts.min.js"></script>
+		<script src="/WEB-ROOT/app/index/style75/assets/js/pages/dashboard-main.js"></script>
+		
+	</body>
+
+</html>

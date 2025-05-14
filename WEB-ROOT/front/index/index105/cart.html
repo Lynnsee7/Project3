@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>${systemName} - 购物车</title>
+  <link rel="stylesheet" type="text/css" href="/WEB-ROOT/front/skin/css/style.css">
+  <script src="/WEB-ROOT/front/skin/js/jquery.min.js"></script>
+  <style>
+    .cart-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .cart-table th, .cart-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    .cart-table th {
+      background-color: #f5f5f5;
+    }
+    .quantity-control {
+      display: flex;
+      align-items: center;
+    }
+    .quantity-control button {
+      width: 30px;
+      height: 30px;
+      background: #f0f0f0;
+      border: 1px solid #ddd;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .quantity-control input {
+      width: 50px;
+      height: 30px;
+      text-align: center;
+      border: 1px solid #ddd;
+      margin: 0 5px;
+    }
+    .remove-item {
+      color: #e53935;
+      cursor: pointer;
+    }
+    .cart-summary {
+      margin-top: 30px;
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 8px;
+    }
+    .cart-total {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    .checkout-btn {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .checkout-btn:hover {
+      background: #45a049;
+    }
+    .empty-cart {
+      text-align: center;
+      padding: 50px 0;
+      color: #888;
+    }
+    .empty-cart h3 {
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+    .empty-cart a {
+      display: inline-block;
+      background: #2196F3;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 4px;
+      text-decoration: none;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>${systemName}</h1>
+    <nav>
+      <ul>
+        <li><a href="index.do">首页</a></li>
+        <li><a href="index.do?flag=shop">商品列表</a></li>
+        <li><a href="index.do?flag=cart" class="active">购物车</a></li>
+        <#if login_user_acct == "guest">
+        <li><a href="${LOG_SUCC_GO2_FRONT}">登录</a></li>
+        <#else>
+        <li><a href="#">${login_user_acct}</a></li>
+        <li><a href="logout.do">退出</a></li>
+      </#if>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h2>购物车</h2>
+
+    <#if getCart?? && getCart?size gt 0>
+    <table class="cart-table">
+      <thead>
+      <tr>
+        <th>商品</th>
+        <th>单价</th>
+        <th>数量</th>
+        <th>小计</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <#list getCart as item>
+      <tr data-huohao="${item.huohao}">
+        <td>${item.shangpinmingcheng}</td>
+        <td>¥${item.price}</td>
+        <td>
+          <div class="quantity-control">
+            <button class="decrease-qty">-</button>
+            <input type="text" class="item-qty" value="${item.quantity}" readonly>
+            <button class="increase-qty">+</button>
+          </div>
+        </td>
+        <td>¥${item.subtotal}</td>
+        <td><span class="remove-item">删除</span></td>
+      </tr>
+      </#list>
+      </tbody>
+    </table>
+
+    <div class="cart-summary">
+      <div class="cart-total">总计: ¥${Session.cartTotal}</div>
+      <button class="checkout-btn">结算</button>
+    </div>
+    <#else>
+    <div class="empty-cart">
+      <h3>购物车是空的</h3>
+      <p>快去添加商品吧</p>
+      <a href="index.do?flag=shop">去购物</a>
+    </div>
+  </#if>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 ${systemName} - All Rights Reserved</p>
+  </footer>
+</div>
+
+<script>
+  $(document).ready(function() {
+    // 增加商品数量
+    $('.increase-qty').click(function() {
+      var row = $(this).closest('tr');
+      var huohao = row.data('huohao');
+      var inputField = row.find('.item-qty');
+      var currentVal = parseInt(inputField.val());
+
+      $.ajax({
+        url: 'index.do?flag=addToCart',
+        type: 'POST',
+        data: {
+          huohao: huohao,
+          quantity: 1
+        },
+        success: function(response) {
+          if(response.indexOf('已更新') > -1) {
+            location.reload();
+          } else {
+            alert(response);
+          }
+        },
+        error: function() {
+          alert('操作失败，请重试');
+        }
+      });
+    });
+
+// 减少商品数量
+    $('.decrease-qty').click(function() {
+      var row = $(this).closest('tr');
+      var inputField = row.find('.item-qty');
+      var currentVal = parseInt(inputField.val());
+
+      if(currentVal > 1) {
+        // 减少数量
+        updateCartItemQuantity(row.data('huohao'), currentVal - 1);
+      } else {
+        // 如果只有1个，提示是否要删除
+        if(confirm('确定要从购物车中移除此商品吗？')) {
+          removeCartItem(row.data('huohao'));
+        }
+      }
+    });
+
+    // 删除商品
+    $('.remove-item').click(function() {
+      var row = $(this).closest('tr');
+      var huohao = row.data('huohao');
+
+      if(confirm('确定要从购物车中移除此商品吗？')) {
+        removeCartItem(huohao);
+      }
+    });
+
+    // 更新购物车商品数量
+    function updateCartItemQuantity(huohao, quantity) {
+      $.ajax({
+        url: 'index.do?flag=updateCart',
+        type: 'POST',
+        data: {
+          huohao: huohao,
+          quantity: quantity
+        },
+        success: function(response) {
+          location.reload();
+        },
+        error: function() {
+          alert('操作失败，请重试');
+        }
+      });
+    }
+
+    // 从购物车中移除商品
+    function removeCartItem(huohao) {
+      $.ajax({
+        url: 'index.do?flag=removeFromCart',
+        type: 'POST',
+        data: {
+          huohao: huohao
+        },
+        success: function(response) {
+          location.reload();
+        },
+        error: function() {
+          alert('操作失败，请重试');
+        }
+      });
+    }
+
+    // 结算
+    $('.checkout-btn').click(function() {
+      if(confirm('确认提交订单吗？')) {
+        $.ajax({
+          url: 'index.do?flag=checkout',
+          type: 'POST',
+          success: function(response) {
+            alert(response);
+            location.href = 'index.do';
+          },
+          error: function() {
+            alert('结算失败，请重试');
+          }
+        });
+      }
+    });
+  });
+</script>
+</body>
+</html>

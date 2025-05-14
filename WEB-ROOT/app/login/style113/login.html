@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+	<title>登录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="/WEB-ROOT/app/login/style113/css/style.css" type="text/css" media="all" />
+    
+    <link rel="stylesheet" href="/WEB-ROOT/app/login/style113/css/font-awesome.min.css" type="text/css" media="all">
+	
+	<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-base.js"></script>
+	<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-all.js"></script>
+	<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="/WEB-ROOT/skin/js/pub/global/global.js"></script>
+	
+	<script type="text/javascript">
+		function doSubmit() {
+		var username = document.getElementById("username").value;
+		var password = document.getElementById("password").value;
+		if (username == "") {
+			alert("账户名不能为空！");
+			doFocus('username');
+			return;
+		}
+		if (password == "") {
+			alert("登陆密码不能为空！");
+			doFocus('password');
+			return;
+		}
+
+		/*
+		if( !validate () ){ 
+			return ;
+		}
+		*/
+
+		ajaxLogin();
+	}
+
+	function doKeyPress() {
+		if (window.event.keyCode == 13) {
+			doSubmit();
+		}
+	}
+
+	function ajaxLogin() {
+		Ext.Ajax.request({
+			waitMsg : '数据提交中......',
+			url : '/login.do',
+			method : 'POST',
+			success : function(response, options) {
+				var responseArray = Ext.util.JSON.decode(response.responseText);
+				if (responseArray.success) {
+					window.location.href = LOGIN_SUCC_GO_PAGE ;
+				} else {
+					alert(responseArray.msg);
+				}
+			},
+			params : {
+				flag : "doLogin",
+				username : document.getElementById("username").value,
+				password : document.getElementById("password").value
+			}
+		});
+	}
+
+	function doRegiste() {
+		window.location.href = "/WEB-ROOT/app/register/style25/index.html" ;
+	}
+
+		
+		
+	</script>
+	
+</head>
+
+<body>
+  
+    <section class="w3l-hotair-form">
+        <h1>南希超市</h1>
+        <div class="container">
+            <div class="workinghny-form-grid">
+                <div class="main-hotair">
+                    <div class="content-wthree">
+                        <form action="#" method="post">
+                            <input type="text" class="text" name="username" id="username" placeholder="登录帐号" required="" autofocus>
+                            <input type="password" class="password" name="password" id="password" placeholder="登录密码" required="" autofocus>
+                            <button class="btn" type="button" onclick="doSubmit();">Login</button>
+                        </form>
+                        
+                        <p class="account">没有登录帐号吗？<a href="#" onclick="doRegiste()">点我注册吧</a></p>
+                    </div>
+                    <div class="w3l_form align-self">
+                        <div class="left_grid_info">
+                            <img src="/WEB-ROOT/app/login/style113/images/1.png" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright text-center">
+            <p class="copy-footer-29"></p>
+        </div>
+    </section>
+</body>
+
+</html>

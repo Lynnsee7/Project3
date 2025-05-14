@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=GBK" />
+    <title>Welcome To ${SYSTEM_NAME}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+    
+    <link href="/WEB-ROOT/app/index/style31/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+  
+    <link rel="stylesheet" href="/WEB-ROOT/app/index/style31/css/bar.css">
+   
+    <link rel="stylesheet" type="text/css" href="/WEB-ROOT/app/index/style31/css/pignose.calender.css" />
+   
+    <link href="/WEB-ROOT/app/index/style31/css/style.css" rel="stylesheet" type="text/css" media="all" />
+   
+    <link rel="stylesheet" href="/WEB-ROOT/app/index/style31/css/style4.css">
+  
+    <link href="/WEB-ROOT/app/index/style31/css/fontawesome-all.css" rel="stylesheet">
+   
+	<script type="text/javascript">
+		function changeUrl(url,t1,t2){
+			
+			document.getElementById("mainDiv").innerHTML = '<iframe scrolling="auto" rameborder="0"'+
+			'src="'+url+'" id="contentFrame" name="contentFrame" width="100%" frameborder="0" scrolling="yes" frameBorder="no"'+
+			'height="610"></iframe>';
+			
+			return false;
+		}
+	</script>
+   
+</head>
+
+<body>
+    <div class="se-pre-con"></div>
+    <div class="wrapper">
+       
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h1>
+                    <a href="/WEB-ROOT/app/index.do">${SYSTEM_NAME}</a>
+                </h1>
+                <span>Hi</span>
+            </div>
+            <div class="profile-bg"></div>
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="/WEB-ROOT/app/index.do">
+                        <i class="fas fa-th-large"></i>
+                        HOME
+                    </a>
+                </li>
+                
+               #set($arr = ["fas fa-laptop", "far fa-window-restore", "fas fa-chart-pie", "fas fa-users","fas fa-table","fas fa-th","fas fa-laptop",
+                			  "fas fa-cogs", "fas fa-book","fas fa-desktop","fas fa-tasks","fas fa-th","far fa-window-restore"])
+              	 
+              	#foreach($menu in ${ResultMap.menuList})
+                <li>
+                    <a href="#${menu.text}" data-toggle="collapse" aria-expanded="false">
+                        <i class="$arr.get($velocityCount)"></i>
+                        $menu.text
+                        <i class="fas fa-angle-down fa-pull-right"></i>
+                    </a>
+                    <ul class="collapse list-unstyled" id="${menu.text}">
+                    	#foreach($submenu in $menu.innerList)
+                        <li><a href="#" onclick="changeUrl('$submenu.menu_todo','$menu.text','$submenu.text');">$submenu.text</a></li>
+                        #end
+                    </ul>
+                </li>
+                #end
+                
+            </ul>
+        </nav>
+
+        <div id="content">
+           
+            <nav class="navbar navbar-default mb-xl-5 mb-4">
+                <div class="container-fluid">
+
+                    <div class="navbar-header">
+                        <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                    </div>
+                  	
+                    <ul class="top-icons-agileits-w3layouts float-right">
+                        
+                        <li class="nav-item dropdown mx-3">
+                            <a title="主页" class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                <i class="fas fa-home"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                <i class="far fa-user"></i>
+                            </a>
+                            <div class="dropdown-menu drop-3">
+                                <div class="profile d-flex mr-o">
+                                    <div class="profile-l align-self-center">
+                                        <img src="/WEB-ROOT/app/index/style31/images/profile.jpg" class="img-fluid mb-3" alt="Responsive image">
+                                    </div>
+                                    <div class="profile-r align-self-center">
+                                        <h3 class="sub-title-w3-agileits">${LoginUserAcct}</h3>
+                                        <a href="#">欢迎您回来</a>
+                                    </div>
+                                </div>
+                                <a href="#" class="dropdown-item mt-3">
+                                    <h4>
+                                        <i class="far fa-user mr-3"></i>个人信息</h4>
+                                </a>
+                                <a href="#" class="dropdown-item mt-3">
+                                    <h4>
+                                        <i class="fas fa-link mr-3"></i>返回主页</h4>
+                                </a>
+                                <a href="#" class="dropdown-item mt-3">
+                                    <h4>
+                                        <i class="far fa-envelope mr-3"></i>我的评论</h4>
+                                </a>
+                                <a href="#" class="dropdown-item mt-3">
+                                    <h4>
+                                        <i class="far fa-thumbs-up mr-3"></i>个人收藏</h4>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="/login.do">切换用户</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+           
+            
+            <div id='mainDiv'>
+	            <iframe scrolling="auto" rameborder="0"
+				src="/WEB-ROOT/app/index/home.do" id="contentDiv" name="contentDiv" width="100%" frameborder="0" scrolling="yes" frameBorder="no"
+				height="610"></iframe>
+            </div>
+            
+            
+            <!-- Copyright 
+            <div class="copyright-w3layouts py-xl-3 py-2 mt-xl-5 mt-4 text-center">
+                <p>
+                    <a href="/WEB-ROOT/app/index.do">${SYSTEM_DESIGNER} </a>
+                </p>
+            </div>
+           -->
+            
+        </div>
+    </div>
+
+
+    <!-- Required common Js -->
+    <script src='/WEB-ROOT/app/index/style31/js/jquery-2.2.3.min.js'></script>
+    <!-- //Required common Js -->
+    
+    <!-- loading-gif Js -->
+    <script src="/WEB-ROOT/app/index/style31/js/modernizr.js"></script>
+    <script>
+        //paste this code under head tag or in a seperate js file.
+        // Wait for window load
+        $(window).load(function () {
+            // Animate loader off screen
+            $(".se-pre-con").fadeOut("slow");;
+        });
+    </script>
+    <!--// loading-gif Js -->
+
+    <!-- Sidebar-nav Js -->
+    <script>
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
+    </script>
+    <!--// Sidebar-nav Js -->
+
+    
+    <!-- Bar-chart -->
+    <script src="/WEB-ROOT/app/index/style31/js/rumcaJS.js"></script>
+    <script src="/WEB-ROOT/app/index/style31/js/example.js"></script>
+    <!--// Bar-chart -->
+    <!-- Calender -->
+    <script src="/WEB-ROOT/app/index/style31/js/moment.min.js"></script>
+    <script src="/WEB-ROOT/app/index/style31/js/pignose.calender.js"></script>
+    <script>
+        //<![CDATA[
+        $(function () {
+            $('.calender').pignoseCalender({
+                select: function (date, obj) {
+                    obj.calender.parent().next().show().text('您选择了 ' +
+                        (date[0] === null ? 'null' : date[0].format('YYYY-MM-DD')) +
+                        '.');
+                }
+            });
+
+            $('.multi-select-calender').pignoseCalender({
+                multiple: true,
+                select: function (date, obj) {
+                    obj.calender.parent().next().show().text('您选择了 ' +
+                        (date[0] === null ? 'null' : date[0].format('YYYY-MM-DD')) +
+                        '至' +
+                        (date[1] === null ? 'null' : date[1].format('YYYY-MM-DD')) +
+                        '.');
+                }
+            });
+        });
+        //]]>
+    </script>
+    <!--// Calender -->
+
+    <!-- profile-widget-dropdown js-->
+    <script src="/WEB-ROOT/app/index/style31/js/script.js"></script>
+    <!--// profile-widget-dropdown js-->
+
+   
+   
+
+    <!-- pie-chart -->
+    <script src='/WEB-ROOT/app/index/style31/js/amcharts.js'></script>
+    <script>
+        var chart;
+        var legend;
+
+        var chartData = [{
+                country: "城市公交",
+                value: 3
+            },
+            {
+                country: "区间公交",
+                value: 5
+            },
+            {
+                country: "定制公交",
+                value: 2
+            },
+            {
+                country: "快速公交",
+                value: 6
+            }
+        ];
+
+        AmCharts.ready(function () {
+            // PIE CHART
+            chart = new AmCharts.AmPieChart();
+            chart.dataProvider = chartData;
+            chart.titleField = "country";
+            chart.valueField = "value";
+            chart.outlineColor = "";
+            chart.outlineAlpha = 0.8;
+            chart.outlineThickness = 2;
+            // this makes the chart 3D
+            chart.depth3D = 20;
+            chart.angle = 30;
+
+            // WRITE
+            chart.write("chartdiv");
+        });
+    </script>
+    <!--// pie-chart -->
+
+    <!-- dropdown nav -->
+    <script>
+        $(document).ready(function () {
+            $(".dropdown").hover(
+                function () {
+                    $('.dropdown-menu', this).stop(true, true).slideDown("fast");
+                    $(this).toggleClass('open');
+                },
+                function () {
+                    $('.dropdown-menu', this).stop(true, true).slideUp("fast");
+                    $(this).toggleClass('open');
+                }
+            );
+        });
+    </script>
+    <!-- //dropdown nav -->
+
+    <!-- Js for bootstrap working-->
+    <script src="/WEB-ROOT/app/index/style31/js/bootstrap.min.js"></script>
+    <!-- //Js for bootstrap working -->
+
+</body>
+
+</html>

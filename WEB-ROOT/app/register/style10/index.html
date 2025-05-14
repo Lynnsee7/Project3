@@ -1,0 +1,126 @@
+
+<!DOCTYPE HTML>
+<html lang="zxx">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+<title>新用户注册</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script>
+	addEventListener("load", function() {
+		setTimeout(hideURLbar, 0);
+	}, false);
+
+	function hideURLbar() {
+		window.scrollTo(0, 1);
+	}
+</script>
+
+<link rel="stylesheet" href="/WEB-ROOT/app/register/style10/css/style.css" type="text/css" media="all" />
+
+<link rel="stylesheet" href="/WEB-ROOT/app/register/style10/css/font-awesome.css">
+
+<link rel="stylesheet" type="text/css" href="/WEB-ROOT/skin/css/ext-all.css" />
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-base.js" charset="gbk"></script>
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-all.js" charset="gbk"></script>
+<script type="text/javascript" src="/WEB-ROOT/skin/js/ext3.0.0/ext-lang-zh_CN.js" charset="gbk"></script>
+
+<script type="text/javascript">
+	function doSubmit() {
+		var userAcct = document.getElementById("userAcct").value;
+		var userName = document.getElementById("userName").value;
+		var userPass = document.getElementById("userPass").value;
+		if (userAcct == "") {
+			alert("帐号为空，请填写！");
+			return;
+		}
+		if (userPass == "") {
+			alert("登录密码为空，请填写！");
+			return;
+		}
+		if (userName == "") {
+			alert("昵称为空，请填写！");
+			return;
+		}
+
+		Ext.Ajax.request({
+			waitMsg : '数据提交中......',
+			url : '/login.do',
+			method : 'POST',
+			success : function(response, options) {
+				var responseArray = Ext.util.JSON.decode(response.responseText);
+				if (responseArray.success) {
+					alert("注册成功！");
+					window.location.href = "/" ;
+				} else {
+					alert(responseArray.msg);
+				}
+			},
+			params : {
+				flag : "doRegister",
+				userAcct : userAcct,
+				userPass : userPass,
+				userName : userName
+			}
+		});
+
+	}
+</script>
+
+
+
+</head>
+
+<body>
+
+	<br>
+	<br>
+	<br>
+	<h1>
+		新<span>用</span>户<span>注</span>册
+	</h1>
+	<br>
+	<br>
+
+	<div class="main-content-agile">
+		<div class="sub-main-w3">
+			<form action="#" method="post">
+				<div class="form-style-agile">
+					<label>登录帐号</label>
+					<div class="pom-agile">
+						<span class="fa fa-user-o" aria-hidden="true"></span> <input placeholder="登录帐号" id="userAcct" name="userAcct" maxlength="16"  type="text" required="">
+					</div>
+				</div>
+				
+				<div class="form-style-agile">
+					<label>用户姓名</label>
+					<div class="pom-agile">
+						<span class="fa fa-user-o" aria-hidden="true"></span> <input placeholder="用户姓名" id="userName" name="userName" maxlength="18" type="text" required="">
+					</div>
+				</div>
+				
+				<div class="form-style-agile">
+					<label>登录密码</label>
+					<div class="pom-agile">
+						<span class="fa fa-key" aria-hidden="true"></span> <input placeholder="登录密码" name="userPass" type="password" id="userPass" maxlength="16"  required="">
+					</div>
+				</div>
+
+				<input type="button" value="提交注册" onclick="doSubmit();">
+			</form>
+		</div>
+	</div>
+
+
+	<div class="footer">
+		<h2>
+			<a href="/" >欢迎访问</a>
+		</h2>
+	</div>
+
+
+
+</body>
+
+</html>
