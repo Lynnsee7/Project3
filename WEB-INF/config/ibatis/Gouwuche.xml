@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Gouwuche">
+    <typeAlias alias="gouwucheBean" type="bean.gouwucheBean" />
+
+    <resultMap id="ibatorgenerated_GouwucheResultMap" class="gouwucheBean">
+        <result column="id" property="id" jdbcType="INTEGER" />
+        <result column="huiyuanbianhao" property="huiyuanbianhao" jdbcType="VARCHAR" />
+        <result column="huohao" property="huohao" jdbcType="VARCHAR" />
+        <result column="shangpinmingcheng" property="shangpinmingcheng" jdbcType="VARCHAR" />
+        <result column="danjia" property="danjia" jdbcType="VARCHAR" />
+        <result column="shuliang" property="shuliang" jdbcType="VARCHAR" />
+        <result column="xiaoji" property="xiaoji" jdbcType="VARCHAR" />
+        <result column="operatorId" property="operatorid" jdbcType="VARCHAR" />
+        <result column="itime" property="itime" jdbcType="VARCHAR" />
+        <result column="detail" property="detail" jdbcType="VARCHAR" />
+        <result column="deleteFlag" property="deleteflag" jdbcType="INTEGER" />
+    </resultMap>
+
+    <sql id="ibatorgenerated_Example_Where_Clause">
+        <dynamic prepend="">
+            <isEqual property="huiyuanbianhaoSearch" compareValue="" prepend="">
+            </isEqual>
+            <isNotEqual property="huiyuanbianhaoSearch" compareValue="" prepend="and">
+                huiyuanbianhao like '%$huiyuanbianhaoSearch$%'
+            </isNotEqual>
+            <isEqual property="huohaoSearch" compareValue="" prepend="">
+            </isEqual>
+            <isNotEqual property="huohaoSearch" compareValue="" prepend="and">
+                huohao like '%$huohaoSearch$%'
+            </isNotEqual>
+            <isEqual property="shangpinmingchengSearch" compareValue="" prepend="">
+            </isEqual>
+            <isNotEqual property="shangpinmingchengSearch" compareValue="" prepend="and">
+                shangpinmingcheng like '%$shangpinmingchengSearch$%'
+            </isNotEqual>
+            <isEqual property="deleteFlagSearch" compareValue="" prepend="">
+            </isEqual>
+            <isNotEqual property="deleteFlagSearch" compareValue="" prepend="and">
+                deleteFlag = #deleteFlagSearch#
+            </isNotEqual>
+        </dynamic>
+    </sql>
+
+    <select id="selecteList" resultClass="map" parameterClass="map">
+        SELECT
+            id as id,
+            huiyuanbianhao as huiyuanbianhao,
+            huohao as huohao,
+            shangpinmingcheng as shangpinmingcheng,
+            danjia as danjia,
+            shuliang as shuliang,
+            xiaoji as xiaoji,
+            operatorId as operatorId,
+            itime as itime,
+            detail as detail,
+            deleteFlag as deleteFlag
+        FROM gouwuche
+        WHERE 1=1
+        <include refid="ibatorgenerated_Example_Where_Clause" />
+        ORDER BY id DESC
+    </select>
+
+    <insert id="insertObj" parameterClass="map">
+        INSERT INTO gouwuche (
+            huiyuanbianhao,
+            huohao,
+            shangpinmingcheng,
+            danjia,
+            shuliang,
+            xiaoji,
+            operatorId,
+            itime,
+            detail,
+            deleteFlag
+        ) VALUES (
+            #huiyuanbianhao#,
+            #huohao#,
+            #shangpinmingcheng#,
+            #danjia#,
+            #shuliang#,
+            #xiaoji#,
+            #operatorId#,
+            now(),
+            #detail#,
+            0
+        )
+    </insert>
+
+    <update id="updateObj" parameterClass="map">
+        UPDATE gouwuche
+        SET
+            shuliang = #shuliang#,
+            xiaoji = #xiaoji#
+        WHERE id = #id#
+    </update>
+
+    <update id="doDeleOrUnDele" parameterClass="map">
+        UPDATE gouwuche
+        SET deleteFlag = #deleteFlag#
+        WHERE id = #id#
+    </update>
+</sqlMap>

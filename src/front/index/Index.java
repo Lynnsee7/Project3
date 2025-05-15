@@ -238,59 +238,7 @@ public class Index extends BaseFormController {
 				
 				return toFrontPage("/WEB-ROOT/front/index/index"+qianTaiNum+"/single.html", resultMap, request, response);
 			}
-			// ==========Added: 0514
-			// 商品列表页面的路由处理
-			else if (flag != null && flag.equals("shop")) {
-				String login_user_acct = SysInfo.getLoginUserAcct4Front(request, response);
-				HashMap<Object, Object> resultMap = new HashMap<Object, Object>();
-				resultMap.put("fenlei", getFenLei(sqlMap, request, response));
-				resultMap.put("lanmu", getLanMu(sqlMap, request, response));
-				resultMap.put("getProducts", getProductsList(sqlMap, request, response));
-				resultMap.put("login_user_acct", login_user_acct);
-				resultMap.put("LOG_SUCC_GO2_FRONT", LOG_SUCC_GO2_FRONT);
-				resultMap.put("LOG_SUCC_GO2_APP", LOG_SUCC_GO2_APP);
-				resultMap.put("systemName", getSystemName(sqlMap, request, response));
-				return toFrontPage("/WEB-ROOT/front/index/index"+qianTaiNum+"/shop.html", resultMap, request, response);
-			}
-			// 添加到购物车
-			else if (flag != null && flag.equals("addToCart")) {
-				addToCart(sqlMap, request, response);
-				return null;
-			}
-			// 购物车页面
-			else if (flag != null && flag.equals("cart")) {
-				String login_user_acct = SysInfo.getLoginUserAcct4Front(request, response);
-				if(login_user_acct.equals("guest")) {
-					response.sendRedirect(LOG_SUCC_GO2_FRONT);
-					return null;
-				}
 
-				HashMap<Object, Object> resultMap = new HashMap<Object, Object>();
-				resultMap.put("fenlei", getFenLei(sqlMap, request, response));
-				resultMap.put("lanmu", getLanMu(sqlMap, request, response));
-				resultMap.put("getCart", getCartItems(sqlMap, request, response));
-				resultMap.put("login_user_acct", login_user_acct);
-				resultMap.put("LOG_SUCC_GO2_FRONT", LOG_SUCC_GO2_FRONT);
-				resultMap.put("LOG_SUCC_GO2_APP", LOG_SUCC_GO2_APP);
-				resultMap.put("systemName", getSystemName(sqlMap, request, response));
-				return toFrontPage("/WEB-ROOT/front/index/index"+qianTaiNum+"/cart.html", resultMap, request, response);
-			}
-			// 结算处理
-			else if (flag != null && flag.equals("checkout")) {
-				processCheckout(sqlMap, request, response);
-				return null;
-			}
-			// 更新购物车
-			else if (flag != null && flag.equals("updateCart")) {
-				updateCart(sqlMap, request, response);
-				return null;
-			}
-			// 从购物车移除商品
-			else if (flag != null && flag.equals("removeFromCart")) {
-				removeFromCart(sqlMap, request, response);
-				return null;
-			}
-			// ==========Added: 0514
 			else {
 				HashMap<Object, Object> resultMap = new HashMap<Object, Object>();
 				resultMap.put("lanmu", getLanMu(sqlMap, request, response));
@@ -632,343 +580,184 @@ public class Index extends BaseFormController {
 			throw new Exception("��ȡ��Ϣ����");
 		}
 	}
-
-	// ==========Added: 0514
-	// 获取商品列表
-	public List getProductsList(SqlMapClient sqlMap, HttpServletRequest request, HttpServletResponse response) throws Exception {
+// Added ==============================================================
+	public void submitOrder(SqlMapClient sqlMap, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		PrintWriter pw = null;
 		try {
-			String sql = "select distinct id, shangpinmingcheng, huohao, shangpinleixing, danjia, kucunliang, fuJian " +
-					"from caigouxinxi " +
-					"where deleteFlag=0 and kucunliang > 0 and zhuangtai='审批通过' " +
-					"order by id desc";
-			ArrayList list = SqlTool.getMultDoc(sql, sqlMap.getCurrentConnection());
+			response.setCharacterEncoding("utf-8");
+			pw = response.getWriter();
 
-			// 处理商品图片
-			if(list != null && list.size() > 0) {
-				for(int j = 0; j < list.size(); j++) {
-					Properties product = ((Properties)(list.get(j)));
-					HashMap<String, Object> imgWhere = new HashMap<String, Object>();
+			// 获取当前登录用户
+			String login_user_acct = SysInfo.getLoginUserAcct4Front(request, response);
+			if(login_user_acct.equals("guest")) {
+				pw.write("请先登录！");
+				return;
+			}
 
-					// 获取商品的销售价格
-					String huohao = product.getProperty("huohao");
-					String priceSql = "select xiaoshoujiage from jiageshezhi where huohao='"+huohao+"' and deleteFlag=0";
-					try {
-						Properties priceProps = SqlTool.getSingleDoc(priceSql, sqlMap.getCurrentConnection());
-						if(priceProps != null && priceProps.getProperty("xiaoshoujiage") != null) {
-							product.put("xiaoshoujiage", priceProps.getProperty("xiaoshoujiage"));
-						} else {
-							product.put("xiaoshoujiage", product.getProperty("danjia"));
-						}
-					} catch(Exception e) {
-						product.put("xiaoshoujiage", product.getProperty("danjia"));
-					}
+			// 查询用户购物车信息
+			HashMap<String, Object> where = new HashMap<String, Object>();
+			where.put("yonghuming", login_user_acct);
+			List gouwucheList = sqlMap.queryForList("Gouwuche.selecteList", where);
 
-					// 获取商品图片
-					if(product.get("fuJian") != null && !product.get("fuJian").equals("")) {
-						imgWhere.put("tuPianIndex", product.get("fuJian").toString());
-						List imgList = IbatisUtil.queryForList(sqlMap, request, response, imgWhere, "Util.selecteTuPianList");
-						product.put("imgList", imgList);
-					} else {
-						HashMap m = new HashMap();
-						m.put("picPath", "/WEB-ROOT/front/skin/images/product-default.jpg");
-						List defaultImgList = new ArrayList();
-						defaultImgList.add(m);
-						product.put("imgList", defaultImgList);
-					}
+			if(gouwucheList == null || gouwucheList.size() == 0) {
+				pw.write("购物车为空！");
+				return;
+			}
+
+			// 生成订单号
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+			String dingdandanhao = sdf.format(new Date());
+
+			// 计算总金额
+			double zonge = 0;
+			for(int i = 0; i < gouwucheList.size(); i++) {
+				HashMap item = (HashMap)gouwucheList.get(i);
+				zonge += Double.parseDouble(item.get("xiaoji").toString());
+			}
+
+			// 创建订单
+			where.clear();
+			where.put("dingdandanhao", dingdandanhao);
+			where.put("yonghuming", login_user_acct);
+			where.put("xiaofeizonge", String.valueOf(zonge));
+			where.put("zhifufangshi", "在线支付");
+			where.put("zhuangtai", "已支付");
+			where.put("operatorId", SysInfo.getLoginUserId4Front(request, response));
+			where.put("itime", DateUtil.getNowTime());
+
+			sqlMap.insert("Dingdanxinxi.insertObj", where);
+
+			// 创建订单明细
+			for(int i = 0; i < gouwucheList.size(); i++) {
+				HashMap item = (HashMap)gouwucheList.get(i);
+
+				where.clear();
+				where.put("dingdandanhao", dingdandanhao);
+				where.put("huohao", item.get("huohao").toString());
+				where.put("shangpinmingcheng", item.get("shangpinmingcheng").toString());
+				where.put("shuliang", item.get("shuliang").toString());
+				where.put("danjia", item.get("danjia").toString());
+				where.put("xiaoji", item.get("xiaoji").toString());
+
+				sqlMap.insert("Dingdanxinxi_mingxi.insertObj", where);
+
+				// 更新商品库存
+				String huohao = item.get("huohao").toString();
+				String shuliang = item.get("shuliang").toString();
+
+				where.clear();
+				where.put("huohao", huohao);
+				List caigouxinxiList = sqlMap.queryForList("Caigouxinxi.selecteList", where);
+
+				if(caigouxinxiList != null && caigouxinxiList.size() > 0) {
+					double kucunliang = Double.parseDouble(((HashMap)caigouxinxiList.get(0)).get("kucunliang").toString());
+					double newKucunliang = kucunliang - Double.parseDouble(shuliang);
+
+					where.clear();
+					where.put("huohao", huohao);
+					where.put("kucunliang", String.valueOf(newKucunliang));
+
+					sqlMap.update("Caigouxinxi.updateKucun", where);
 				}
 			}
 
-			return list;
+			// 清空购物车
+			where.clear();
+			where.put("yonghuming", login_user_acct);
+			sqlMap.delete("Gouwuche.deleteByUser", where);
+
+			sqlMap.commitTransaction();
+			pw.write("订单提交成功！订单号：" + dingdandanhao);
 		} catch (Exception e) {
+			pw.write("订单提交失败！" + e.getMessage());
 			e.printStackTrace();
-			throw new Exception("获取商品列表出错！");
+			throw new Exception();
+		} finally {
+			if (pw != null) {
+				pw.close();
+			}
 		}
 	}
-
-	// 添加到购物车
 	public void addToCart(SqlMapClient sqlMap, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		PrintWriter pw = null;
 		try {
 			response.setCharacterEncoding("utf-8");
 			pw = response.getWriter();
 
+			// 获取当前登录用户
 			String login_user_acct = SysInfo.getLoginUserAcct4Front(request, response);
 			if(login_user_acct.equals("guest")) {
 				pw.write("请先登录！");
 				return;
 			}
 
+			// 获取商品信息
 			String huohao = request.getParameter("huohao");
-			String quantity = request.getParameter("quantity");
-			if(quantity == null || quantity.equals("")) {
-				quantity = "1";
+			String shuliang = request.getParameter("shuliang");
+			if(shuliang == null || shuliang.equals("")) {
+				shuliang = "1"; // 默认数量为1
 			}
 
-			// 检查库存
-			String sql = "select kucunliang, shangpinmingcheng from caigouxinxi where huohao='"+huohao+"' and deleteFlag=0";
-			Properties productProps = SqlTool.getSingleDoc(sql, sqlMap.getCurrentConnection());
+			// 查询商品信息
+			HashMap<String, Object> where = new HashMap<String, Object>();
+			where.put("huohao", huohao);
+			List caigouxinxiList = sqlMap.queryForList("Caigouxinxi.selecteList", where);
 
-			if(productProps == null) {
+			if(caigouxinxiList == null || caigouxinxiList.size() == 0) {
 				pw.write("商品不存在！");
 				return;
-			}
-
-			float kucunliang = Float.parseFloat(productProps.getProperty("kucunliang"));
-			float requiredQuantity = Float.parseFloat(quantity);
-
-			if(kucunliang < requiredQuantity) {
-				pw.write("库存不足，当前库存: " + kucunliang);
-				return;
-			}
-
-			// 检查购物车中是否已有此商品
-			HttpSession session = request.getSession(true);
-			ArrayList<HashMap<String, Object>> cart;
-
-			if(session.getAttribute("cart") == null) {
-				cart = new ArrayList<HashMap<String, Object>>();
-			} else {
-				cart = (ArrayList<HashMap<String, Object>>) session.getAttribute("cart");
-
-				// 检查是否已在购物车中
-				for(HashMap<String, Object> item : cart) {
-					if(item.get("huohao").equals(huohao)) {
-						// 已存在此商品，增加数量
-						float currentQty = Float.parseFloat(item.get("quantity").toString());
-						float newQty = currentQty + requiredQuantity;
-
-						if(newQty > kucunliang) {
-							pw.write("添加失败，超出库存数量");
-							return;
-						}
-
-						item.put("quantity", String.valueOf(newQty));
-						session.setAttribute("cart", cart);
-						pw.write("商品数量已更新！");
-						return;
-					}
-				}
 			}
 
 			// 获取商品价格
-			String priceSql = "select xiaoshoujiage from jiageshezhi where huohao='"+huohao+"' and deleteFlag=0";
-			String price = "";
-			try {
-				Properties priceProps = SqlTool.getSingleDoc(priceSql, sqlMap.getCurrentConnection());
-				if(priceProps != null && priceProps.getProperty("xiaoshoujiage") != null) {
-					price = priceProps.getProperty("xiaoshoujiage");
-				}
-			} catch(Exception e) {
-				// 如果没有设置销售价格，则使用采购单价
-				String danjiaSQL = "select danjia from caigouxinxi where huohao='"+huohao+"' and deleteFlag=0";
-				Properties danjiaProps = SqlTool.getSingleDoc(danjiaSQL, sqlMap.getCurrentConnection());
-				price = danjiaProps.getProperty("danjia");
-			}
+			where.clear();
+			where.put("huohao", huohao);
+			List jiagelist = sqlMap.queryForList("Jiageshezhi.selecteList", where);
 
-			// 添加新商品到购物车
-			HashMap<String, Object> newItem = new HashMap<String, Object>();
-			newItem.put("huohao", huohao);
-			newItem.put("shangpinmingcheng", productProps.getProperty("shangpinmingcheng"));
-			newItem.put("quantity", quantity);
-			newItem.put("price", price);
-
-			cart.add(newItem);
-			session.setAttribute("cart", cart);
-
-			pw.write("商品已添加到购物车！");
-		} catch (Exception e) {
-			pw.write("添加失败：" + e.getMessage());
-			e.printStackTrace();
-			throw new Exception();
-		} finally {
-			if (pw != null) {
-				pw.close();
-			}
-		}
-	}
-
-	// 获取购物车内容
-	public List getCartItems(SqlMapClient sqlMap, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		HttpSession session = request.getSession(false);
-		if(session == null || session.getAttribute("cart") == null) {
-			return new ArrayList();
-		}
-
-		ArrayList<HashMap<String, Object>> cart = (ArrayList<HashMap<String, Object>>) session.getAttribute("cart");
-		float totalAmount = 0;
-
-		for(HashMap<String, Object> item : cart) {
-			float quantity = Float.parseFloat(item.get("quantity").toString());
-			float price = Float.parseFloat(item.get("price").toString());
-			float subtotal = quantity * price;
-
-			item.put("subtotal", String.format("%.2f", subtotal));
-			totalAmount += subtotal;
-		}
-
-		// 将总金额保存到session中，结算时使用
-		session.setAttribute("cartTotal", String.format("%.2f", totalAmount));
-
-		return cart;
-	}
-
-	// 结算方法
-	public void processCheckout(SqlMapClient sqlMap, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		PrintWriter pw = null;
-		try {
-			response.setCharacterEncoding("utf-8");
-			pw = response.getWriter();
-
-			String login_user_acct = SysInfo.getLoginUserAcct4Front(request, response);
-			if(login_user_acct.equals("guest")) {
-				pw.write("请先登录！");
+			if(jiagelist == null || jiagelist.size() == 0) {
+				pw.write("商品价格未设置！");
 				return;
 			}
 
-			HttpSession session = request.getSession(false);
-			if(session == null || session.getAttribute("cart") == null ||
-					((ArrayList)session.getAttribute("cart")).size() == 0) {
-				pw.write("购物车为空！");
-				return;
+			String danjia = ((HashMap)jiagelist.get(0)).get("xiaoshoujiage").toString();
+			double xiaoji = Double.parseDouble(danjia) * Integer.parseInt(shuliang);
+
+			// 查询购物车中是否已存在该商品
+			where.clear();
+			where.put("huohao", huohao);
+			where.put("yonghuming", login_user_acct);
+			List gouwucheList = sqlMap.queryForList("Gouwuche.selecteList", where);
+
+			if(gouwucheList != null && gouwucheList.size() > 0) {
+				// 已存在，更新数量
+				int oldShuliang = Integer.parseInt(((HashMap)gouwucheList.get(0)).get("shuliang").toString());
+				int newShuliang = oldShuliang + Integer.parseInt(shuliang);
+				double newXiaoji = Double.parseDouble(danjia) * newShuliang;
+
+				where.clear();
+				where.put("id", ((HashMap)gouwucheList.get(0)).get("id").toString());
+				where.put("shuliang", String.valueOf(newShuliang));
+				where.put("xiaoji", String.valueOf(newXiaoji));
+
+				sqlMap.update("Gouwuche.updateObj", where);
+			} else {
+				// 不存在，新增记录
+				where.clear();
+				where.put("yonghuming", login_user_acct);
+				where.put("huohao", huohao);
+				where.put("shangpinmingcheng", ((HashMap)caigouxinxiList.get(0)).get("shangpinmingcheng").toString());
+				where.put("shuliang", shuliang);
+				where.put("danjia", danjia);
+				where.put("xiaoji", String.valueOf(xiaoji));
+				where.put("operatorId", SysInfo.getLoginUserId4Front(request, response));
+				where.put("itime", DateUtil.getNowTime());
+
+				sqlMap.insert("Gouwuche.insertObj", where);
 			}
 
-			ArrayList<HashMap<String, Object>> cart = (ArrayList<HashMap<String, Object>>) session.getAttribute("cart");
-			String totalAmount = (String) session.getAttribute("cartTotal");
-
-			// 生成销售单号
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-			String xiaoshoudanhao = sdf.format(new Date());
-
-			// 创建销售订单
-			HashMap<String, Object> orderMap = new HashMap<String, Object>();
-			orderMap.put("xiaoshoudanhao", xiaoshoudanhao);
-			orderMap.put("jingshouren", login_user_acct);
-			orderMap.put("xiaofeijine", totalAmount);
-
-			// 检查是否是会员
-			String memberSql = "select huiyuanbianhao from huiyuanxinxi where huiyuanmingcheng='"+login_user_acct+"' and deleteFlag=0";
-			try {
-				Properties memberProps = SqlTool.getSingleDoc(memberSql, sqlMap.getCurrentConnection());
-				if(memberProps != null && memberProps.getProperty("huiyuanbianhao") != null) {
-					orderMap.put("huiyuanbianhao", memberProps.getProperty("huiyuanbianhao"));
-				} else {
-					orderMap.put("huiyuanbianhao", "");
-				}
-			} catch(Exception e) {
-				orderMap.put("huiyuanbianhao", "");
-			}
-
-			orderMap.put("operatorId", SysInfo.getLoginUserId4Front(request, response));
-			orderMap.put("itime", DateUtil.getNowTime2());
-			orderMap.put("detail", "");
-
-			// 插入销售记录
-			sqlMap.insert("Xiaoshouxinxi.insertObj", orderMap);
-
-			// 添加销售明细并减少库存
-			for(HashMap<String, Object> item : cart) {
-				String huohao = (String) item.get("huohao");
-				String quantity = (String) item.get("quantity");
-				String price = (String) item.get("price");
-				float subtotal = Float.parseFloat(quantity) * Float.parseFloat(price);
-
-				// 使用直接SQL插入销售明细
-				String insertDetailSql = "INSERT INTO xiaoshouxinxi_mingxi (xiaoshoudanhao, huohao, shuliang, danjia, xiaoji, beizhu) VALUES " +
-						"('" + xiaoshoudanhao + "', '" + huohao + "', '" + quantity + "', '" + price + "', '" +
-						String.format("%.2f", subtotal) + "', '')";
-				Connection conn = sqlMap.getCurrentConnection();
-				SqlTool.updateSQL(insertDetailSql, conn);
-
-				// 减少库存
-				String updateSql = "update caigouxinxi set kucunliang=kucunliang-" + quantity +
-						" where huohao='" + huohao + "' and deleteFlag=0";
-				SqlTool.updateSQL(updateSql, conn);
-			}
-
-			// 提交事务
 			sqlMap.commitTransaction();
-
-			// 清空购物车
-			session.removeAttribute("cart");
-			session.removeAttribute("cartTotal");
-
-			pw.write("订单提交成功，订单号：" + xiaoshoudanhao);
+			pw.write("添加到购物车成功！");
 		} catch (Exception e) {
-			pw.write("订单提交失败：" + e.getMessage());
-			e.printStackTrace();
-			sqlMap.getCurrentConnection().rollback();
-			throw new Exception();
-		} finally {
-			if (pw != null) {
-				pw.close();
-			}
-		}
-	}
-
-	// 更新购物车处理
-	public void updateCart(SqlMapClient sqlMap, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		PrintWriter pw = null;
-		try {
-			response.setCharacterEncoding("utf-8");
-			pw = response.getWriter();
-
-			String login_user_acct = SysInfo.getLoginUserAcct4Front(request, response);
-			if(login_user_acct.equals("guest")) {
-				pw.write("请先登录！");
-				return;
-			}
-
-			String huohao = request.getParameter("huohao");
-			String quantity = request.getParameter("quantity");
-			if(quantity == null || quantity.equals("") || Integer.parseInt(quantity) <= 0) {
-				pw.write("无效的数量");
-				return;
-			}
-
-			// 检查库存
-			String sql = "select kucunliang from caigouxinxi where huohao='"+huohao+"' and deleteFlag=0";
-			Properties productProps = SqlTool.getSingleDoc(sql, sqlMap.getCurrentConnection());
-
-			if(productProps == null) {
-				pw.write("商品不存在！");
-				return;
-			}
-
-			float kucunliang = Float.parseFloat(productProps.getProperty("kucunliang"));
-			float requiredQuantity = Float.parseFloat(quantity);
-
-			if(kucunliang < requiredQuantity) {
-				pw.write("库存不足，当前库存: " + kucunliang);
-				return;
-			}
-
-			// 更新购物车中的商品数量
-			HttpSession session = request.getSession(false);
-			if(session == null || session.getAttribute("cart") == null) {
-				pw.write("购物车为空！");
-				return;
-			}
-
-			ArrayList<HashMap<String, Object>> cart = (ArrayList<HashMap<String, Object>>) session.getAttribute("cart");
-			boolean found = false;
-
-			for(HashMap<String, Object> item : cart) {
-				if(item.get("huohao").equals(huohao)) {
-					item.put("quantity", quantity);
-					found = true;
-					break;
-				}
-			}
-
-			if(!found) {
-				pw.write("商品不在购物车中！");
-				return;
-			}
-
-			session.setAttribute("cart", cart);
-			pw.write("购物车已更新！");
-		} catch (Exception e) {
-			pw.write("更新失败：" + e.getMessage());
+			pw.write("添加到购物车失败！" + e.getMessage());
 			e.printStackTrace();
 			throw new Exception();
 		} finally {
@@ -977,51 +766,7 @@ public class Index extends BaseFormController {
 			}
 		}
 	}
-
-	// 从购物车中移除商品
-	public void removeFromCart(SqlMapClient sqlMap, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		PrintWriter pw = null;
-		try {
-			response.setCharacterEncoding("utf-8");
-			pw = response.getWriter();
-
-			String login_user_acct = SysInfo.getLoginUserAcct4Front(request, response);
-			if(login_user_acct.equals("guest")) {
-				pw.write("请先登录！");
-				return;
-			}
-
-			String huohao = request.getParameter("huohao");
-
-			HttpSession session = request.getSession(false);
-			if(session == null || session.getAttribute("cart") == null) {
-				pw.write("购物车为空！");
-				return;
-			}
-
-			ArrayList<HashMap<String, Object>> cart = (ArrayList<HashMap<String, Object>>) session.getAttribute("cart");
-
-			for(int i = 0; i < cart.size(); i++) {
-				if(cart.get(i).get("huohao").equals(huohao)) {
-					cart.remove(i);
-					break;
-				}
-			}
-
-			session.setAttribute("cart", cart);
-			pw.write("商品已从购物车中移除！");
-		} catch (Exception e) {
-			pw.write("操作失败：" + e.getMessage());
-			e.printStackTrace();
-			throw new Exception();
-		} finally {
-			if (pw != null) {
-				pw.close();
-			}
-		}
-	}
-	// ==========Added: 0514
-	
+//	Added==============================================================
 	public void doComment(SqlMapClient sqlMap, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// �������������
 		PrintWriter pw = null;

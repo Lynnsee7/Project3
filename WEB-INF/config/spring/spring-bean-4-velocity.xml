@@ -96,6 +96,10 @@
 <prop key="/WEB-ROOT/app/xinxifabuguanli/xinxifabu.do">XINXIFABU</prop> 
 
 
+<prop key="/WEB-ROOT/app/goumaiguanli/goumaishangpin.do">GOUMAISHANGPIN</prop>
+<prop key="/WEB-ROOT/app/goumaiguanli/gouwuche.do">GOUWUCHE</prop>
+
+
 
 
 
@@ -179,13 +183,16 @@
 <bean id="BAOSUNXINXI" class="app.baosunguanli.baosunxinxi.Baosunxinxi"></bean> 
 <bean id="JIFENDUIHUAN" class="app.huiyuanjifenguanli.jifenduihuan.Jifenduihuan"></bean> 
 
+<bean id="GOUMAISHANGPIN" class="app.goumaiguanli.goumaishangpin.Goumaishangpin"></bean>
+<bean id="GOUWUCHE" class="app.goumaiguanli.gouwuche.Gouwuche"></bean>
 
 
 
 
 
 
-<bean id="XINXIFABU" class="app.xinxifabuguanli.xinxifabu.Xinxifabu"></bean> 
+<bean id="XINXIFABU" class="app.xinxifabuguanli.xinxifabu.Xinxifabu"></bean>
+	<bean id="freemarkerConfigurer" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer"></bean>
 
 
 
